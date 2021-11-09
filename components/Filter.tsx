@@ -11,7 +11,7 @@ interface FilterProps {}
 
 const Filter: FC<FilterProps> = ({}) => {
     return (
-        <Box w="90%" my={4}>
+        <Box w="90%" my={4} ml="5%">
             <Wrap spacing={4} justify="center">
                 <Button colorScheme="orange" size="lg" variant="ghost">
                     All Classes

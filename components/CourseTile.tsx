@@ -24,7 +24,7 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
         <Center py={6}>
             <Box
                 maxW={"330px"}
-                w={"full"}
+                w={"330px"}
                 bg={useColorModeValue("orange.100", "gray.700")}
                 boxShadow={"2xl"}
                 rounded={"md"}
@@ -51,11 +51,17 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
                 >
                     {Number}
                 </Text>
-                <Box bg="orange" px={6} py={10}>
+                <Stack
+                    align={"center"}
+                    justify={"center"}
+                    bg="orange"
+                    h="104px"
+                    px={8}
+                >
                     <Text align={"center"} justify={"center"}>
                         {Title}
                     </Text>
-                </Box>
+                </Stack>
                 <Box
                     bg={useColorModeValue("gray.50", "gray.900")}
                     px={6}
