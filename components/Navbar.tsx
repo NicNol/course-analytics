@@ -1,17 +1,49 @@
-import React, { FC } from "react";
+import { ReactNode } from "react";
+import {
+    Box,
+    Flex,
+    Link,
+    Button,
+    useColorModeValue,
+    Heading,
+    Stack,
+    Text,
+    useColorMode,
+} from "@chakra-ui/react";
+import { Search2Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-interface NavbarProps {}
-
-const Navbar: FC<NavbarProps> = () => {
+export default function Nav() {
+    const { colorMode, toggleColorMode } = useColorMode();
     return (
-        <nav>
-            <h1>Course Analyzer</h1>
-            <h2>
-                for Oregon State University&apos;s Computer Science Post-Bacc
-                Program
-            </h2>
-        </nav>
-    );
-};
+        <Box bg={useColorModeValue("black", "gray.900")} px={4}>
+            <Flex alignItems={"center"} justifyContent={"space-between"}>
+                <Box w="50%">
+                    <Search2Icon
+                        w={16}
+                        h={16}
+                        color="white"
+                        float="left"
+                        m={2}
+                        sx={{
+                            filter: "drop-shadow(3px 3px 3px #333);",
+                        }}
+                    />
+                    <Heading
+                        textShadow="2px 2px #333"
+                        color={useColorModeValue("orange.400", "orange.300")}
+                    >
+                        Course Analytics
+                    </Heading>
+                    <Text color="white" textShadow="1px 1px #333">
+                        for Oregon State University&apos;s Computer Science
+                        Post-Bacc Program
+                    </Text>
+                </Box>
 
-export default Navbar;
+                <Button onClick={toggleColorMode}>
+                    {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                </Button>
+            </Flex>
+        </Box>
+    );
+}

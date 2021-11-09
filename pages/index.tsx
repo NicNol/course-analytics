@@ -1,14 +1,15 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-//import Navbar from "../components/navbar";
-import Navbar2 from "../components/Navbar2";
+import Navbar from "../components/Navbar";
 import Filter from "../components/Filter";
+import CourseList from "../components/CourseList";
 
 const Home: NextPage = () => {
     return (
         <>
-            <Navbar2 />
+            <Navbar />
             <Filter />
+            <CourseList />
         </>
     );
 };

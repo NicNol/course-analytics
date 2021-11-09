@@ -11,14 +11,14 @@ interface FilterProps {}
 
 const Filter: FC<FilterProps> = ({}) => {
     return (
-        <Box w="90%">
+        <Box w="90%" my={4}>
             <Wrap spacing={4} justify="center">
-                <Button colorScheme="orange" size="sm" variant="ghost">
+                <Button colorScheme="orange" size="lg" variant="ghost">
                     All Classes
                 </Button>
                 <Button
                     colorScheme="orange"
-                    size="sm"
+                    size="lg"
                     variant="ghost"
                     leftIcon={<ArrowDownIcon />}
                 >
@@ -26,7 +26,7 @@ const Filter: FC<FilterProps> = ({}) => {
                 </Button>
                 <Button
                     colorScheme="orange"
-                    size="sm"
+                    size="lg"
                     variant="ghost"
                     leftIcon={<ArrowUpIcon />}
                 >
@@ -34,7 +34,7 @@ const Filter: FC<FilterProps> = ({}) => {
                 </Button>
                 <Button
                     colorScheme="orange"
-                    size="sm"
+                    size="lg"
                     variant="ghost"
                     leftIcon={<SettingsIcon />}
                 >
@@ -42,7 +42,7 @@ const Filter: FC<FilterProps> = ({}) => {
                 </Button>
                 <Button
                     colorScheme="orange"
-                    size="sm"
+                    size="lg"
                     variant="ghost"
                     leftIcon={<StarIcon />}
                 >
