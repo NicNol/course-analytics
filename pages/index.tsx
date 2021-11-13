@@ -15,7 +15,6 @@ const Home: NextPage = () => {
 
     function handleFilter(criteria: Array<string>) {
         setFilter(criteria);
-        console.log("hello");
     }
 
     return (

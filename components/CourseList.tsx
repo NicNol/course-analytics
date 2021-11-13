@@ -37,8 +37,6 @@ const CourseList: FC<CourseListProps> = ({ filter }) => {
         }
     });
 
-    console.log(courseTiles);
-
     return (
         <Container maxW="container.xl">
             <Wrap spacing={4} justify="center">
