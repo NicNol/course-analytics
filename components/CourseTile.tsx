@@ -29,6 +29,7 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
                 boxShadow={"2xl"}
                 rounded={"md"}
                 overflow={"hidden"}
+                _hover={{}}
             >
                 <Stack
                     justify={"center"}
@@ -54,11 +55,20 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
                 <Stack
                     align={"center"}
                     justify={"center"}
-                    bg="orange"
+                    //bg={useColorModeValue("black", "gray.300")}
+                    bg={useColorModeValue(
+                        "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)",
+                        "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)"
+                    )}
                     h="104px"
                     px={8}
                 >
-                    <Text align={"center"} justify={"center"}>
+                    <Text
+                        align={"center"}
+                        justify={"center"}
+                        color={useColorModeValue("white", "black")}
+                        fontWeight="bold"
+                    >
                         {Title}
                     </Text>
                 </Stack>

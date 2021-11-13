@@ -3,7 +3,9 @@ import { Container, Wrap } from "@chakra-ui/react";
 import CourseTile from "./CourseTile";
 import { classList } from "../classList";
 
-interface CourseListProps {}
+interface CourseListProps {
+    filter: Array<string>;
+}
 
 interface classObject {
     Tags: Array<string>;
@@ -11,14 +13,32 @@ interface classObject {
     Title: string;
 }
 
-let courseTiles = classList.map((classObject: classObject) => {
-    const { Tags, Number, Title } = classObject;
-    return (
-        <CourseTile key={Number} Tags={Tags} Number={Number} Title={Title} />
-    );
-});
+const CourseList: FC<CourseListProps> = ({ filter }) => {
+    let courseTiles = classList.map((classObject: classObject) => {
+        const { Tags, Number, Title } = classObject;
 
-const CourseList: FC<CourseListProps> = ({}) => {
+        let in_filter = false;
+        for (const tag of Tags) {
+            if (filter.includes(tag)) {
+                in_filter = true;
+                break;
+            }
+        }
+
+        if (in_filter) {
+            return (
+                <CourseTile
+                    key={Number}
+                    Tags={Tags}
+                    Number={Number}
+                    Title={Title}
+                />
+            );
+        }
+    });
+
+    console.log(courseTiles);
+
     return (
         <Container maxW="container.xl">
             <Wrap spacing={4} justify="center">

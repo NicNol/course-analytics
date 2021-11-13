@@ -7,13 +7,27 @@ import {
     StarIcon,
 } from "@chakra-ui/icons";
 
-interface FilterProps {}
+interface FilterProps {
+    handleFilter: Function;
+}
 
-const Filter: FC<FilterProps> = ({}) => {
+const Filter: FC<FilterProps> = ({ handleFilter }) => {
     return (
         <Box w="90%" my={4} ml="5%">
             <Wrap spacing={4} justify="center">
-                <Button colorScheme="orange" size="lg" variant="ghost">
+                <Button
+                    colorScheme="orange"
+                    size="lg"
+                    variant="ghost"
+                    onClick={() =>
+                        handleFilter([
+                            "Lower Division",
+                            "Core Class",
+                            "Upper Division",
+                            "Elective",
+                        ])
+                    }
+                >
                     All Classes
                 </Button>
                 <Button
@@ -21,6 +35,7 @@ const Filter: FC<FilterProps> = ({}) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<ArrowDownIcon />}
+                    onClick={() => handleFilter(["Lower Division"])}
                 >
                     Lower Division
                 </Button>
@@ -29,6 +44,7 @@ const Filter: FC<FilterProps> = ({}) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<ArrowUpIcon />}
+                    onClick={() => handleFilter(["Upper Division"])}
                 >
                     Upper Division
                 </Button>
@@ -37,6 +53,7 @@ const Filter: FC<FilterProps> = ({}) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<SettingsIcon />}
+                    onClick={() => handleFilter(["Core Class"])}
                 >
                     Core Classes
                 </Button>
@@ -45,6 +62,7 @@ const Filter: FC<FilterProps> = ({}) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<StarIcon />}
+                    onClick={() => handleFilter(["Elective"])}
                 >
                     Electives
                 </Button>
