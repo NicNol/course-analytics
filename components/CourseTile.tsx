@@ -76,22 +76,21 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
                     bg={useColorModeValue("gray.50", "gray.900")}
                     px={6}
                     py={10}
+                    justify={"center"}
+                    align={"center"}
                 >
-                    <Text align={"center"} justify={"center"}>
-                        100 Reviews
-                    </Text>
+                    <Text>100 Reviews</Text>
                     <Button
                         mt={10}
-                        w={"full"}
-                        bg={"orange.400"}
+                        bg={useColorModeValue("orange.400", "gray.500")}
                         color={"white"}
                         rounded={"xl"}
                         shadow={"md"}
                         _hover={{
-                            bg: "orange.500",
+                            bg: useColorModeValue("orange.500", "gray.600"),
                         }}
                         _focus={{
-                            bg: "orange.500",
+                            bg: useColorModeValue("orange.500", "gray.600"),
                         }}
                     >
                         See Analytics
