@@ -1,7 +1,15 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import { Schema, model } from "mongoose";
 
-const course = new Schema({
+export interface CourseSchema {
+    name: string;
+    difficulty: string;
+    "time commitment": string;
+    review: string;
+    "review date": string;
+    quarter: string;
+}
+
+const schema = new Schema<CourseSchema>({
     name: {
         type: String,
         required: true,
@@ -28,8 +36,6 @@ const course = new Schema({
     },
 });
 
-mongoose.models = {};
-
-const Course = mongoose.model("User", course);
+const Course = model<CourseSchema>("Course", schema);
 
 export default Course;
