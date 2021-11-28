@@ -7,6 +7,7 @@ export interface CourseSchema {
     review: string;
     "review date": string;
     quarter: string;
+    "other courses": Array<string>;
 }
 
 const schema = new Schema<CourseSchema>({
@@ -32,6 +33,10 @@ const schema = new Schema<CourseSchema>({
     },
     quarter: {
         type: String,
+        required: true,
+    },
+    "other courses": {
+        type: [String],
         required: true,
     },
 });
