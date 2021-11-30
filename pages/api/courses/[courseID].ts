@@ -1,20 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../../util/mongodb";
-import { CourseSchema } from "../../../util/models/course";
-import { prepareSheet, getJSON } from "../../../util/sheets";
+import { connectToDatabase } from "../../../util/mongodb";
+import { Course } from "../../../util/models/course";
+//import { prepareSheet, getJSON } from "../../../util/sheets";
 
-// type Data = {
-//     name: string;
-// };
-
-async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<Array<CourseSchema>>
-) {
-    await prepareSheet();
-    const data = await getJSON();
-    res.status(200).json(data);
+async function getCourses(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === "GET") {
+        try {
+            await connectToDatabase();
+            const courses = await Course.find({});
+            console.log(courses.length);
+            res.status(200).json(courses);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+    }
 }
 
-//export default connectDB(handler);
-export default handler;
+export default getCourses;

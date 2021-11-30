@@ -1,6 +1,4 @@
-import { connections, connect, ConnectOptions } from "mongoose";
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { CourseSchema } from "./models/course";
+import { connect, ConnectionOptions } from "mongoose";
 
 declare var process: {
     env: {
@@ -8,23 +6,10 @@ declare var process: {
     };
 };
 
-const connectDB = function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<CourseSchema>
-) {
-    async (req: NextApiRequest, res: NextApiResponse<CourseSchema>) => {
-        if (connections[0].readyState) {
-            // Use current db connection
-            return handler(req, res);
-        }
-        // Use new db connection
-        await connect(process.env.MONGODB_URI, {
-            useUnifiedTopology: true,
-            useFindAndModify: false,
-            useCreateIndex: true,
-            useNewUrlParser: true,
-        } as ConnectOptions);
-        return handler(req, res);
-    };
+const options: ConnectionOptions = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
 };
-export default connectDB;
+
+export const connectToDatabase = () =>
+    connect(process.env.MONGODB_URI, options);

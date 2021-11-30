@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Model, models } from "mongoose";
 
-export interface CourseSchema {
+interface ICourse {
     name: string;
     difficulty: string;
     "time commitment": string;
@@ -10,37 +10,42 @@ export interface CourseSchema {
     "other courses": Array<string>;
 }
 
-const schema = new Schema<CourseSchema>({
-    name: {
-        type: String,
-        required: true,
+const schema = new Schema<ICourse>(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        difficulty: {
+            type: String,
+            required: true,
+        },
+        "time commitment": {
+            type: String,
+            required: true,
+        },
+        review: {
+            type: String,
+            required: true,
+        },
+        "review date": {
+            type: String,
+            required: true,
+        },
+        quarter: {
+            type: String,
+            required: true,
+        },
+        "other courses": {
+            type: [String],
+            required: true,
+        },
     },
-    difficulty: {
-        type: String,
-        required: true,
-    },
-    "time commitment": {
-        type: String,
-        required: true,
-    },
-    review: {
-        type: String,
-        required: true,
-    },
-    "review date": {
-        type: String,
-        required: true,
-    },
-    quarter: {
-        type: String,
-        required: true,
-    },
-    "other courses": {
-        type: [String],
-        required: true,
-    },
-});
+    { collection: "course-data" }
+);
 
-const Course = model<CourseSchema>("Course", schema);
+const Course: Model<ICourse> =
+    models.Course || model<ICourse>("Course", schema);
 
-export default Course;
+export { Course };
+export type { ICourse };

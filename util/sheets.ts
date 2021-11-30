@@ -1,6 +1,9 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import { CourseSchema } from "./models/course";
+import { ICourse } from "./models/course";
+//import connectToDatabase from "./mongodb";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { Connection } from "mongoose";
 
 const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
 
@@ -12,47 +15,6 @@ const authCredentials = {
     client_email: GOOGLE_CLIENT_EMAIL,
     private_key: GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
 };
-
-async function getJSON(): Promise<Array<CourseSchema>> {
-    try {
-        await newSpreadsheet.useServiceAccountAuth(authCredentials);
-        await newSpreadsheet.loadInfo();
-        const worksheet = newSpreadsheet.sheetsByIndex[1];
-
-        const rows = await worksheet.getRows();
-        let output = [];
-
-        for (const row of rows) {
-            let courses = 1;
-            let courseNames = [row.course1];
-            if (row.secondBool === "Yes") {
-                courseNames.push(row.course2);
-                courses++;
-            }
-            if (row.thirdBool === "Yes") {
-                courseNames.push(row.course3);
-                courses++;
-            }
-            for (let i = 1; i <= courses; i++) {
-                let course: CourseSchema = {
-                    name: row[`course${i}`],
-                    difficulty: row[`difficulty${i}`],
-                    "time commitment": row[`time${i}`],
-                    review: row[`tips${i}`],
-                    "review date": row.timestamp,
-                    quarter: row.when1,
-                    "other courses": courseNames.filter(
-                        (courseName) => courseName !== row[`course${i}`]
-                    ),
-                };
-                output.push(course);
-            }
-        }
-        return output;
-    } catch (err) {
-        throw err;
-    }
-}
 
 async function prepareSheet(): Promise<any> {
     try {
@@ -103,5 +65,55 @@ async function prepareSheet(): Promise<any> {
         throw err;
     }
 }
+
+async function getJSON(): Promise<ICourse[]> {
+    try {
+        await newSpreadsheet.useServiceAccountAuth(authCredentials);
+        await newSpreadsheet.loadInfo();
+        const worksheet = newSpreadsheet.sheetsByIndex[1];
+
+        const rows = await worksheet.getRows();
+        let output = [];
+
+        for (const row of rows) {
+            let courses = 1;
+            let courseNames = [row.course1];
+            if (row.secondBool === "Yes") {
+                courseNames.push(row.course2);
+                courses++;
+            }
+            if (row.thirdBool === "Yes") {
+                courseNames.push(row.course3);
+                courses++;
+            }
+            for (let i = 1; i <= courses; i++) {
+                let course: ICourse = {
+                    name: row[`course${i}`],
+                    difficulty: row[`difficulty${i}`],
+                    "time commitment": row[`time${i}`],
+                    review: row[`tips${i}`],
+                    "review date": row.timestamp,
+                    quarter: row.when1,
+                    "other courses": courseNames.filter(
+                        (courseName) => courseName !== row[`course${i}`]
+                    ),
+                };
+                output.push(course);
+            }
+        }
+        return output;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function pushJsonToDatabase(json: ICourse[]): Promise<any> {
+    try {
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function processCourse(course: ICourse) {}
 
 export { prepareSheet, getJSON };
