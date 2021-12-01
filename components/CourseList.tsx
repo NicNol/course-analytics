@@ -8,17 +8,17 @@ interface CourseListProps {
 }
 
 interface classObject {
-    Tags: Array<string>;
-    Number: string;
-    Title: string;
+    tags: Array<string>;
+    number: string;
+    title: string;
 }
 
 const CourseList: FC<CourseListProps> = ({ filter }) => {
     let courseTiles = classList.map((classObject: classObject) => {
-        const { Tags, Number, Title } = classObject;
+        const { tags, number, title } = classObject;
 
         let in_filter = false;
-        for (const tag of Tags) {
+        for (const tag of tags) {
             if (filter.includes(tag)) {
                 in_filter = true;
                 break;
@@ -28,10 +28,10 @@ const CourseList: FC<CourseListProps> = ({ filter }) => {
         if (in_filter) {
             return (
                 <CourseTile
-                    key={Number}
-                    Tags={Tags}
-                    Number={Number}
-                    Title={Title}
+                    key={number}
+                    Tags={tags}
+                    Number={number}
+                    Title={title}
                 />
             );
         }

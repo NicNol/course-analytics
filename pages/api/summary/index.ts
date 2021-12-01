@@ -1,20 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../../util/mongodb";
-import { Course } from "../../../util/models/course";
+import { Summary } from "../../../util/models/summary";
+import summarizeData from "../../../util/summarize";
 
-async function getCourses(req: NextApiRequest, res: NextApiResponse) {
+async function getSummary(req: NextApiRequest, res: NextApiResponse) {
+    //await summarizeData();
     if (req.method === "GET") {
         try {
             await connectToDatabase();
-            const { courseID } = req.query;
-            const courses = await Course.find({
-                name: { $regex: courseID, $options: "i" },
-            });
-            res.status(200).json(courses);
+            const summary = await Summary.find({});
+            res.status(200).json(summary);
         } catch (err) {
             res.status(500).send(err);
         }
     }
 }
 
-export default getCourses;
+export default getSummary;
