@@ -26,7 +26,7 @@ const schema = new Schema<ISummary>(
             required: true,
         },
     },
-    { collection: "summary-data" }
+    { collection: "summary-data", versionKey: false }
 );
 
 const Summary: Model<ISummary> =

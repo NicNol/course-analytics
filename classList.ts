@@ -21,11 +21,6 @@ export const classList = [
         tags: ["Lower Division", "Core Class"],
     },
     {
-        number: "MTH 231",
-        title: "ELEMENTS OF DISCRETE MATHEMATICS",
-        tags: ["Lower Division", "Core Class"],
-    },
-    {
         number: "CS 261",
         title: "DATA STRUCTURES",
         tags: ["Lower Division", "Core Class"],

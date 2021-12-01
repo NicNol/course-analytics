@@ -23,8 +23,6 @@ async function summarizeData() {
         let courseNumber = classObj.number;
         let totalTime = 0;
         let totalDifficulty = 0;
-        let courseName: string;
-
         try {
             await connectToDatabase();
             const courses = await Course.find({
@@ -60,6 +58,7 @@ async function summarizeData() {
             /* Update the summary document -or- Insert if not found */
             await Summary.findOneAndUpdate({ name: courses[0].name }, output, {
                 upsert: true,
+                overwrite: true,
             });
         } catch (err) {
             console.error(err);
