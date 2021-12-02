@@ -1,21 +1,33 @@
 import React, { FC } from "react";
 import { Container, Wrap } from "@chakra-ui/react";
 import CourseTile from "./CourseTile";
-import { classList } from "../classList";
+import { ISummary } from "../util/models/summary";
 
 interface CourseListProps {
-    filter: Array<string>;
+    filter: string[];
+    jsonData: CourseListJSON;
+}
+
+interface CourseListJSON {
+    data: ISummary[];
 }
 
 interface classObject {
-    tags: Array<string>;
+    tags: string[];
     number: string;
     title: string;
 }
 
-const CourseList: FC<CourseListProps> = ({ filter }) => {
-    let courseTiles = classList.map((classObject: classObject) => {
-        const { tags, number, title } = classObject;
+const CourseList: FC<CourseListProps> = ({ jsonData, filter }) => {
+    const { data } = jsonData;
+    let courseTiles = data.map((classSummary: ISummary) => {
+        const { tags, name } = classSummary;
+        let nameArray = name.split(" ");
+        const number = nameArray[0] + " " + nameArray[1];
+        let title = "";
+        for (let i = 3; i < nameArray.length; i++) {
+            title += nameArray[i] + " ";
+        }
 
         let in_filter = false;
         for (const tag of tags) {
@@ -47,3 +59,4 @@ const CourseList: FC<CourseListProps> = ({ filter }) => {
 };
 
 export default CourseList;
+export type { CourseListJSON };

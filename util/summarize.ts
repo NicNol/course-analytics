@@ -53,6 +53,7 @@ async function summarizeData() {
                 "average difficulty": avgDifficulty.toString(),
                 "time commitment": timeCommitment.toString(),
                 "review count": courses.length.toString(),
+                tags: classObj.tags,
             };
 
             /* Update the summary document -or- Insert if not found */

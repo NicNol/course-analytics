@@ -7,7 +7,7 @@ interface ICourse {
     review: string;
     "review date": string;
     quarter: string;
-    "other courses": Array<string>;
+    "other courses": string[];
 }
 
 const schema = new Schema<ICourse>(

@@ -5,6 +5,7 @@ interface ISummary {
     "average difficulty": string;
     "time commitment": string;
     "review count": string;
+    tags: string[];
 }
 
 const schema = new Schema<ISummary>(
@@ -23,6 +24,10 @@ const schema = new Schema<ISummary>(
         },
         "review count": {
             type: String,
+            required: true,
+        },
+        tags: {
+            type: [String],
             required: true,
         },
     },
