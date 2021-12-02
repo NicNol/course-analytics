@@ -1,8 +1,10 @@
 import React, { FC } from "react";
+import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
 import {
     Button,
     Box,
     Center,
+    Icon,
     Stack,
     Text,
     useColorModeValue,
@@ -13,9 +15,19 @@ interface CourseTileProps {
     Tags: Array<string>;
     Number: string;
     Title: string;
+    Reviews: string;
+    Difficulty: string;
+    Time: string;
 }
 
-const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
+const CourseTile: FC<CourseTileProps> = ({
+    Tags,
+    Number,
+    Title,
+    Reviews,
+    Difficulty,
+    Time,
+}) => {
     let tags = Tags.map((tag) => (
         <CourseTag key={Number + tag}>{tag}</CourseTag>
     ));
@@ -55,7 +67,6 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
                 <Stack
                     align={"center"}
                     justify={"center"}
-                    //bg={useColorModeValue("black", "gray.300")}
                     bg={useColorModeValue(
                         "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)",
                         "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)"
@@ -79,7 +90,24 @@ const CourseTile: FC<CourseTileProps> = ({ Tags, Number, Title }) => {
                     justify={"center"}
                     align={"center"}
                 >
-                    <Text>100 Reviews</Text>
+                    <Stack
+                        color={useColorModeValue("#333", "#ccc")}
+                        align={"center"}
+                    >
+                        <Stack direction={"row"}>
+                            <Icon as={MdFeedback} w={6} h={6} />
+                            <Text>{Reviews} Reviews</Text>
+                        </Stack>
+                        <Stack direction={"row"}>
+                            <Icon as={MdAccessTime} w={6} h={6} />
+                            <Text>{Time} Hours/Week</Text>
+                        </Stack>
+                        <Stack direction={"row"}>
+                            <Icon as={MdExtension} w={6} h={6} />
+                            <Text>{Difficulty}/5 Difficulty</Text>
+                        </Stack>
+                    </Stack>
+
                     <Button
                         mt={10}
                         bg={useColorModeValue("orange.400", "gray.500")}

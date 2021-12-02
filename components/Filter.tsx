@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Box, Wrap } from "@chakra-ui/react";
+import { Button, Box, Wrap, useColorModeValue } from "@chakra-ui/react";
 import {
     ArrowDownIcon,
     ArrowUpIcon,
@@ -16,7 +16,7 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
         <Box w="90%" my={4} ml="5%">
             <Wrap spacing={4} justify="center">
                 <Button
-                    colorScheme="orange"
+                    colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
                     onClick={() =>
@@ -31,7 +31,7 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     All Classes
                 </Button>
                 <Button
-                    colorScheme="orange"
+                    colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
                     leftIcon={<ArrowDownIcon />}
@@ -40,7 +40,7 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     Lower Division
                 </Button>
                 <Button
-                    colorScheme="orange"
+                    colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
                     leftIcon={<ArrowUpIcon />}
@@ -49,7 +49,7 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     Upper Division
                 </Button>
                 <Button
-                    colorScheme="orange"
+                    colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
                     leftIcon={<SettingsIcon />}
@@ -58,7 +58,7 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     Core Classes
                 </Button>
                 <Button
-                    colorScheme="orange"
+                    colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
                     leftIcon={<StarIcon />}

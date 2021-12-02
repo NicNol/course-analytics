@@ -12,16 +12,16 @@ interface CourseListJSON {
     data: ISummary[];
 }
 
-interface classObject {
-    tags: string[];
-    number: string;
-    title: string;
-}
-
 const CourseList: FC<CourseListProps> = ({ jsonData, filter }) => {
     const { data } = jsonData;
     let courseTiles = data.map((classSummary: ISummary) => {
-        const { tags, name } = classSummary;
+        const {
+            tags,
+            name,
+            "review count": reviews,
+            "time commitment": time,
+            "average difficulty": difficulty,
+        } = classSummary;
         let nameArray = name.split(" ");
         const number = nameArray[0] + " " + nameArray[1];
         let title = "";
@@ -44,6 +44,9 @@ const CourseList: FC<CourseListProps> = ({ jsonData, filter }) => {
                     Tags={tags}
                     Number={number}
                     Title={title}
+                    Reviews={reviews}
+                    Difficulty={difficulty}
+                    Time={time}
                 />
             );
         }

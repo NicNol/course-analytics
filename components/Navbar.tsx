@@ -36,7 +36,7 @@ export default function Nav() {
                                 textShadow="2px 2px #333"
                                 color={useColorModeValue(
                                     "orange.400",
-                                    "orange.300"
+                                    "rgb(160,174,192)"
                                 )}
                             >
                                 Course Analytics
