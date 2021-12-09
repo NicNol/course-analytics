@@ -33,7 +33,7 @@ const CourseTile: FC<CourseTileProps> = ({
     ));
 
     return (
-        <Center py={6}>
+        <Center p={2}>
             <Box
                 maxW={"330px"}
                 w={"330px"}
@@ -45,7 +45,7 @@ const CourseTile: FC<CourseTileProps> = ({
             >
                 <Stack
                     justify={"center"}
-                    p={6}
+                    pt={6}
                     color={useColorModeValue("gray.800", "white")}
                     align={"center"}
                     direction={"row"}
@@ -71,57 +71,105 @@ const CourseTile: FC<CourseTileProps> = ({
                         "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)",
                         "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)"
                     )}
-                    h="104px"
+                    h="64px"
                     px={8}
                 >
                     <Text
                         align={"center"}
                         justify={"center"}
                         color={useColorModeValue("white", "black")}
-                        fontWeight="bold"
+                        fontWeight={"600"}
                     >
                         {Title}
                     </Text>
                 </Stack>
                 <Box
-                    bg={useColorModeValue("gray.50", "gray.900")}
+                    bg={useColorModeValue("#f5f5f5", "gray.900")}
                     px={6}
-                    py={10}
-                    justify={"center"}
+                    py={4}
                     align={"center"}
                 >
-                    <Stack
-                        color={useColorModeValue("#333", "#ccc")}
-                        align={"center"}
-                    >
-                        <Stack direction={"row"}>
-                            <Icon as={MdFeedback} w={6} h={6} />
-                            <Text>{Reviews} Reviews</Text>
+                    <Stack color={useColorModeValue("#333", "#ccc")} ml={16}>
+                        <Stack
+                            direction={"row"}
+                            justifyContent={"flex-start"}
+                            align={"baseline"}
+                        >
+                            <Icon
+                                as={MdFeedback}
+                                w={8}
+                                h={8}
+                                pos={"relative"}
+                                top={"8px"}
+                            />
+                            <Text fontSize={"3xl"} fontWeight={"100"}>
+                                {Reviews}
+                            </Text>
+                            <Text fontWeight={"700"}>Reviews</Text>
                         </Stack>
-                        <Stack direction={"row"}>
-                            <Icon as={MdAccessTime} w={6} h={6} />
-                            <Text>{Time} Hours/Week</Text>
+                        <Stack
+                            direction={"row"}
+                            justify={"flex-start"}
+                            align={"baseline"}
+                        >
+                            <Icon
+                                as={MdAccessTime}
+                                w={8}
+                                h={8}
+                                pos={"relative"}
+                                top={"5px"}
+                            />
+                            <Text fontSize={"3xl"} fontWeight={"100"}>
+                                {Time}
+                            </Text>
+                            <Text fontWeight={"700"}> Hours per Week</Text>
                         </Stack>
-                        <Stack direction={"row"}>
-                            <Icon as={MdExtension} w={6} h={6} />
-                            <Text>{Difficulty}/5 Difficulty</Text>
+                        <Stack
+                            direction={"row"}
+                            justifyContent={"flex-start"}
+                            align={"baseline"}
+                        >
+                            <Icon
+                                as={MdExtension}
+                                w={8}
+                                h={8}
+                                pos={"relative"}
+                                top={"3px"}
+                            />
+                            <Text fontSize={"3xl"} fontWeight={"100"}>
+                                {Difficulty}
+                            </Text>
+                            <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
                         </Stack>
                     </Stack>
 
                     <Button
-                        mt={10}
-                        bg={useColorModeValue("orange.400", "gray.500")}
-                        color={"white"}
+                        mt={4}
+                        variant={"outline"}
+                        borderColor={useColorModeValue(
+                            "orange.300",
+                            "gray.500"
+                        )}
+                        color={useColorModeValue("orange.400", "white")}
+                        backgroundColor={useColorModeValue(
+                            "orange.50",
+                            "gray.700"
+                        )}
                         rounded={"xl"}
                         shadow={"md"}
                         _hover={{
-                            bg: useColorModeValue("orange.500", "gray.600"),
+                            bg: useColorModeValue("orange.100", "gray.600"),
+                            color: useColorModeValue("orange.500", "white"),
                         }}
                         _focus={{
-                            bg: useColorModeValue("orange.500", "gray.600"),
+                            bg: useColorModeValue("orange.100", "gray.600"),
+                            color: useColorModeValue("orange.500", "white"),
+                        }}
+                        _active={{
+                            bg: useColorModeValue("orange.200", "gray.400"),
                         }}
                     >
-                        See Analytics
+                        View Details
                     </Button>
                 </Box>
             </Box>

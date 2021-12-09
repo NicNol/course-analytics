@@ -1,8 +1,6 @@
-import { ReactNode } from "react";
 import {
     Box,
     Flex,
-    Link,
     Button,
     useColorModeValue,
     Heading,
