@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
 import {
     Button,
@@ -12,39 +12,20 @@ import {
 } from "@chakra-ui/react";
 import CourseTag from "./CourseTag";
 
-interface CourseTileProps {
-    Tags: Array<string>;
-    Number: string;
-    Title: string;
-    Reviews: string;
-    Difficulty: string;
-    Time: string;
-}
+interface CourseDetailBodyProps {}
 
-const CourseTile: FC<CourseTileProps> = ({
-    Tags,
-    Number,
-    Title,
-    Reviews,
-    Difficulty,
-    Time,
-}) => {
-    let tags = Tags.map((tag) => (
-        <CourseTag key={Number + tag}>{tag}</CourseTag>
-    ));
-
+const CourseDetailBody: FC<CourseDetailBodyProps> = () => {
     const router = useRouter();
 
     return (
         <Center p={2}>
             <Box
-                maxW={"330px"}
-                w={"330px"}
+                maxW={"1054px"}
+                w={"1054px"}
                 bg={useColorModeValue("orange.100", "gray.700")}
                 boxShadow={"2xl"}
                 rounded={"md"}
                 overflow={"hidden"}
-                _hover={{}}
             >
                 <Stack
                     justify={"center"}
@@ -52,9 +33,7 @@ const CourseTile: FC<CourseTileProps> = ({
                     color={useColorModeValue("gray.800", "white")}
                     align={"center"}
                     direction={"row"}
-                >
-                    {tags}
-                </Stack>
+                ></Stack>
                 <Text
                     align={"center"}
                     justify={"center"}
@@ -82,9 +61,7 @@ const CourseTile: FC<CourseTileProps> = ({
                         justify={"center"}
                         color={useColorModeValue("white", "black")}
                         fontWeight={"600"}
-                    >
-                        {Title}
-                    </Text>
+                    ></Text>
                 </Stack>
                 <Box
                     bg={useColorModeValue("#f5f5f5", "gray.900")}
@@ -105,9 +82,7 @@ const CourseTile: FC<CourseTileProps> = ({
                                 pos={"relative"}
                                 top={"8px"}
                             />
-                            <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {Reviews}
-                            </Text>
+                            <Text fontSize={"3xl"} fontWeight={"100"}></Text>
                             <Text fontWeight={"700"}>Reviews</Text>
                         </Stack>
                         <Stack
@@ -122,9 +97,7 @@ const CourseTile: FC<CourseTileProps> = ({
                                 pos={"relative"}
                                 top={"5px"}
                             />
-                            <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {Time}
-                            </Text>
+                            <Text fontSize={"3xl"} fontWeight={"100"}></Text>
                             <Text fontWeight={"700"}> Hours per Week</Text>
                         </Stack>
                         <Stack
@@ -139,9 +112,7 @@ const CourseTile: FC<CourseTileProps> = ({
                                 pos={"relative"}
                                 top={"3px"}
                             />
-                            <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {parseFloat(Difficulty).toFixed(1)}
-                            </Text>
+                            <Text fontSize={"3xl"} fontWeight={"100"}></Text>
                             <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
                         </Stack>
                     </Stack>
@@ -181,4 +152,4 @@ const CourseTile: FC<CourseTileProps> = ({
     );
 };
 
-export default CourseTile;
+export default CourseDetailBody;
