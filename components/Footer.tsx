@@ -23,27 +23,44 @@ export default function Footer() {
                 justifyContent={"space-evenly"}
                 direction={"row"}
             >
-                <Stack>
+                <Stack w={"40%"}>
+                    <Heading size={"lg"}>About: </Heading>
                     <Text>
                         Course Analytics was developed for students of Oregon
                         State University&apos;s online Computer Science program.
                         The data on difficulty, time commitments, course
                         pairings, and tips have been submitted by real students
                         using{" "}
-                        <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeAWZa_OWYqwOte5yw4loGgE6hEUqOJOeSpmzStZF_HcufufQ/viewform">
+                        <Link
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSeAWZa_OWYqwOte5yw4loGgE6hEUqOJOeSpmzStZF_HcufufQ/viewform"
+                            color={useColorModeValue("orange.400", "blue.200")}
+                        >
                             this survey
                         </Link>
                         . Feel free to add your own reviews if you are a current
                         student! The data is scraped from{" "}
-                        <Link href="https://docs.google.com/spreadsheets/d/1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU/edit">
+                        <Link
+                            href="https://docs.google.com/spreadsheets/d/1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU/edit"
+                            color={useColorModeValue("orange.400", "blue.200")}
+                        >
                             this spreadsheet
                         </Link>
                         .
                     </Text>
                     <Text>
                         Course Analytics is an open source project by{" "}
-                        <Link href="https://github.com/NicNol">Nic Nolan</Link>.{" "}
-                        <Link href="https://github.com/NicNol/course-analytics">
+                        <Link
+                            href="https://github.com/NicNol"
+                            color={useColorModeValue("orange.400", "blue.200")}
+                        >
+                            Nic Nolan
+                        </Link>
+                        .
+                        <br />
+                        <Link
+                            href="https://github.com/NicNol/course-analytics"
+                            color={useColorModeValue("orange.400", "blue.200")}
+                        >
                             View the repository on GitHub
                         </Link>
                     </Text>

@@ -137,7 +137,7 @@ const CourseTile: FC<CourseTileProps> = ({
                                 top={"3px"}
                             />
                             <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {Difficulty}
+                                {parseFloat(Difficulty).toFixed(1)}
                             </Text>
                             <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
                         </Stack>
