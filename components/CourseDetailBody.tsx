@@ -10,12 +10,25 @@ import {
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
+import type { ICourse } from "../util/models/course";
+import { classList } from "../classList";
 import CourseTag from "./CourseTag";
 
-interface CourseDetailBodyProps {}
+interface CourseDetailBodyProps {
+    courseData: ICourse[];
+    courseid: string;
+}
 
-const CourseDetailBody: FC<CourseDetailBodyProps> = () => {
+const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
     const router = useRouter();
+    const { courseData, courseid } = props;
+    const CourseListing = classList.filter(
+        (course) => course.number === courseid
+    );
+    const { tags, title } = CourseListing[0];
+    const tagElements = tags.map((tag) => (
+        <CourseTag key={courseid + tag}>{tag}</CourseTag>
+    ));
 
     return (
         <Center p={2}>
@@ -33,7 +46,9 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = () => {
                     color={useColorModeValue("gray.800", "white")}
                     align={"center"}
                     direction={"row"}
-                ></Stack>
+                >
+                    {tagElements}
+                </Stack>
                 <Text
                     align={"center"}
                     justify={"center"}
@@ -44,7 +59,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = () => {
                         "2px 2px #333"
                     )}
                 >
-                    {Number}
+                    {courseid}
                 </Text>
                 <Stack
                     align={"center"}
@@ -61,7 +76,13 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = () => {
                         justify={"center"}
                         color={useColorModeValue("white", "black")}
                         fontWeight={"600"}
-                    ></Text>
+                    >
+                        {title
+                            .toLowerCase()
+                            .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+                                letter.toUpperCase()
+                            )}
+                    </Text>
                 </Stack>
                 <Box
                     bg={useColorModeValue("#f5f5f5", "gray.900")}
