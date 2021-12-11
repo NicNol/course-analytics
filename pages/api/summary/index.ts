@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../../util/mongodb";
 import { Summary } from "../../../util/models/summary";
-import summarizeData from "../../../util/summarize";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "GET") {

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
     Box,
     Flex,
@@ -12,6 +13,7 @@ import { Search2Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode();
+    const router = useRouter();
     return (
         <Box bg={useColorModeValue("black", "gray.900")} px={4}>
             <Flex alignItems={"center"} justifyContent={"space-between"}>
@@ -31,6 +33,16 @@ export default function Nav() {
                         </Box>
                         <Box>
                             <Heading
+                                onClick={() => router.push("/")}
+                                _hover={{
+                                    cursor: "pointer",
+                                    color: useColorModeValue(
+                                        "orange.300",
+                                        "blue.200"
+                                    ),
+                                    textShadow: "1px 1px #999",
+                                }}
+                                transition={".2s"}
                                 textShadow="2px 2px #333"
                                 color={useColorModeValue(
                                     "orange.400",

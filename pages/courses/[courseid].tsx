@@ -4,10 +4,26 @@ import CourseDetailBody from "../../components/CourseDetailBody";
 import Footer from "../../components/Footer";
 import { getCourseData } from "../api/courses";
 import type { ICourse } from "../../util/models/course";
+import { classList } from "../../classList";
 
 type Params = {
     params: {
         slug: string;
+    };
+};
+
+export const getStaticPaths = async () => {
+    let coursePaths = [];
+    for (const course of classList) {
+        const coursePath = {
+            params: { courseid: course.number },
+        };
+        coursePaths.push(coursePath);
+    }
+
+    return {
+        paths: coursePaths,
+        fallback: false,
     };
 };
 
