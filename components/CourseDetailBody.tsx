@@ -1,18 +1,18 @@
 import React, { FC } from "react";
-import { useRouter } from "next/router";
-import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
 import {
-    Button,
     Box,
     Center,
-    Icon,
+    Heading,
     Stack,
     Text,
     useColorModeValue,
+    Flex,
 } from "@chakra-ui/react";
 import type { ICourse } from "../util/models/course";
 import { classList } from "../classList";
 import CourseTag from "./CourseTag";
+import CourseReview from "./CourseReview";
+import CourseStats from "./CourseStats";
 
 interface CourseDetailBodyProps {
     courseData: ICourse[];
@@ -20,15 +20,28 @@ interface CourseDetailBodyProps {
 }
 
 const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
-    const router = useRouter();
     const { courseData, courseid } = props;
     const CourseListing = classList.filter(
         (course) => course.number === courseid
     );
+
     const { tags, title } = CourseListing[0];
     const tagElements = tags.map((tag) => (
         <CourseTag key={courseid + tag}>{tag}</CourseTag>
     ));
+
+    const reviews = courseData
+        .map((course) => {
+            if (course.review.length > 0) {
+                return (
+                    <CourseReview
+                        key={course["review date"]}
+                        courseData={course}
+                    />
+                );
+            }
+        })
+        .reverse();
 
     return (
         <Center p={2}>
@@ -75,7 +88,9 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                         align={"center"}
                         justify={"center"}
                         color={useColorModeValue("white", "black")}
+                        fontSize={"2xl"}
                         fontWeight={"600"}
+                        lineHeight={".75"}
                     >
                         {title
                             .toLowerCase()
@@ -90,83 +105,15 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                     py={4}
                     align={"center"}
                 >
-                    <Stack color={useColorModeValue("#333", "#ccc")} ml={16}>
-                        <Stack
-                            direction={"row"}
-                            justifyContent={"flex-start"}
-                            align={"baseline"}
-                        >
-                            <Icon
-                                as={MdFeedback}
-                                w={8}
-                                h={8}
-                                pos={"relative"}
-                                top={"8px"}
-                            />
-                            <Text fontSize={"3xl"} fontWeight={"100"}></Text>
-                            <Text fontWeight={"700"}>Reviews</Text>
+                    <Flex>
+                        <Stack>
+                            <CourseStats courseData={courseData} />
                         </Stack>
-                        <Stack
-                            direction={"row"}
-                            justify={"flex-start"}
-                            align={"baseline"}
-                        >
-                            <Icon
-                                as={MdAccessTime}
-                                w={8}
-                                h={8}
-                                pos={"relative"}
-                                top={"5px"}
-                            />
-                            <Text fontSize={"3xl"} fontWeight={"100"}></Text>
-                            <Text fontWeight={"700"}> Hours per Week</Text>
+                        <Stack gridGap={1}>
+                            <Heading size={"lg"}>Tips from Students</Heading>
+                            {reviews}
                         </Stack>
-                        <Stack
-                            direction={"row"}
-                            justifyContent={"flex-start"}
-                            align={"baseline"}
-                        >
-                            <Icon
-                                as={MdExtension}
-                                w={8}
-                                h={8}
-                                pos={"relative"}
-                                top={"3px"}
-                            />
-                            <Text fontSize={"3xl"} fontWeight={"100"}></Text>
-                            <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
-                        </Stack>
-                    </Stack>
-
-                    <Button
-                        onClick={() => router.push("/courses/" + Number)}
-                        mt={4}
-                        variant={"outline"}
-                        borderColor={useColorModeValue(
-                            "orange.300",
-                            "gray.500"
-                        )}
-                        color={useColorModeValue("orange.400", "white")}
-                        backgroundColor={useColorModeValue(
-                            "orange.50",
-                            "gray.700"
-                        )}
-                        rounded={"xl"}
-                        shadow={"md"}
-                        _hover={{
-                            bg: useColorModeValue("orange.100", "gray.600"),
-                            color: useColorModeValue("orange.500", "white"),
-                        }}
-                        _focus={{
-                            bg: useColorModeValue("orange.100", "gray.600"),
-                            color: useColorModeValue("orange.500", "white"),
-                        }}
-                        _active={{
-                            bg: useColorModeValue("orange.200", "gray.400"),
-                        }}
-                    >
-                        View Details
-                    </Button>
+                    </Flex>
                 </Box>
             </Box>
         </Center>

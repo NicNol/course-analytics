@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Button, Box, Wrap, useColorModeValue } from "@chakra-ui/react";
-import { TimeIcon } from "@chakra-ui/icons";
+import { MdCalendarToday } from "react-icons/md";
 
 interface FilterProps {
     handleFilter: Function;
@@ -14,14 +14,7 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
-                    onClick={() =>
-                        handleFilter([
-                            "Lower Division",
-                            "Core Class",
-                            "Upper Division",
-                            "Elective",
-                        ])
-                    }
+                    onClick={() => handleFilter(99999)}
                 >
                     All Time
                 </Button>
@@ -29,8 +22,8 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
-                    leftIcon={<TimeIcon />}
-                    onClick={() => handleFilter(["Lower Division"])}
+                    leftIcon={<MdCalendarToday />}
+                    onClick={() => handleFilter(730)}
                 >
                     Past 2 Years
                 </Button>
@@ -38,8 +31,8 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
-                    leftIcon={<TimeIcon />}
-                    onClick={() => handleFilter(["Upper Division"])}
+                    leftIcon={<MdCalendarToday />}
+                    onClick={() => handleFilter(183)}
                 >
                     Past 6 Months
                 </Button>

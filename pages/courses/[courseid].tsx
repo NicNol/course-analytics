@@ -44,9 +44,13 @@ const Course = (data: any) => {
 
     const [filteredData, setFilter] = useState([...courseData]);
 
-    function handleFilter(criteria: Array<string>) {
+    function handleFilter(days: number) {
         const filteredData = courseData.filter((course) => {
-            course === course;
+            const reviewDate = Date.parse(course["review date"]);
+            const currentDate = new Date();
+            return (
+                reviewDate > currentDate.getTime() - days * 1000 * 60 * 60 * 24
+            );
         });
         setFilter(filteredData);
     }
