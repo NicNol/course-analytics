@@ -1,5 +1,11 @@
 import React, { FC } from "react";
-import { MdAccessTime, MdExtension, MdFeedback, MdInfo } from "react-icons/md";
+import {
+    MdAccessTime,
+    MdExtension,
+    MdFeedback,
+    MdInfo,
+    MdMode,
+} from "react-icons/md";
 import {
     Box,
     Divider,
@@ -61,7 +67,12 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
         const courseID = `${pairArray[0]} ${pairArray[1]}`;
 
         return (
-            <Stack direction={"row"} key={pair} align={"baseline"}>
+            <Stack
+                direction={"row"}
+                key={pair}
+                align={"baseline"}
+                justifyContent={["center", null, null, "flex-start"]}
+            >
                 <Tooltip
                     hasArrow
                     label={pair}
@@ -70,9 +81,8 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
                 >
                     <Icon as={MdInfo} w={4} h={4} />
                 </Tooltip>
-                <Text textAlign={"left"}>
-                    {courseID}: {coursePairings[pair]}
-                </Text>
+                <Text fontWeight={"bold"}>{courseID}:</Text>
+                <Text>{coursePairings[pair]} times</Text>
             </Stack>
         );
     });
@@ -81,73 +91,84 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
     const timeCommitment = Math.round(totalHours / totalReviews);
 
     return (
-        <Box>
+        <Stack
+            color={useColorModeValue("#333", "#ccc")}
+            w={["100%", null, null, 56]}
+        >
             <Stack
-                color={useColorModeValue("#333", "#ccc")}
-                w={56}
-                // sx={{ position: "sticky", top: "0" }}
+                direction={"row"}
+                justifyContent={["center", null, null, "flex-start"]}
+                align={"baseline"}
             >
+                <Icon
+                    as={MdFeedback}
+                    w={8}
+                    h={8}
+                    pos={"relative"}
+                    top={"8px"}
+                />
+                <Text fontSize={"3xl"} fontWeight={"100"}>
+                    {totalReviews}
+                </Text>
+                <Text fontWeight={"700"}>Reviews</Text>
+            </Stack>
+            <Stack
+                direction={"row"}
+                justifyContent={["center", null, null, "flex-start"]}
+                align={"baseline"}
+            >
+                <Icon
+                    as={MdAccessTime}
+                    w={8}
+                    h={8}
+                    pos={"relative"}
+                    top={"5px"}
+                />
+                <Text fontSize={"3xl"} fontWeight={"100"}>
+                    {timeCommitment}
+                </Text>
+                <Text fontWeight={"700"}> Hours per Week</Text>
+            </Stack>
+            <Stack
+                direction={"row"}
+                justifyContent={["center", null, null, "flex-start"]}
+                align={"baseline"}
+            >
+                <Icon
+                    as={MdExtension}
+                    w={8}
+                    h={8}
+                    pos={"relative"}
+                    top={"3px"}
+                />
+                <Text fontSize={"3xl"} fontWeight={"100"}>
+                    {difficulty.toFixed(1)}
+                </Text>
+
+                <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
+            </Stack>
+            <Divider w={["auto", null, null, 48]} />
+            <Stack>
                 <Stack
                     direction={"row"}
-                    justifyContent={"flex-start"}
+                    justifyContent={["center", null, null, "flex-start"]}
                     align={"baseline"}
                 >
                     <Icon
-                        as={MdFeedback}
-                        w={8}
-                        h={8}
-                        pos={"relative"}
-                        top={"8px"}
-                    />
-                    <Text fontSize={"3xl"} fontWeight={"100"}>
-                        {totalReviews}
-                    </Text>
-                    <Text fontWeight={"700"}>Reviews</Text>
-                </Stack>
-                <Stack
-                    direction={"row"}
-                    justify={"flex-start"}
-                    align={"baseline"}
-                >
-                    <Icon
-                        as={MdAccessTime}
-                        w={8}
-                        h={8}
-                        pos={"relative"}
-                        top={"5px"}
-                    />
-                    <Text fontSize={"3xl"} fontWeight={"100"}>
-                        {timeCommitment}
-                    </Text>
-                    <Text fontWeight={"700"}> Hours per Week</Text>
-                </Stack>
-                <Stack
-                    direction={"row"}
-                    justifyContent={"flex-start"}
-                    align={"baseline"}
-                >
-                    <Icon
-                        as={MdExtension}
+                        as={MdMode}
                         w={8}
                         h={8}
                         pos={"relative"}
                         top={"3px"}
                     />
-                    <Text fontSize={"3xl"} fontWeight={"100"}>
-                        {difficulty}
-                    </Text>
-
-                    <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
-                </Stack>
-                <Divider w={48} />
-                <Stack>
                     <Heading size={"md"} textAlign={"left"}>
                         Common Pairings
                     </Heading>
-                    <>{coursePairs}</>
                 </Stack>
+                <Stack pl={[0, null, null, 6]}>{coursePairs}</Stack>
+                <Divider w={["auto", null, null, 48]} />
             </Stack>
-        </Box>
+        </Stack>
     );
 };
 

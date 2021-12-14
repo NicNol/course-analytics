@@ -39,7 +39,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
 
     const reviews = sortedCourses
         .map((course) => {
-            if (course.review.length > 0) {
+            if (course.review?.length > 0) {
                 return (
                     <CourseReview
                         key={course["review date"]}
@@ -54,11 +54,11 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         <Center p={2}>
             <Box
                 maxW={"1054px"}
-                w={"1054px"}
+                w={["auto"]}
                 bg={useColorModeValue("orange.100", "gray.700")}
                 boxShadow={"2xl"}
                 rounded={"md"}
-                overflow={"hidden"}
+                overflow={"auto"}
             >
                 <Stack
                     justify={"center"}
@@ -112,12 +112,17 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                     py={4}
                     align={"center"}
                 >
-                    <Flex>
-                        <Stack mt={12}>
+                    <Flex
+                        flexWrap={["wrap", null, null, "nowrap"]}
+                        alignItems={"stretch"}
+                    >
+                        <Stack mt={[0, null, null, 12]} w={"100%"}>
                             <CourseStats courseData={courseData} />
                         </Stack>
                         <Stack>
-                            <Heading size={"lg"}>Tips from Students</Heading>
+                            <Heading size={"lg"} mt={[2, null, null, 0]}>
+                                Tips from Students
+                            </Heading>
                             {reviews}
                         </Stack>
                     </Flex>
