@@ -5,7 +5,9 @@ import { getSummary } from "../pages/api/summary/index";
 import type { CourseListJSON } from "../components/CourseList";
 import Navbar from "../components/Navbar";
 import Filter from "../components/Filter";
+import Footer from "../components/Footer";
 import CourseList from "../components/CourseList";
+import PageWrapper from "../components/PageWrapper";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let jsonData = await getSummary();
@@ -29,11 +31,10 @@ const Home: NextPage<CourseListJSON> = (jsonData) => {
     }
 
     return (
-        <>
-            <Navbar />
+        <PageWrapper>
             <Filter handleFilter={handleFilter} />
             <CourseList filter={filter} jsonData={jsonData} />
-        </>
+        </PageWrapper>
     );
 };
 

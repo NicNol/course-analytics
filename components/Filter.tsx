@@ -13,8 +13,8 @@ interface FilterProps {
 
 const Filter: FC<FilterProps> = ({ handleFilter }) => {
     return (
-        <Box w="90%" my={4} ml="5%">
-            <Wrap spacing={4} justify="center">
+        <Box w="90%" mt={4} ml="5%">
+            <Wrap spacing={2} justify="center">
                 <Button
                     colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
