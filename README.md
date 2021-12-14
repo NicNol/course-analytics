@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🔍 [Course Analytics](https://course-analytics.herokuapp.com/)
 
-## Getting Started
+![Preview of Course Analytics](/public/images/preview.jpg?raw=true)
+Course Analytics was developed for students of Oregon State University's online Computer Science program. It provides students with aggregated data and tips to help students understand the difficulty, time commitment, common course pairings. The data has been submitted by real students using [this survey](https://docs.google.com/forms/d/e/1FAIpQLSeAWZa_OWYqwOte5yw4loGgE6hEUqOJOeSpmzStZF_HcufufQ/viewform). Feel free to add your own reviews if you are a current student! The data is scraped from [this spreadsheet](https://docs.google.com/spreadsheets/d/1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU/edit#gid=2042942971).
 
-First, run the development server:
+# 📞 API Calls
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+At this time, the API does not require an API key. Make requests by making http get requests to the desired URI.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+URIs are relative to the hosting domain, currently: `https://course-analytics.herokuapp.com`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Get Course Summary Data
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Get all course summaries using:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+`/api/summaries/`
 
-## Learn More
+Get a specific course summary using:
 
-To learn more about Next.js, take a look at the following resources:
+`/api/summaries/CS <number>`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Where `<number>` is the course number. For example, to get the course summary for CS 271, use:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+`/api/summaries/CS 271`
 
-## Deploy on Vercel
+## Get Course Review Data
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Get all course review data using:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`/api/courses/`
+
+Get specific course review data using:
+
+`/api/courses/CS <number>`
+
+Where `<number>` is the course number. For example, to get the course summary for CS 271, use:
+
+`/api/courses/CS 271`
+
+# ⚙️ Development 
+
+## Prerequisites
+
+1. [Node.js](https://nodejs.dev/learn/how-to-install-nodejs), v16.13.1 (recommended) or higher
+2. [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), v8.x (recommended) or higher
+3. [MongoDB](https://docs.mongodb.com/guides/server/install/)
+
+## Install
+
+Download the current codebase or create a fork. Navigate to the root of the project directory in your terminal window and call `npm install`. This will install the required node module dependencies into your project folder.
+
+## Configure
+
+Within MongoDB, create a new database called `specs`. Inside the database, create a new collection called `bac`.
+
+From the root of the project directory, open `config.js`. Set the URI of the `specs` database using the format provided.
+
+This will allow BAC specification data to be scraped and saved to the database, as well as searched by users using the API.
+
+## Run
+
+Call `node run dev`. This will start the Next.js server in development mode.
+
+The previous call should open a browser window and navigate to `localhost:3000`. This is the project running locally on your machine. 🎉🎉🎉
