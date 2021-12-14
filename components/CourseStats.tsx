@@ -1,10 +1,23 @@
 import React, { FC } from "react";
-import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
-import { Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { MdAccessTime, MdExtension, MdFeedback, MdInfo } from "react-icons/md";
+import {
+    Box,
+    Divider,
+    Heading,
+    Icon,
+    Stack,
+    Text,
+    Tooltip,
+    useColorModeValue,
+} from "@chakra-ui/react";
 import type { ICourse } from "../util/models/course";
 
 interface CourseDetailBodyProps {
     courseData: ICourse[];
+}
+
+interface CoursePairings {
+    [key: string]: number;
 }
 
 interface TimeAvg {
@@ -31,60 +44,110 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
         totalHours += (timeAvg as any)[course["time commitment"]];
     }
 
+    const coursePairings: CoursePairings = {};
+    for (const course of courseData) {
+        for (const pairing of course["other courses"]) {
+            if (!coursePairings.hasOwnProperty(pairing)) {
+                coursePairings[pairing] = 0;
+            }
+            coursePairings[pairing] += 1;
+        }
+    }
+    const sortedPairings = Object.keys(coursePairings).sort(function (a, b) {
+        return coursePairings[b] - coursePairings[a];
+    });
+    const coursePairs = sortedPairings.map((pair) => {
+        const pairArray = pair.split(" ");
+        const courseID = `${pairArray[0]} ${pairArray[1]}`;
+
+        return (
+            <Stack direction={"row"} key={pair} align={"baseline"}>
+                <Tooltip
+                    hasArrow
+                    label={pair}
+                    placement="top"
+                    shouldWrapChildren
+                >
+                    <Icon as={MdInfo} w={4} h={4} />
+                </Tooltip>
+                <Text textAlign={"left"}>
+                    {courseID}: {coursePairings[pair]}
+                </Text>
+            </Stack>
+        );
+    });
+
     const difficulty = Math.round((totalDifficulty / totalReviews) * 10) / 10;
     const timeCommitment = Math.round(totalHours / totalReviews);
 
     return (
-        <Stack color={useColorModeValue("#333", "#ccc")} w={56}>
+        <Box>
             <Stack
-                direction={"row"}
-                justifyContent={"flex-start"}
-                align={"baseline"}
+                color={useColorModeValue("#333", "#ccc")}
+                w={56}
+                // sx={{ position: "sticky", top: "0" }}
             >
-                <Icon
-                    as={MdFeedback}
-                    w={8}
-                    h={8}
-                    pos={"relative"}
-                    top={"8px"}
-                />
-                <Text fontSize={"3xl"} fontWeight={"100"}>
-                    {totalReviews}
-                </Text>
-                <Text fontWeight={"700"}>Reviews</Text>
-            </Stack>
-            <Stack direction={"row"} justify={"flex-start"} align={"baseline"}>
-                <Icon
-                    as={MdAccessTime}
-                    w={8}
-                    h={8}
-                    pos={"relative"}
-                    top={"5px"}
-                />
-                <Text fontSize={"3xl"} fontWeight={"100"}>
-                    {timeCommitment}
-                </Text>
-                <Text fontWeight={"700"}> Hours per Week</Text>
-            </Stack>
-            <Stack
-                direction={"row"}
-                justifyContent={"flex-start"}
-                align={"baseline"}
-            >
-                <Icon
-                    as={MdExtension}
-                    w={8}
-                    h={8}
-                    pos={"relative"}
-                    top={"3px"}
-                />
-                <Text fontSize={"3xl"} fontWeight={"100"}>
-                    {difficulty}
-                </Text>
+                <Stack
+                    direction={"row"}
+                    justifyContent={"flex-start"}
+                    align={"baseline"}
+                >
+                    <Icon
+                        as={MdFeedback}
+                        w={8}
+                        h={8}
+                        pos={"relative"}
+                        top={"8px"}
+                    />
+                    <Text fontSize={"3xl"} fontWeight={"100"}>
+                        {totalReviews}
+                    </Text>
+                    <Text fontWeight={"700"}>Reviews</Text>
+                </Stack>
+                <Stack
+                    direction={"row"}
+                    justify={"flex-start"}
+                    align={"baseline"}
+                >
+                    <Icon
+                        as={MdAccessTime}
+                        w={8}
+                        h={8}
+                        pos={"relative"}
+                        top={"5px"}
+                    />
+                    <Text fontSize={"3xl"} fontWeight={"100"}>
+                        {timeCommitment}
+                    </Text>
+                    <Text fontWeight={"700"}> Hours per Week</Text>
+                </Stack>
+                <Stack
+                    direction={"row"}
+                    justifyContent={"flex-start"}
+                    align={"baseline"}
+                >
+                    <Icon
+                        as={MdExtension}
+                        w={8}
+                        h={8}
+                        pos={"relative"}
+                        top={"3px"}
+                    />
+                    <Text fontSize={"3xl"} fontWeight={"100"}>
+                        {difficulty}
+                    </Text>
 
-                <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
+                    <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
+                </Stack>
+                <Divider w={48} />
+                <Stack>
+                    <Heading size={"md"} textAlign={"left"}>
+                        Common Pairings
+                    </Heading>
+                    <>{coursePairs}</>
+                </Stack>
             </Stack>
-        </Stack>
+        </Box>
     );
 };
 

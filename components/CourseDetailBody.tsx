@@ -106,10 +106,10 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                     align={"center"}
                 >
                     <Flex>
-                        <Stack>
+                        <Stack mt={12}>
                             <CourseStats courseData={courseData} />
                         </Stack>
-                        <Stack gridGap={1}>
+                        <Stack>
                             <Heading size={"lg"}>Tips from Students</Heading>
                             {reviews}
                         </Stack>

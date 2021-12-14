@@ -42,7 +42,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
         >
             <Flex gridGap={4}>
                 <Avatar mt={1} />
-                <Box>
+                <Box width={"100%"}>
                     <Flex gridGap={2} pb={2}>
                         <Tag>
                             <TagLeftIcon as={MdCalendarToday} />
