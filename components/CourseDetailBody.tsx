@@ -37,24 +37,29 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         return dateA.valueOf() - dateB.valueOf();
     });
 
-    const reviews = sortedCourses
-        .map((course) => {
-            if (course.review?.length > 0) {
-                return (
-                    <CourseReview
-                        key={course["review date"]}
-                        courseData={course}
-                    />
-                );
-            }
-        })
-        .reverse();
+    const reviews =
+        sortedCourses.length === 0 ? (
+            <Text>None</Text>
+        ) : (
+            sortedCourses
+                .map((course) => {
+                    if (course.review?.length > 0) {
+                        return (
+                            <CourseReview
+                                key={course["review date"]}
+                                courseData={course}
+                            />
+                        );
+                    }
+                })
+                .reverse()
+        );
 
     return (
         <Center p={2}>
             <Box
                 maxW={"1054px"}
-                w={["auto"]}
+                w={["auto", null, null, "1054px"]}
                 bg={useColorModeValue("orange.100", "gray.700")}
                 boxShadow={"2xl"}
                 rounded={"md"}
@@ -115,11 +120,12 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                     <Flex
                         flexWrap={["wrap", null, null, "nowrap"]}
                         alignItems={"stretch"}
+                        justifyContent={"flex-start"}
                     >
-                        <Stack mt={[0, null, null, 12]} w={"100%"}>
+                        <Stack mt={[0, null, null, 12]} flexGrow={[1, 1, 1, 0]}>
                             <CourseStats courseData={courseData} />
                         </Stack>
-                        <Stack>
+                        <Stack flexGrow={1}>
                             <Heading size={"lg"} mt={[2, null, null, 0]}>
                                 Tips from Students
                             </Heading>

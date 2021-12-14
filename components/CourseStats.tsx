@@ -62,33 +62,42 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
     const sortedPairings = Object.keys(coursePairings).sort(function (a, b) {
         return coursePairings[b] - coursePairings[a];
     });
-    const coursePairs = sortedPairings.map((pair) => {
-        const pairArray = pair.split(" ");
-        const courseID = `${pairArray[0]} ${pairArray[1]}`;
+    const coursePairs =
+        sortedPairings.length === 0 ? (
+            <Text>None</Text>
+        ) : (
+            sortedPairings.map((pair) => {
+                const pairArray = pair.split(" ");
+                const courseID = `${pairArray[0]} ${pairArray[1]}`;
 
-        return (
-            <Stack
-                direction={"row"}
-                key={pair}
-                align={"baseline"}
-                justifyContent={["center", null, null, "flex-start"]}
-            >
-                <Tooltip
-                    hasArrow
-                    label={pair}
-                    placement="top"
-                    shouldWrapChildren
-                >
-                    <Icon as={MdInfo} w={4} h={4} />
-                </Tooltip>
-                <Text fontWeight={"bold"}>{courseID}:</Text>
-                <Text>{coursePairings[pair]} times</Text>
-            </Stack>
+                return (
+                    <Stack
+                        direction={"row"}
+                        key={pair}
+                        align={"baseline"}
+                        justifyContent={["center", null, null, "flex-start"]}
+                    >
+                        <Tooltip
+                            hasArrow
+                            label={pair}
+                            placement="top"
+                            shouldWrapChildren
+                        >
+                            <Icon as={MdInfo} w={4} h={4} />
+                        </Tooltip>
+                        <Text fontWeight={"bold"}>{courseID}:</Text>
+                        <Text>{coursePairings[pair]} times</Text>
+                    </Stack>
+                );
+            })
         );
-    });
 
-    const difficulty = Math.round((totalDifficulty / totalReviews) * 10) / 10;
-    const timeCommitment = Math.round(totalHours / totalReviews);
+    const difficulty = totalDifficulty
+        ? (Math.round((totalDifficulty / totalReviews) * 10) / 10).toFixed(1)
+        : "0.0";
+    const timeCommitment = totalHours
+        ? Math.round(totalHours / totalReviews)
+        : 0;
 
     return (
         <Stack
@@ -142,7 +151,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
                     top={"3px"}
                 />
                 <Text fontSize={"3xl"} fontWeight={"100"}>
-                    {difficulty.toFixed(1)}
+                    {difficulty}
                 </Text>
 
                 <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
