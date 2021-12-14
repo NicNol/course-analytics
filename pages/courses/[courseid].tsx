@@ -6,6 +6,7 @@ import DateFilter from "../../components/DateFilter";
 import { getCourseData } from "../api/courses";
 import type { ICourse } from "../../util/models/course";
 import { classList } from "../../classList";
+import PageWrapper from "../../components/PageWrapper";
 
 type Params = {
     params: {
@@ -56,12 +57,10 @@ const Course = (data: any) => {
     }
 
     return (
-        <>
-            <Navbar />
+        <PageWrapper>
             <DateFilter handleFilter={handleFilter} />
             <CourseDetailBody courseData={filteredData} courseid={courseid} />
-            <Footer />
-        </>
+        </PageWrapper>
     );
 };
 

@@ -17,6 +17,7 @@ export default function Footer() {
             p={4}
             mt={12}
             color={"white"}
+            flexGrow={0}
         >
             <Stack
                 alignItems={"center"}
