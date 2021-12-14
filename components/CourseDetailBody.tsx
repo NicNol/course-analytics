@@ -30,7 +30,14 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         <CourseTag key={courseid + tag}>{tag}</CourseTag>
     ));
 
-    const reviews = courseData
+    const sortedCourses = courseData.sort(function (a, b) {
+        const dateKey = "review date";
+        const dateA = new Date(a[dateKey]);
+        const dateB = new Date(b[dateKey]);
+        return dateA.valueOf() - dateB.valueOf();
+    });
+
+    const reviews = sortedCourses
         .map((course) => {
             if (course.review.length > 0) {
                 return (
