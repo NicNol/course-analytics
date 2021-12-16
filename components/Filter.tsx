@@ -68,8 +68,8 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                             "Elective",
                         ])
                         handleButtonStatus("All");
-                    }
-                    }>
+                    }}
+                    >
                     All Classes
                 </Button>
                 <Button
