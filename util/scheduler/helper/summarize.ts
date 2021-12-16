@@ -1,7 +1,7 @@
-import { connectToDatabase } from "./mongodb";
-import { Course } from "./models/course";
-import { ISummary, Summary } from "./models/summary";
-import { classList } from "../classList";
+import { connectToDatabase } from "../../mongodb";
+import { Course } from "../../models/course";
+import { ISummary, Summary } from "../../models/summary";
+import { classList } from "../../../classList";
 
 interface TimeAvg {
     "0-5 hours": Number;
