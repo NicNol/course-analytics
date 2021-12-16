@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Box, Wrap, useColorModeValue } from "@chakra-ui/react";
+import { Button, Box, Wrap, useBoolean, useColorModeValue } from "@chakra-ui/react";
 import {
     ArrowDownIcon,
     ArrowUpIcon,
@@ -11,7 +11,47 @@ interface FilterProps {
     handleFilter: Function;
 }
 
+interface Toggle { 
+    readonly on: () => void; 
+    readonly off: () => void; 
+    readonly toggle: () => void; 
+}
+
+interface ButtonToggles {
+    "All": Toggle,
+    "Lower": Toggle,
+    "Upper": Toggle,
+    "Core": Toggle,
+    "Electives": Toggle
+}
+
 const Filter: FC<FilterProps> = ({ handleFilter }) => {
+
+    const [allStatus, setAllStatus] = useBoolean(true)
+    const [lowerStatus, setLowerStatus] = useBoolean()
+    const [upperStatus, setUpperStatus] = useBoolean()
+    const [coreStatus, setCoreStatus] = useBoolean()
+    const [electivesStatus, setElectivesStatus] = useBoolean()
+
+    function handleButtonStatus (buttonName: string): void {
+        const buttons: ButtonToggles = {
+            "All": setAllStatus,
+            "Lower": setLowerStatus,
+            "Upper": setUpperStatus,
+            "Core": setCoreStatus,
+            "Electives": setElectivesStatus
+        }
+        
+        for (const button in buttons) {
+            if (buttons.hasOwnProperty(buttonName) && button == buttonName) {
+                (buttons as any)[buttonName].on()
+                continue;
+            }
+            (buttons as any)[button].off()
+        }
+
+    }
+
     return (
         <Box w="90%" mt={4} ml="5%">
             <Wrap spacing={2} justify="center">
@@ -19,23 +59,29 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
-                    onClick={() =>
+                    isActive={allStatus}
+                    onClick={() => {
                         handleFilter([
                             "Lower Division",
                             "Core Class",
                             "Upper Division",
                             "Elective",
                         ])
+                        handleButtonStatus("All");
                     }
-                >
+                    }>
                     All Classes
                 </Button>
                 <Button
                     colorScheme={useColorModeValue("orange", "black")}
                     size="lg"
                     variant="ghost"
+                    isActive={lowerStatus}
                     leftIcon={<ArrowDownIcon />}
-                    onClick={() => handleFilter(["Lower Division"])}
+                    onClick={() => {
+                        handleFilter(["Lower Division"]);
+                        handleButtonStatus("Lower");
+                    }}
                 >
                     Lower Division
                 </Button>
@@ -44,7 +90,11 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<ArrowUpIcon />}
-                    onClick={() => handleFilter(["Upper Division"])}
+                    isActive={upperStatus}
+                    onClick={() => {
+                        handleFilter(["Upper Division"]);
+                        handleButtonStatus("Upper");
+                    }}
                 >
                     Upper Division
                 </Button>
@@ -53,7 +103,11 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<SettingsIcon />}
-                    onClick={() => handleFilter(["Core Class"])}
+                    isActive={coreStatus}
+                    onClick={() => {
+                        handleFilter(["Core Class"]);
+                        handleButtonStatus("Core");
+                    }}
                 >
                     Core Classes
                 </Button>
@@ -62,7 +116,11 @@ const Filter: FC<FilterProps> = ({ handleFilter }) => {
                     size="lg"
                     variant="ghost"
                     leftIcon={<StarIcon />}
-                    onClick={() => handleFilter(["Elective"])}
+                    isActive={electivesStatus}
+                    onClick={() => {
+                        handleFilter(["Elective"]);
+                        handleButtonStatus("Electives");
+                    }}
                 >
                     Electives
                 </Button>
