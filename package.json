@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.3.0",
     "framer-motion": "^4.1.17",
     "google-spreadsheet": "^3.2.0",
-    "mongoose": "^6.0.12",
+    "mongoose": "^6.1.2",
     "next": "12.0.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@types/google-spreadsheet": "^3.1.5",
-    "@types/mongoose": "^5.10.3",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^16.11.11",
     "@types/react": "17.0.33",
     "eslint": "7.32.0",
