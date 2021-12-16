@@ -1,11 +1,10 @@
-import type { NextPage } from "next";
-import { useState } from "react";
 import { GetServerSideProps } from "next";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useState } from "react";
 import { getSummary } from "../pages/api/summary/index";
 import type { CourseListJSON } from "../components/CourseList";
-import Navbar from "../components/Navbar";
 import Filter from "../components/Filter";
-import Footer from "../components/Footer";
 import CourseList from "../components/CourseList";
 import PageWrapper from "../components/PageWrapper";
 
@@ -31,10 +30,20 @@ const Home: NextPage<CourseListJSON> = (jsonData) => {
     }
 
     return (
-        <PageWrapper>
-            <Filter handleFilter={handleFilter} />
-            <CourseList filter={filter} jsonData={jsonData} />
-        </PageWrapper>
+        <>
+            <Head>
+                <title>Course Analytics</title>
+                <meta charSet="UTF-8"/>
+                <meta name="keywords" content="Oregon State University,Online, Computer Science, Post-Bacc, Course, Analytics, Reviews, Data" />
+                <meta name="description" content="Course Analytics for Oregon State University's Computer Science Post-Bacc Program"/>
+                <meta name="author" content="Nic Nolan"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            </Head>
+            <PageWrapper>
+                <Filter handleFilter={handleFilter} />
+                <CourseList filter={filter} jsonData={jsonData} />
+            </PageWrapper>
+        </>
     );
 };
 
