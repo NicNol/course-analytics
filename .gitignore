@@ -37,7 +37,7 @@ yarn-error.log*
 .vercel
 
 # vscode
-.vscode
+/.vscode
 
 # typescript
 *.tsbuildinfo

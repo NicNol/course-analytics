@@ -6,6 +6,7 @@ import { getCourseData } from "../api/courses";
 import type { ICourse } from "../../util/models/course";
 import { classList } from "../../classList";
 import PageWrapper from "../../components/PageWrapper";
+import BackBreadcrumb from "../../components/BackBreadcrumb";
 
 type Params = {
     params: {
@@ -66,6 +67,7 @@ const Course = (data: any) => {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 </Head>
             <PageWrapper>
+                <BackBreadcrumb />
                 <DateFilter handleFilter={handleFilter} />
                 <CourseDetailBody courseData={filteredData} courseid={courseid} />
             </PageWrapper>
