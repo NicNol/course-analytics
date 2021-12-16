@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
+import Head from "next/head";
 import CourseDetailBody from "../../components/CourseDetailBody";
-import Footer from "../../components/Footer";
 import DateFilter from "../../components/DateFilter";
 import { getCourseData } from "../api/courses";
 import type { ICourse } from "../../util/models/course";
 import { classList } from "../../classList";
 import PageWrapper from "../../components/PageWrapper";
+import BackBreadcrumb from "../../components/BackBreadcrumb";
 
 type Params = {
     params: {
@@ -57,10 +57,21 @@ const Course = (data: any) => {
     }
 
     return (
-        <PageWrapper>
-            <DateFilter handleFilter={handleFilter} />
-            <CourseDetailBody courseData={filteredData} courseid={courseid} />
-        </PageWrapper>
+        <>
+            <Head>
+                    <title>Course Analytics | {courseid}</title>
+                    <meta charSet="UTF-8"/>
+                    <meta name="keywords" content="Oregon State University,Online, Computer Science, Post-Bacc, Course, Analytics, Reviews, Data" />
+                    <meta name="description" content="Course Analytics for Oregon State University's Computer Science Post-Bacc Program"/>
+                    <meta name="author" content="Nic Nolan"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                </Head>
+            <PageWrapper>
+                <BackBreadcrumb />
+                <DateFilter handleFilter={handleFilter} />
+                <CourseDetailBody courseData={filteredData} courseid={courseid} />
+            </PageWrapper>
+        </>
     );
 };
 

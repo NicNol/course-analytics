@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useRouter } from "next/router";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
 import {
@@ -34,6 +34,7 @@ const CourseTile: FC<CourseTileProps> = ({
     ));
 
     const router = useRouter();
+    const [loadingStatus, setLoadingStatus] = useState(false);
 
     return (
         <Center p={2}>
@@ -147,7 +148,10 @@ const CourseTile: FC<CourseTileProps> = ({
                     </Stack>
 
                     <Button
-                        onClick={() => router.push("/courses/" + Number)}
+                        onClick={() => {
+                            router.push("/courses/" + Number);
+                            setLoadingStatus(true);
+                        }}
                         mt={4}
                         variant={"outline"}
                         borderColor={useColorModeValue(
@@ -172,6 +176,8 @@ const CourseTile: FC<CourseTileProps> = ({
                         _active={{
                             bg: useColorModeValue("orange.200", "gray.400"),
                         }}
+                        isLoading={loadingStatus}
+                        loadingText="Loading"
                     >
                         View Details
                     </Button>
