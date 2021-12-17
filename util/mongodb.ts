@@ -1,4 +1,4 @@
-import { connect, ConnectionOptions } from "mongoose";
+import { connect } from "mongoose";
 
 declare var process: {
     env: {
@@ -6,7 +6,7 @@ declare var process: {
     };
 };
 
-const options: ConnectionOptions = {
+const options: any = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
 };
