@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../../mongodb";
-import { Course } from "../../models/course";
+import { connectToDatabase, disconnectFromDatabase } from "../../mongodb";
+import { Course, ICourse } from "../../models/course";
 import { ISummary, Summary } from "../../models/summary";
 import { classList } from "../../../classList";
 
@@ -16,6 +16,17 @@ const timeAvg: TimeAvg = {
     "13-18 hours": 15,
     "18+ hours": 21,
 };
+
+async function emptyDB() {
+    await connectToDatabase();
+    await Course.deleteMany({});
+    await Summary.deleteMany({});
+}
+
+async function saveCourses(json: ICourse[]) {
+    await connectToDatabase();
+    Course.insertMany(json);
+}
 
 async function summarizeData() {
     /* Summarize data in each course in the classList */
@@ -61,10 +72,12 @@ async function summarizeData() {
                 upsert: true,
                 overwrite: true,
             });
+
+            disconnectFromDatabase();
         } catch (err) {
             console.error(err);
         }
     }
 }
 
-export default summarizeData;
+export { summarizeData, emptyDB, saveCourses };

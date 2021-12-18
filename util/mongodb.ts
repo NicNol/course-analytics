@@ -1,4 +1,4 @@
-import { connect } from "mongoose";
+import { connect, connection } from "mongoose";
 
 declare var process: {
     env: {
@@ -13,3 +13,5 @@ const options: any = {
 
 export const connectToDatabase = () =>
     connect(process.env.MONGODB_URI, options);
+
+export const disconnectFromDatabase = () => connection.close();
