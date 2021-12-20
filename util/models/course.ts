@@ -43,7 +43,7 @@ const schema = new Schema<ICourse>(
             required: true,
         },
     },
-    { collection: "course-data" }
+    { collection: "course-data", versionKey: false, _id: false }
 );
 
 const Course: Model<ICourse> =
