@@ -4,10 +4,21 @@ import { ISummary, Summary } from "../../models/summary";
 import { classList } from "../../../classList";
 
 interface TimeAvg {
-    "0-5 hours": Number;
-    "6-12 hours": Number;
-    "13-18 hours": Number;
-    "18+ hours": Number;
+    [key: string]: number;
+}
+
+interface CourseNames {
+    [key: string]: SummaryObject;
+}
+
+interface TagsMap {
+    [key: string]: [] | string[];
+}
+
+const tagsMap: TagsMap = {};
+for (const course of classList) {
+    const { number, tags } = course;
+    tagsMap[number] = tags;
 }
 
 const timeAvg: TimeAvg = {
@@ -17,6 +28,19 @@ const timeAvg: TimeAvg = {
     "18+ hours": 21,
 };
 
+class SummaryObject {
+    name: string;
+    difficulty: number = 0;
+    time: number = 0;
+    reviews: number = 0;
+    tags: [] | string[] = [];
+
+    constructor(name: string, tags: string[]) {
+        this.name = name;
+        this.tags = tags;
+    }
+}
+
 async function emptyDB() {
     await connectToDatabase();
     await Course.deleteMany({});
@@ -25,58 +49,55 @@ async function emptyDB() {
 
 async function saveCourses(json: ICourse[]) {
     await connectToDatabase();
-    Course.insertMany(json);
+    await Course.insertMany(json);
+    await summarizeData(json);
+    await disconnectFromDatabase();
 }
 
-async function summarizeData() {
+async function summarizeData(json: ICourse[]) {
     /* Summarize data in each course in the classList */
-    for (const classObj of classList) {
-        let courseNumber = classObj.number;
-        let totalTime = 0;
-        let totalDifficulty = 0;
-        try {
-            await connectToDatabase();
-            const courses = await Course.find({
-                name: { $regex: courseNumber, $options: "i" },
-            });
-            /* If no course data is found for some reason, skip to the next course */
-            if (!courses.length) {
-                continue;
-            }
 
-            /* Tally difficulty and time commitment data */
-            for (const course of courses) {
-                totalDifficulty += parseInt(course.difficulty);
-                const timeCommitted = course["time commitment"];
-                let time = parseInt((timeAvg as any)[timeCommitted]);
-                totalTime += time;
-            }
+    const courseNames: CourseNames = {};
+    const summaryJSON: ISummary[] = [];
 
-            /* Round difficulty to one decimal */
-            let avgDifficulty =
-                Math.round((totalDifficulty / courses.length) * 10) / 10;
-
-            let timeCommitment = Math.round(totalTime / courses.length);
-
-            /* Create a new summary document */
-            let output: ISummary = {
-                name: courses[0].name,
-                "average difficulty": avgDifficulty.toString(),
-                "time commitment": timeCommitment.toString(),
-                "review count": courses.length.toString(),
-                tags: classObj.tags,
-            };
-
-            /* Update the summary document -or- Insert if not found */
-            await Summary.findOneAndUpdate({ name: courses[0].name }, output, {
-                upsert: true,
-                overwrite: true,
-            });
-
-            disconnectFromDatabase();
-        } catch (err) {
-            console.error(err);
+    /* Get Course Names (keys) */
+    for (const course of json) {
+        const { difficulty, name, "time commitment": time } = course;
+        if (!courseNames.hasOwnProperty(name)) {
+            const name_array = name.split(" ");
+            const key = `${name_array[0]} ${name_array[1]}`;
+            const tags = tagsMap[key];
+            courseNames[name] = new SummaryObject(name, tags);
         }
+        courseNames[name].reviews++;
+        courseNames[name].difficulty += parseInt(difficulty);
+        courseNames[name].time += timeAvg[time];
+    }
+
+    /* Average difficulty and time commitment data */
+    for (const course in courseNames) {
+        const { difficulty, name, reviews, tags, time } = courseNames[course];
+        /* Round difficulty to one decimal */
+        const avgDifficulty = Math.round((difficulty / reviews) * 10) / 10;
+
+        const timeCommitment = Math.round(time / reviews);
+
+        /* Create a new summary document */
+        let courseSummary: ISummary = {
+            name: name,
+            "average difficulty": avgDifficulty.toString(),
+            "time commitment": timeCommitment.toString(),
+            "review count": reviews.toString(),
+            tags: tags,
+        };
+        summaryJSON.push(courseSummary);
+    }
+
+    try {
+        /* Update the summary document -or- Insert if not found */
+        await Summary.insertMany(summaryJSON);
+    } catch (err) {
+        console.error(err);
     }
 }
 

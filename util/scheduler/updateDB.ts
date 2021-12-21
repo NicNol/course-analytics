@@ -6,7 +6,7 @@ export default async function updateDB() {
     const json = await getJSON();
     await emptyDB();
     await saveCourses(json);
-    await summarizeData();
+    //await summarizeData(json);
 }
 
 updateDB();

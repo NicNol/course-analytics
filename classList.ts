@@ -1,10 +1,10 @@
 interface Course {
     number: string;
     title: string;
-    tags: string;
+    tags: string[];
 }
 
-export const classList = [
+export const classList: Course[] = [
     {
         number: "CS 161",
         title: "INTRODUCTION TO COMPUTER SCIENCE I",
