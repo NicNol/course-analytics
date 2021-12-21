@@ -1,9 +1,6 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import { ICourse } from "./models/course";
-//import connectToDatabase from "./mongodb";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Connection } from "mongoose";
+import { ICourse } from "../../models/course";
 
 const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
 
@@ -106,14 +103,5 @@ async function getJSON(): Promise<ICourse[]> {
         throw err;
     }
 }
-
-async function pushJsonToDatabase(json: ICourse[]): Promise<any> {
-    try {
-    } catch (err) {
-        throw err;
-    }
-}
-
-async function processCourse(course: ICourse) {}
 
 export { prepareSheet, getJSON };

@@ -26,7 +26,9 @@ const schema = new Schema<ICourse>(
         },
         review: {
             type: String,
-            required: true,
+            required: function () {
+                return typeof this === "string";
+            },
         },
         "review date": {
             type: String,
@@ -41,7 +43,7 @@ const schema = new Schema<ICourse>(
             required: true,
         },
     },
-    { collection: "course-data" }
+    { collection: "course-data", versionKey: false, _id: false }
 );
 
 const Course: Model<ICourse> =

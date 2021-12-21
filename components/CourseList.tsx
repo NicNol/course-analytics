@@ -14,7 +14,17 @@ interface CourseListJSON {
 
 const CourseList: FC<CourseListProps> = ({ jsonData, filter }) => {
     const { data } = jsonData;
-    let courseTiles = data.map((classSummary: ISummary) => {
+
+    const sortedCourses = data.sort((a, b) => {
+        const key = "name";
+        const a_title = a[key].split(" ");
+        const a_number = parseInt(a_title[1]);
+        const b_title = b[key].split(" ");
+        const b_number = parseInt(b_title[1]);
+        return a_number - b_number;
+    });
+
+    let courseTiles = sortedCourses.map((classSummary: ISummary) => {
         const {
             tags,
             name,
