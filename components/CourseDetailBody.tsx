@@ -61,7 +61,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 maxW={"1054px"}
                 w={["auto", null, null, "1054px"]}
                 bg={useColorModeValue("orange.100", "gray.700")}
-                boxShadow={"2xl"}
+                boxShadow={"lg"}
                 rounded={"md"}
                 overflow={"auto"}
             >
