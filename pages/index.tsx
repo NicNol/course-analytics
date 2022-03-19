@@ -14,6 +14,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     jsonData = JSON.parse(JSON.stringify(jsonData));
     return {
         props: { data: jsonData },
+        revalidate: 3600, // seconds (1 hour)
     };
 };
 

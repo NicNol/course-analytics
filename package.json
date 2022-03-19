@@ -11,10 +11,12 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "prescrape": "tsc ./util/scheduler/updateDB.ts",
+        "prescrape": "npm run transpile",
         "scrape": "node ./util/scheduler/updateDB.js",
-        "prescrape-dev": "tsc ./util/scheduler/updateDB.ts",
-        "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local"
+        "prescrape-dev": "npx tsc ./util/scheduler/updateDB.ts",
+        "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local",
+        "pretranspile": "npm install -g typescript",
+        "transpile": "npx tsc ./util/scheduler/updateDB.ts"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.16",
@@ -38,6 +40,9 @@
         "eslint": "7.32.0",
         "eslint-config-next": "12.0.1",
         "prettier": "2.4.1",
-        "typescript": "4.4.4"
-    }
+        "typescript": "^4.6.2"
+    },
+    "cacheDirectories": [
+        ".next/cache"
+    ]
 }
