@@ -15,7 +15,7 @@
         "scrape": "node ./util/scheduler/updateDB.js",
         "prescrape-dev": "npx tsc ./util/scheduler/updateDB.ts",
         "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local",
-        "pretranspile": "npm install typescript",
+        "pretranspile": "npm install -g typescript",
         "transpile": "npx tsc ./util/scheduler/updateDB.ts"
     },
     "dependencies": {
@@ -39,7 +39,6 @@
         "dotenv": "^10.0.0",
         "eslint": "7.32.0",
         "eslint-config-next": "12.0.1",
-        "prettier": "2.4.1",
-        "typescript": "4.4.4"
+        "prettier": "2.4.1"
     }
 }
