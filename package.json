@@ -7,7 +7,7 @@
     },
     "scripts": {
         "dev": "next dev",
-        "prebuild": "npm run scrape",
+        ".prebuild": "npm run scrape",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
