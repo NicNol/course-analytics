@@ -14,7 +14,7 @@ export default function Footer() {
     return (
         <Box
             bg={useColorModeValue("black", "gray.900")}
-            p={4}
+            p={8}
             mt={12}
             color={"white"}
             flexGrow={0}
@@ -24,7 +24,7 @@ export default function Footer() {
                 justifyContent={"space-evenly"}
                 direction={"row"}
             >
-                <Stack w={"40%"}>
+                <Stack maxW={"1200px"}>
                     <Heading size={"lg"}>About: </Heading>
                     <Text>
                         Course Analytics was developed for students of Oregon
