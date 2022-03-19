@@ -36,6 +36,7 @@ export const getStaticProps = async ({ params }: Params) => {
     courseData = JSON.parse(JSON.stringify(courseData));
     return {
         props: { data: courseData, courseid: courseid },
+        revalidate: 3600, // seconds (1 hour)
     };
 };
 
