@@ -15,8 +15,8 @@
         "scrape": "node ./util/scheduler/updateDB.js",
         "prescrape-dev": "npx tsc ./util/scheduler/updateDB.ts",
         "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local",
-        "pretranspile": "npm install",
-        "transpile": "tsc ./util/scheduler/updateDB.ts"
+        "pretranspile": "npm install -g typescript && npm install",
+        "transpile": "npx tsc ./util/scheduler/updateDB.ts"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.16",
