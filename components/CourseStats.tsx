@@ -86,7 +86,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
                             <Icon as={MdInfo} w={4} h={4} />
                         </Tooltip>
                         <Text fontWeight={"bold"}>{courseID}:</Text>
-                        <Text>{coursePairings[pair]} times</Text>
+                        <Text>{coursePairings[pair]} {coursePairings[pair] > 1 ? "times" : "time"}</Text>
                     </Stack>
                 );
             })
