@@ -93,7 +93,8 @@ const CourseTile: FC<CourseTileProps> = ({
                     py={4}
                     align={"center"}
                 >
-                    <Stack color={useColorModeValue("#333", "#ccc")} ml={16}>
+                    <Stack color={useColorModeValue("#333", "#ccc")} alignItems={"center"}>
+                        <Box>
                         <Stack
                             direction={"row"}
                             justifyContent={"flex-start"}
@@ -145,6 +146,7 @@ const CourseTile: FC<CourseTileProps> = ({
                             </Text>
                             <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
                         </Stack>
+                        </Box>
                     </Stack>
 
                     <Button
