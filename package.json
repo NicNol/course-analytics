@@ -13,7 +13,7 @@
         "lint": "next lint",
         "prescrape": "tsc ./util/scheduler/updateDB.ts",
         "scrape": "node ./util/scheduler/updateDB.js",
-        "prescrape-dev": "tsc ./util/scheduler/updateDB.ts",
+        "prescrape-dev": "npx tsc ./util/scheduler/updateDB.ts",
         "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local"
     },
     "dependencies": {
