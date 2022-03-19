@@ -7,42 +7,40 @@
     },
     "scripts": {
         "dev": "next dev",
-        ".prebuild": "npm run scrape",
+        "prebuild": "npm run scrape",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "prescrape": "npm run transpile",
         "scrape": "node ./util/scheduler/updateDB.js",
-        "postscrape": "npm install --save-dev typescript",
         "prescrape-dev": "npx tsc ./util/scheduler/updateDB.ts",
         "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local",
         "pretranspile": "npm install -g typescript",
-        "transpile": "npx tsc ./util/scheduler/updateDB.ts",
-        "posttranspile": "npm uninstall -g typescript"
+        "transpile": "npx tsc ./util/scheduler/updateDB.ts"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.16",
         "@chakra-ui/react": "^1.6.10",
         "@emotion/react": "^11.5.0",
         "@emotion/styled": "^11.3.0",
-        "@types/google-spreadsheet": "^3.1.5",
         "framer-motion": "^4.1.17",
         "google-spreadsheet": "^3.2.0",
         "mongoose": "^6.1.2",
         "next": "^12.1.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-icons": "^4.3.1",
-        "typescript": "^4.6.2"
+        "react-icons": "^4.3.1"
     },
     "devDependencies": {
+        "@types/google-spreadsheet": "^3.1.5",
         "@types/mongoose": "^5.11.97",
         "@types/node": "^16.11.11",
         "@types/react": "17.0.33",
         "dotenv": "^10.0.0",
         "eslint": "7.32.0",
         "eslint-config-next": "12.0.1",
-        "prettier": "2.4.1"
+        "prettier": "2.4.1",
+        "typescript": "^4.6.2"
     },
     "cacheDirectories": [
         ".next/cache"
