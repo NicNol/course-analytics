@@ -8,6 +8,8 @@ import {
 } from "react-icons/md";
 import {
     Box,
+    Button,
+    Collapse,
     Divider,
     Heading,
     Icon,
@@ -15,6 +17,7 @@ import {
     Text,
     Tooltip,
     useColorModeValue,
+    useDisclosure,
 } from "@chakra-ui/react";
 import type { ICourse } from "../util/models/course";
 
@@ -34,6 +37,7 @@ interface TimeAvg {
 }
 
 const CourseStats: FC<CourseDetailBodyProps> = (props) => {
+    const { isOpen, onToggle } = useDisclosure();
     const { courseData } = props;
     const timeAvg: TimeAvg = {
         "0-5 hours": 3,
@@ -63,34 +67,55 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
         return coursePairings[b] - coursePairings[a];
     });
     const coursePairs =
-        sortedPairings.length === 0 ? (
-            <Text>None</Text>
-        ) : (
-            sortedPairings.map((pair) => {
-                const pairArray = pair.split(" ");
-                const courseID = `${pairArray[0]} ${pairArray[1]}`;
+        sortedPairings.length === 0
+            ? [<Text key="None">None</Text>]
+            : sortedPairings.map((pair) => {
+                  const pairArray = pair.split(" ");
+                  const courseID = `${pairArray[0]} ${pairArray[1]}`;
 
-                return (
-                    <Stack
-                        direction={"row"}
-                        key={pair}
-                        align={"baseline"}
-                        justifyContent={["center", null, null, "flex-start"]}
+                  return (
+                      <Stack
+                          direction={"row"}
+                          key={pair}
+                          align={"baseline"}
+                          justifyContent={["center", null, null, "flex-start"]}
+                      >
+                          <Tooltip
+                              hasArrow
+                              label={pair}
+                              placement="top"
+                              shouldWrapChildren
+                          >
+                              <Icon as={MdInfo} w={4} h={4} />
+                          </Tooltip>
+                          <Text fontWeight={"bold"}>{courseID}:</Text>
+                          <Text>
+                              {coursePairings[pair]}{" "}
+                              {coursePairings[pair] > 1 ? "times" : "time"}
+                          </Text>
+                      </Stack>
+                  );
+              });
+
+    const coursePairsCollapse = (
+        <>
+            {coursePairs.slice(0, 3)}
+            {coursePairs.length > 3 ? (
+                <>
+                    <Collapse in={isOpen} animateOpacity>
+                        <Stack>{coursePairs.slice(3)}</Stack>
+                    </Collapse>
+                    <Button
+                        onClick={onToggle}
+                        variant={"link"}
+                        _focus={{ outline: "none" }}
                     >
-                        <Tooltip
-                            hasArrow
-                            label={pair}
-                            placement="top"
-                            shouldWrapChildren
-                        >
-                            <Icon as={MdInfo} w={4} h={4} />
-                        </Tooltip>
-                        <Text fontWeight={"bold"}>{courseID}:</Text>
-                        <Text>{coursePairings[pair]} {coursePairings[pair] > 1 ? "times" : "time"}</Text>
-                    </Stack>
-                );
-            })
-        );
+                        {isOpen ? "Show Less" : "Show More"}
+                    </Button>
+                </>
+            ) : null}
+        </>
+    );
 
     const difficulty = totalDifficulty
         ? (Math.round((totalDifficulty / totalReviews) * 10) / 10).toFixed(1)
@@ -174,7 +199,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
                         Common Pairings
                     </Heading>
                 </Stack>
-                <Stack pl={[0, null, null, 6]}>{coursePairs}</Stack>
+                <Stack alignItems={"center"}>{coursePairsCollapse}</Stack>
                 <Divider w={["auto", null, null, 48]} />
             </Stack>
         </Stack>
