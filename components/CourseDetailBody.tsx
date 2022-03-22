@@ -104,11 +104,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                         fontWeight={"600"}
                         lineHeight={".75"}
                     >
-                        {title
-                            .toLowerCase()
-                            .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-                                letter.toUpperCase()
-                            )}
+                        {title}
                     </Text>
                 </Stack>
                 <Box
