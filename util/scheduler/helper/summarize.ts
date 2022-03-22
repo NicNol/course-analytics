@@ -112,14 +112,48 @@ async function summarizeData(json: ICourse[]) {
 }
 
 function formatCourseName(courseName: string) {
+    /* Course name(s) found in spreadsheet */
+    const CS161 = ["CS 161 - Intro to Computer Science I"];
+    const CS162 = ["CS 162 - Intro to Computer Science II"];
+    const CS344 = ["CS 344 - Operating Systems"];
+    const CS372 = ["CS 372 - Intro to Computer Networks"];
+    const CS391 = ["CS 391 - Social and Ethical Issues in CS"];
+    const CS450 = ["CS 450 - Intro to Computer Graphics"];
     const CS467 = [
         "CS 419 - Software Projects",
         "CS 419 (Legacy)/467 - Capstone",
         "CS 419/467 - Software Projects",
     ];
+    const CS475 = ["CS 475 - Intro to Parallel Programming"];
+    const CS477 = ["CS 477 - Digital Forensics"];
 
+    /* Course name corrections derived from the course catalog */
+    if (CS161.includes(courseName)) {
+        return "CS 161 - Introduction to Computer Science I";
+    }
+    if (CS162.includes(courseName)) {
+        return "CS 162 - Introduction to Computer Science II";
+    }
+    if (CS344.includes(courseName)) {
+        return "CS 344 - Operating Systems I";
+    }
+    if (CS372.includes(courseName)) {
+        return "CS 372 - Introduction to Computer Networks";
+    }
+    if (CS391.includes(courseName)) {
+        return "CS 391 - Social and Ethical Issues in Computer Science";
+    }
+    if (CS450.includes(courseName)) {
+        return "CS 450 - Introduction to Computer Graphics";
+    }
     if (CS467.includes(courseName)) {
-        return "CS 467 - ONLINE CAPSTONE PROJECT";
+        return "CS 467 - Online Capstone Project";
+    }
+    if (CS475.includes(courseName)) {
+        return "CS 475 - Introduction to Parallel Programming";
+    }
+    if (CS477.includes(courseName)) {
+        return "CS 477 - Introduction to Digital Forensics";
     }
 
     /* Else */
