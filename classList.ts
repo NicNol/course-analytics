@@ -91,6 +91,11 @@ export const classList: Course[] = [
         tags: ["Upper Division", "Elective"],
     },
     {
+        number: "CS 406",
+        title: "PROJECTS",
+        tags: ["Upper Division", "Elective"],
+    },
+    {
         number: "CS 427",
         title: "CRYPTOGRAPHY",
         tags: ["Upper Division", "Elective"],
@@ -113,7 +118,7 @@ export const classList: Course[] = [
     {
         number: "CS 467",
         title: "ONLINE CAPSTONE PROJECT",
-        tags: ["Upper Division", "Elective"],
+        tags: ["Upper Division", "Core Class"],
     },
     {
         number: "CS 475",
