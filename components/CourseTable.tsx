@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ISummary } from "../util/models/summary";
-import { Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react";
+import { Center, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useTable, useSortBy } from "react-table";
 
@@ -14,96 +14,67 @@ interface CourseListJSON {
 }
 
 const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
-    const data = React.useMemo(
-        () => [
-            {
-                fromUnit: "inches",
-                toUnit: "millimetres (mm)",
-                factor: 25.4,
-            },
-            {
-                fromUnit: "feet",
-                toUnit: "centimetres (cm)",
-                factor: 30.48,
-            },
-            {
-                fromUnit: "yards",
-                toUnit: "metres (m)",
-                factor: 0.91444,
-            },
-        ],
-        []
-    );
+    const data = React.useMemo(() => jsonData.data, [jsonData]);
 
     const columns = React.useMemo(
         () => [
             {
-                Header: "To convert",
-                accessor: "fromUnit",
+                Header: "Course Name",
+                accessor: "name",
+                isNumeric: false,
             },
             {
-                Header: "Into",
-                accessor: "toUnit",
-            },
-            {
-                Header: "Multiply by",
-                accessor: "factor",
+                Header: "Difficulty",
+                accessor: "difficulty",
                 isNumeric: true,
+            },
+            {
+                Header: "Time Commitment",
+                accessor: "time",
+                isNumeric: true,
+            },
+            {
+                Header: "Review Count",
+                accessor: "reviews",
+                isNumeric: true,
+            },
+            {
+                Header: "Tags",
+                accessor: "tags",
+                isNumeric: false,
             },
         ],
         []
     );
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data }, useSortBy);
-
     return (
-        <Table {...getTableProps()}>
-            <Thead>
-                {headerGroups.map((headerGroup) => (
-                    <Tr {...headerGroup.getHeaderGroupProps()} key={"1"}>
-                        {headerGroup.headers.map((column) => (
-                            <Th
-                                {...column.getHeaderProps(
-                                    column.getSortByToggleProps()
-                                )}
-                                isNumeric={column.isNumeric}
-                                key={"2"}
-                            >
-                                {column.render("Header")}
-                                <chakra.span pl="4">
-                                    {column.isSorted ? (
-                                        column.isSortedDesc ? (
-                                            <TriangleDownIcon aria-label="sorted descending" />
-                                        ) : (
-                                            <TriangleUpIcon aria-label="sorted ascending" />
-                                        )
-                                    ) : null}
-                                </chakra.span>
-                            </Th>
+        <Center>
+            <Table maxW="container.xl">
+                <Thead>
+                    <Tr>
+                        {columns.map((column) => (
+                            <Th key={column.accessor}>{column.Header}</Th>
                         ))}
                     </Tr>
-                ))}
-            </Thead>
-            <Tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
-                    prepareRow(row);
-                    return (
-                        <Tr {...row.getRowProps()} key={"3"}>
-                            {row.cells.map((cell) => (
-                                <Td
-                                    {...cell.getCellProps()}
-                                    isNumeric={cell.column.isNumeric}
-                                    key={"4"}
-                                >
-                                    {cell.render("Cell")}
-                                </Td>
-                            ))}
-                        </Tr>
-                    );
-                })}
-            </Tbody>
-        </Table>
+                </Thead>
+                <Tbody>
+                    {data.map((row, r_index) => {
+                        return (
+                            <Tr key={r_index}>
+                                {Object.keys(row).map((cell, c_index) => {
+                                    console.log(cell);
+                                    return (
+                                        <Td key={`${r_index}-${c_index}`}>
+                                            {row[cell]}
+                                        </Td>
+                                    );
+                                })}
+                            </Tr>
+                        );
+                    })}
+                </Tbody>
+            </Table>
+        </Center>
     );
 };
 
