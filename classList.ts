@@ -21,6 +21,11 @@ export const classList: Course[] = [
         tags: ["Lower Division", "Core Class"],
     },
     {
+        number: "MTH 231",
+        title: "Elements of Discrete Mathematics",
+        tags: ["Lower Division", "Core Class"],
+    },
+    {
         number: "CS 261",
         title: "Data Structures",
         tags: ["Lower Division", "Core Class"],
