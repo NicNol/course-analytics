@@ -9,6 +9,7 @@ import {
     Stack,
     Text,
     useColorModeValue,
+    Flex,
 } from "@chakra-ui/react";
 import CourseTag from "./CourseTag";
 
@@ -58,7 +59,6 @@ const CourseTile: FC<CourseTileProps> = ({
                 </Stack>
                 <Text
                     align={"center"}
-                    justify={"center"}
                     fontSize={"5xl"}
                     fontWeight={800}
                     textShadow={useColorModeValue(
@@ -81,7 +81,6 @@ const CourseTile: FC<CourseTileProps> = ({
                 >
                     <Text
                         align={"center"}
-                        justify={"center"}
                         color={useColorModeValue("white", "black")}
                         fontWeight={"600"}
                         data-cy={"CourseTitle"}
@@ -89,11 +88,12 @@ const CourseTile: FC<CourseTileProps> = ({
                         {Title}
                     </Text>
                 </Stack>
-                <Box
+                <Flex
                     bg={useColorModeValue("#f5f5f5", "gray.900")}
                     px={6}
                     py={4}
-                    align={"center"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
                 >
                     <Stack
                         color={useColorModeValue("#333", "#ccc")}
@@ -159,7 +159,7 @@ const CourseTile: FC<CourseTileProps> = ({
                             router.push(`/courses/${Number}`);
                             setLoadingStatus(true);
                         }}
-                        href={`/courses/${Number}`}
+                        data-href={`/courses/${Number}`}
                         mt={4}
                         variant={"outline"}
                         borderColor={useColorModeValue(
@@ -189,7 +189,7 @@ const CourseTile: FC<CourseTileProps> = ({
                     >
                         View Details
                     </Button>
-                </Box>
+                </Flex>
             </Box>
         </Center>
     );

@@ -1,8 +1,4 @@
-const SELECTORS = {
-    COURSE_TILE: '[data-cy="CourseTile"]',
-    COURSE_TAG: '[data-cy="CourseTag"]',
-    COURSE_TITLE: '[data-cy="CourseTitle"]',
-};
+import { SELECTORS } from "./util/selectors";
 
 describe("Tests that all homepage cards render correctly", () => {
     beforeEach(() => {
@@ -46,12 +42,12 @@ describe("Tests that all homepage cards render correctly", () => {
         });
     });
 
-    it("Tests that all cards provide a link to the course details page", () => {
+    it("Tests that all cards provide a valid link to a course details page", () => {
         cy.get(SELECTORS.COURSE_TILE).each((courseTile, index, collection) => {
             cy.wrap(courseTile).within(() => {
                 cy.intercept("**/courses/*").as("coursePage");
                 cy.contains("button", "View Details").then((button) => {
-                    cy.request(button[0].getAttribute("href"));
+                    cy.request(button[0].getAttribute("data-href") as string);
                 });
             });
         });
