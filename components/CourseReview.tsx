@@ -39,11 +39,12 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
             p={2}
             px={3}
             rounded={"md"}
+            maxW={"100%"}
         >
-            <Flex gridGap={4}>
+            <Flex gridGap={4} maxW={"100%"}>
                 <Avatar mt={1} />
-                <Box width={"100%"}>
-                    <Flex gridGap={2} pb={2} flexWrap={"wrap"}>
+                <Box maxW={"100%"}>
+                    <Flex gridGap={2} pb={2} flexWrap={"wrap"} maxW={"100%"}>
                         <Tag>
                             <TagLeftIcon as={MdCalendarToday} />
                             <TagLabel>{quarter}</TagLabel>
@@ -72,6 +73,8 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
                         textAlign={"left"}
                         mb={2}
                         overflowWrap={"anywhere"}
+                        wordBreak={"break-word"}
+                        whiteSpace={"pre-line"}
                     >
                         {review}
                     </Text>
