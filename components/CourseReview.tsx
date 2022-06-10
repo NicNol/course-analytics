@@ -71,7 +71,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
                         fontSize={"sm"}
                         textAlign={"left"}
                         mb={2}
-                        overflowWrap={"break-word"}
+                        overflowWrap={"anywhere"}
                     >
                         {review}
                     </Text>
