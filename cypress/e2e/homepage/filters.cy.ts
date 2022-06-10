@@ -1,4 +1,4 @@
-import { SELECTORS } from "./util/selectors";
+import { SELECTORS } from "../util/selectors";
 
 describe("Tests that all homepage filters properly filter cards", () => {
     const lowerDivisionCourseNumberRegex = /^(CS [1-2][0-9]{2})|(MTH 231)$/;

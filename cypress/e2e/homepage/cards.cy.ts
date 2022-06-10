@@ -1,4 +1,4 @@
-import { SELECTORS } from "./util/selectors";
+import { SELECTORS } from "../util/selectors";
 
 describe("Tests that all homepage cards render correctly", () => {
     beforeEach(() => {
