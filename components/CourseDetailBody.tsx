@@ -63,7 +63,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 bg={useColorModeValue("orange.100", "gray.700")}
                 boxShadow={"lg"}
                 rounded={"md"}
-                overflow={"auto"}
+                overflow={"hidden"}
             >
                 <Stack
                     justify={"center"}
@@ -124,7 +124,12 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                         >
                             <CourseStats courseData={courseData} />
                         </Stack>
-                        <Stack flexGrow={1} data-cy={"CourseReviews"}>
+                        <Stack
+                            flexGrow={1}
+                            data-cy={"CourseReviews"}
+                            maxW={"100%"}
+                            w={"100%"}
+                        >
                             <Heading
                                 size={"lg"}
                                 mt={[2, null, null, 0]}
