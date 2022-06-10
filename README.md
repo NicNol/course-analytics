@@ -83,3 +83,11 @@ After setting up the `.env.local` file, call `node run scrape-dev` to scrape dat
 Next, call `node run dev`. This will start the Next.js server in development mode.
 
 Finally, open a browser window and navigate to `localhost:3000`. This is the Next.JS project running in your browser.
+
+## Testing
+
+Course Analytics uses [Cypress.io](https://www.cypress.io/) to perform end-to-end testing. Cypress is installed as part of the `npm install` command.
+
+To run existing tests, use the `npm run cypress` command.
+
+To modify existing tests or create new tests, use the `npm run cypress-dev` command to run Cypress in its [interactive mode](https://docs.cypress.io/guides/core-concepts/cypress-app). This allows for easier development and debugging of test cases.
