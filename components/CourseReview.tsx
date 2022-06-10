@@ -67,7 +67,12 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
                         })}
                     </Flex>
 
-                    <Text fontSize={"sm"} textAlign={"left"} mb={2}>
+                    <Text
+                        fontSize={"sm"}
+                        textAlign={"left"}
+                        mb={2}
+                        overflowWrap={"break-word"}
+                    >
                         {review}
                     </Text>
                     <Text
