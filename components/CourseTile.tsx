@@ -9,6 +9,7 @@ import {
     Stack,
     Text,
     useColorModeValue,
+    Flex,
 } from "@chakra-ui/react";
 import CourseTag from "./CourseTag";
 
@@ -29,7 +30,7 @@ const CourseTile: FC<CourseTileProps> = ({
     Difficulty,
     Time,
 }) => {
-    let tags = Tags.map((tag) => (
+    const tags = Tags.map((tag) => (
         <CourseTag key={Number + tag}>{tag}</CourseTag>
     ));
 
@@ -37,7 +38,7 @@ const CourseTile: FC<CourseTileProps> = ({
     const [loadingStatus, setLoadingStatus] = useState(false);
 
     return (
-        <Center p={2}>
+        <Center p={2} data-cy={"CourseTile"}>
             <Box
                 maxW={"330px"}
                 w={"330px"}
@@ -58,13 +59,13 @@ const CourseTile: FC<CourseTileProps> = ({
                 </Stack>
                 <Text
                     align={"center"}
-                    justify={"center"}
                     fontSize={"5xl"}
                     fontWeight={800}
                     textShadow={useColorModeValue(
                         "2px 2px #eee",
                         "2px 2px #333"
                     )}
+                    data-cy={"CourseNumber"}
                 >
                     {Number}
                 </Text>
@@ -80,80 +81,85 @@ const CourseTile: FC<CourseTileProps> = ({
                 >
                     <Text
                         align={"center"}
-                        justify={"center"}
                         color={useColorModeValue("white", "black")}
                         fontWeight={"600"}
+                        data-cy={"CourseTitle"}
                     >
                         {Title}
                     </Text>
                 </Stack>
-                <Box
+                <Flex
                     bg={useColorModeValue("#f5f5f5", "gray.900")}
                     px={6}
                     py={4}
-                    align={"center"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
                 >
-                    <Stack color={useColorModeValue("#333", "#ccc")} alignItems={"center"}>
+                    <Stack
+                        color={useColorModeValue("#333", "#ccc")}
+                        alignItems={"center"}
+                    >
                         <Box>
-                        <Stack
-                            direction={"row"}
-                            justifyContent={"flex-start"}
-                            align={"baseline"}
-                        >
-                            <Icon
-                                as={MdFeedback}
-                                w={8}
-                                h={8}
-                                pos={"relative"}
-                                top={"8px"}
-                            />
-                            <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {Reviews}
-                            </Text>
-                            <Text fontWeight={"700"}>Reviews</Text>
-                        </Stack>
-                        <Stack
-                            direction={"row"}
-                            justify={"flex-start"}
-                            align={"baseline"}
-                        >
-                            <Icon
-                                as={MdAccessTime}
-                                w={8}
-                                h={8}
-                                pos={"relative"}
-                                top={"5px"}
-                            />
-                            <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {Time}
-                            </Text>
-                            <Text fontWeight={"700"}> Hours per Week</Text>
-                        </Stack>
-                        <Stack
-                            direction={"row"}
-                            justifyContent={"flex-start"}
-                            align={"baseline"}
-                        >
-                            <Icon
-                                as={MdExtension}
-                                w={8}
-                                h={8}
-                                pos={"relative"}
-                                top={"3px"}
-                            />
-                            <Text fontSize={"3xl"} fontWeight={"100"}>
-                                {parseFloat(Difficulty).toFixed(1)}
-                            </Text>
-                            <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
-                        </Stack>
+                            <Stack
+                                direction={"row"}
+                                justifyContent={"flex-start"}
+                                align={"baseline"}
+                            >
+                                <Icon
+                                    as={MdFeedback}
+                                    w={8}
+                                    h={8}
+                                    pos={"relative"}
+                                    top={"8px"}
+                                />
+                                <Text fontSize={"3xl"} fontWeight={"100"}>
+                                    {Reviews}
+                                </Text>
+                                <Text fontWeight={"700"}>Reviews</Text>
+                            </Stack>
+                            <Stack
+                                direction={"row"}
+                                justify={"flex-start"}
+                                align={"baseline"}
+                            >
+                                <Icon
+                                    as={MdAccessTime}
+                                    w={8}
+                                    h={8}
+                                    pos={"relative"}
+                                    top={"5px"}
+                                />
+                                <Text fontSize={"3xl"} fontWeight={"100"}>
+                                    {Time}
+                                </Text>
+                                <Text fontWeight={"700"}> Hours per Week</Text>
+                            </Stack>
+                            <Stack
+                                direction={"row"}
+                                justifyContent={"flex-start"}
+                                align={"baseline"}
+                            >
+                                <Icon
+                                    as={MdExtension}
+                                    w={8}
+                                    h={8}
+                                    pos={"relative"}
+                                    top={"3px"}
+                                />
+                                <Text fontSize={"3xl"} fontWeight={"100"}>
+                                    {parseFloat(Difficulty).toFixed(1)}
+                                </Text>
+                                <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
+                            </Stack>
                         </Box>
                     </Stack>
 
                     <Button
                         onClick={() => {
-                            router.push("/courses/" + Number);
+                            router.push(`/courses/${Number}`);
                             setLoadingStatus(true);
                         }}
+                        data-href={`/courses/${Number}`}
                         mt={4}
                         variant={"outline"}
                         borderColor={useColorModeValue(
@@ -183,7 +189,7 @@ const CourseTile: FC<CourseTileProps> = ({
                     >
                         View Details
                     </Button>
-                </Box>
+                </Flex>
             </Box>
         </Center>
     );
