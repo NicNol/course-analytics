@@ -32,6 +32,8 @@
         "react-icons": "^4.3.1"
     },
     "devDependencies": {
+        "@swc/cli": "^0.1.57",
+        "@swc/core": "^1.2.198",
         "@types/google-spreadsheet": "^3.1.5",
         "@types/mongoose": "^5.11.97",
         "@types/node": "^16.11.11",
