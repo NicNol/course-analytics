@@ -5,7 +5,7 @@ import { useState } from "react";
 import { getSummary } from "../pages/api/summary/index";
 import type { CourseListJSON } from "../components/CourseList";
 import Filter from "../components/Filter";
-import CourseTable from "../components/CourseTable";
+import CourseTable from "../components/CourseTable/CourseTable";
 import CourseList from "../components/CourseList";
 import PageWrapper from "../components/PageWrapper";
 
