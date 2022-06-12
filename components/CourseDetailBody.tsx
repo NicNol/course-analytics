@@ -63,7 +63,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 bg={useColorModeValue("orange.100", "gray.700")}
                 boxShadow={"lg"}
                 rounded={"md"}
-                overflow={"auto"}
+                overflow={"hidden"}
             >
                 <Stack
                     justify={"center"}
@@ -76,13 +76,13 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 </Stack>
                 <Text
                     align={"center"}
-                    justify={"center"}
                     fontSize={"5xl"}
                     fontWeight={800}
                     textShadow={useColorModeValue(
                         "2px 2px #eee",
                         "2px 2px #333"
                     )}
+                    data-cy={"CourseNumber"}
                 >
                     {courseid}
                 </Text>
@@ -98,35 +98,43 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 >
                     <Text
                         align={"center"}
-                        justify={"center"}
                         color={useColorModeValue("white", "black")}
                         fontSize={"2xl"}
                         fontWeight={"600"}
                         lineHeight={".75"}
+                        data-cy={"CourseTitle"}
                     >
-                        {title
-                            .toLowerCase()
-                            .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-                                letter.toUpperCase()
-                            )}
+                        {title}
                     </Text>
                 </Stack>
                 <Box
                     bg={useColorModeValue("#f5f5f5", "gray.900")}
                     px={6}
                     py={4}
-                    align={"center"}
                 >
                     <Flex
                         flexWrap={["wrap", null, null, "nowrap"]}
                         alignItems={"stretch"}
                         justifyContent={"flex-start"}
                     >
-                        <Stack mt={[0, null, null, 12]} flexGrow={[1, 1, 1, 0]}>
+                        <Stack
+                            mt={[0, null, null, 12]}
+                            flexGrow={[1, 1, 1, 0]}
+                            data-cy={"CourseStats"}
+                        >
                             <CourseStats courseData={courseData} />
                         </Stack>
-                        <Stack flexGrow={1}>
-                            <Heading size={"lg"} mt={[2, null, null, 0]}>
+                        <Stack
+                            flexGrow={1}
+                            data-cy={"CourseReviews"}
+                            maxW={"100%"}
+                            w={"100%"}
+                        >
+                            <Heading
+                                size={"lg"}
+                                mt={[2, null, null, 0]}
+                                textAlign={"center"}
+                            >
                                 Tips from Students
                             </Heading>
                             {reviews}

@@ -48,27 +48,32 @@ async function emptyDB() {
 }
 
 async function saveCourses(json: ICourse[]) {
+    const formattedJson = formatCourseData(json);
     await connectToDatabase();
-    await Course.insertMany(json);
+    await Course.insertMany(formattedJson);
     await summarizeData(json);
     await disconnectFromDatabase();
 }
 
 async function summarizeData(json: ICourse[]) {
-    /* Summarize data in each course in the classList */
-
+    /* Declare and initialize variables */
     const courseNames: CourseNames = {};
     const summaryJSON: ISummary[] = [];
 
-    /* Get Course Names (keys) */
+    /* Create course summary objects and sum the data from each review */
     for (const course of json) {
+        /* Destructure course data */
         const { difficulty, name, "time commitment": time } = course;
+
+        /* Add course name to list of possible course names if it doesn't exist yet */
         if (!courseNames.hasOwnProperty(name)) {
             const name_array = name.split(" ");
             const key = `${name_array[0]} ${name_array[1]}`;
             const tags = tagsMap[key];
             courseNames[name] = new SummaryObject(name, tags);
         }
+
+        /* Add review details to course totals */
         courseNames[name].reviews++;
         courseNames[name].difficulty += parseInt(difficulty);
         courseNames[name].time += timeAvg[time];
@@ -76,10 +81,13 @@ async function summarizeData(json: ICourse[]) {
 
     /* Average difficulty and time commitment data */
     for (const course in courseNames) {
+        /* Destructure course totals */
         const { difficulty, name, reviews, tags, time } = courseNames[course];
+
         /* Round difficulty to one decimal */
         const avgDifficulty = Math.round((difficulty / reviews) * 10) / 10;
 
+        /* Round the time commitment to an integer */
         const timeCommitment = Math.round(time / reviews);
 
         /* Create a new summary document */
@@ -90,6 +98,8 @@ async function summarizeData(json: ICourse[]) {
             "review count": reviews.toString(),
             tags: tags,
         };
+
+        /* Push the final summary to the summaryJSON array */
         summaryJSON.push(courseSummary);
     }
 
@@ -101,4 +111,66 @@ async function summarizeData(json: ICourse[]) {
     }
 }
 
-export { summarizeData, emptyDB, saveCourses };
+function formatCourseName(courseName: string) {
+    /* Course name(s) found in spreadsheet */
+    const CS161 = ["CS 161 - Intro to Computer Science I"];
+    const CS162 = ["CS 162 - Intro to Computer Science II"];
+    const CS344 = ["CS 344 - Operating Systems"];
+    const CS372 = ["CS 372 - Intro to Computer Networks"];
+    const CS391 = ["CS 391 - Social and Ethical Issues in CS"];
+    const CS450 = ["CS 450 - Intro to Computer Graphics"];
+    const CS467 = [
+        "CS 419 - Software Projects",
+        "CS 419 (Legacy)/467 - Capstone",
+        "CS 419/467 - Software Projects",
+    ];
+    const CS475 = ["CS 475 - Intro to Parallel Programming"];
+    const CS477 = ["CS 477 - Digital Forensics"];
+
+    /* Course name corrections derived from the course catalog */
+    if (CS161.includes(courseName)) {
+        return "CS 161 - Introduction to Computer Science I";
+    }
+    if (CS162.includes(courseName)) {
+        return "CS 162 - Introduction to Computer Science II";
+    }
+    if (CS344.includes(courseName)) {
+        return "CS 344 - Operating Systems I";
+    }
+    if (CS372.includes(courseName)) {
+        return "CS 372 - Introduction to Computer Networks";
+    }
+    if (CS391.includes(courseName)) {
+        return "CS 391 - Social and Ethical Issues in Computer Science";
+    }
+    if (CS450.includes(courseName)) {
+        return "CS 450 - Introduction to Computer Graphics";
+    }
+    if (CS467.includes(courseName)) {
+        return "CS 467 - Online Capstone Project";
+    }
+    if (CS475.includes(courseName)) {
+        return "CS 475 - Introduction to Parallel Programming";
+    }
+    if (CS477.includes(courseName)) {
+        return "CS 477 - Introduction to Digital Forensics";
+    }
+
+    /* Else */
+    return courseName;
+}
+
+function formatCourseData(json: ICourse[]) {
+    /* Create a copy of the JSON data */
+    const formattedJson = [...json];
+
+    /* Perform formatting on each course within the JSON data */
+    for (const course of formattedJson) {
+        /* Format course names to account for inconsistent naming in results */
+        course.name = formatCourseName(course.name);
+    }
+
+    return formattedJson;
+}
+
+export { summarizeData, emptyDB, saveCourses, formatCourseName };

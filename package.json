@@ -16,7 +16,9 @@
         "prescrape-dev": "npx tsc ./util/scheduler/updateDB.ts",
         "scrape-dev": "node -r dotenv/config ./util/scheduler/updateDB.js dotenv_config_path=./.env.local",
         "pretranspile": "npm install -g typescript",
-        "transpile": "npx tsc ./util/scheduler/updateDB.ts"
+        "transpile": "npx tsc ./util/scheduler/updateDB.ts",
+        "cypress-dev": "cypress open",
+        "cypress": "cypress run"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.1.7",
@@ -34,6 +36,7 @@
         "@types/mongoose": "^5.11.97",
         "@types/node": "^16.11.11",
         "@types/react": "17.0.33",
+        "cypress": "^10.0.3",
         "dotenv": "^10.0.0",
         "eslint": "7.32.0",
         "eslint-config-next": "12.0.1",
