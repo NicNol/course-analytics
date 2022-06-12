@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getSummary } from "../pages/api/summary/index";
 import type { CourseListJSON } from "../components/CourseList";
 import Filter from "../components/Filter";
+import CourseTable from "../components/CourseTable/CourseTable";
 import CourseList from "../components/CourseList";
 import PageWrapper from "../components/PageWrapper";
 
@@ -18,6 +19,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
 };
 
+interface IFilterMap {
+    [key: string]: string[];
+}
+
+const filterMap: IFilterMap = {
+    "All Classes": [
+        "Lower Division",
+        "Upper Division",
+        "Core Class",
+        "Elective",
+    ],
+    "Lower Division": ["Lower Division"],
+    "Upper Division": ["Upper Division"],
+    "Core Classes": ["Core Class"],
+    Electives: ["Elective"],
+};
+
 const Home: NextPage<CourseListJSON> = (jsonData) => {
     const [filter, setFilter] = useState([
         "Lower Division",
@@ -25,9 +43,11 @@ const Home: NextPage<CourseListJSON> = (jsonData) => {
         "Upper Division",
         "Elective",
     ]);
+    const [layoutView, setLayoutView] = useState("Card View");
 
-    function handleFilter(criteria: Array<string>) {
-        setFilter(criteria);
+    function handleFilter(criteria: string) {
+        const filters = filterMap[criteria];
+        setFilter(filters);
     }
 
     return (
@@ -50,8 +70,15 @@ const Home: NextPage<CourseListJSON> = (jsonData) => {
                 />
             </Head>
             <PageWrapper>
-                <Filter handleFilter={handleFilter} />
-                <CourseList filter={filter} jsonData={jsonData} />
+                <Filter
+                    handleFilter={handleFilter}
+                    setLayoutView={setLayoutView}
+                />
+                {layoutView === "Card View" ? (
+                    <CourseList filter={filter} jsonData={jsonData} />
+                ) : (
+                    <CourseTable filter={filter} jsonData={jsonData} />
+                )}
             </PageWrapper>
         </>
     );

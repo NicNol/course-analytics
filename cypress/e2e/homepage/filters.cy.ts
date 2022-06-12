@@ -10,9 +10,6 @@ describe("Tests that all homepage filters properly filter cards", () => {
     before(() => {
         cy.visit("/");
 
-        /* Filter on All Classes */
-        cy.contains("button", "All Classes").click();
-
         /* Push Class Numbers to Array */
         cy.get(SELECTORS.COURSE_NUMBER).each(
             (courseNumber, index, collection) => {
@@ -26,8 +23,7 @@ describe("Tests that all homepage filters properly filter cards", () => {
     });
 
     it("Tests that the lower division filter works properly", () => {
-        /* Filter on Lower Division */
-        cy.contains("button", "Lower Division").click();
+        filterOnClassType("Lower Division");
 
         /* Check only Lower Division Cards are shown*/
         cy.get(SELECTORS.COURSE_TILE).each((courseTile, index, collection) => {
@@ -47,8 +43,7 @@ describe("Tests that all homepage filters properly filter cards", () => {
     });
 
     it("Tests that the upper division filter works properly", () => {
-        /* Filter on Upper Division */
-        cy.contains("button", "Upper Division").click();
+        filterOnClassType("Upper Division");
 
         /* Check only Upper Division Cards are shown*/
         cy.get(SELECTORS.COURSE_TILE).each((courseTile, index, collection) => {
@@ -68,8 +63,7 @@ describe("Tests that all homepage filters properly filter cards", () => {
     });
 
     it("Tests that the core classes filter works properly", () => {
-        /* Filter on Core Classes */
-        cy.contains("button", "Core Classes").click();
+        filterOnClassType("Core Classes");
 
         /* Check only Core Classes are shown*/
         cy.get(SELECTORS.COURSE_TILE).each((courseTile, index, collection) => {
@@ -79,8 +73,7 @@ describe("Tests that all homepage filters properly filter cards", () => {
     });
 
     it("Tests that the elective classes filter works properly", () => {
-        /* Filter on Core Classes */
-        cy.contains("button", "Electives").click();
+        filterOnClassType("Electives");
 
         /* Check only Core Classes are shown*/
         cy.get(SELECTORS.COURSE_TILE).each((courseTile, index, collection) => {
@@ -89,3 +82,9 @@ describe("Tests that all homepage filters properly filter cards", () => {
         });
     });
 });
+
+function filterOnClassType(classType: string): void {
+    cy.get(SELECTORS.MENU_BUTTON).first().click();
+    cy.contains(classType).click({ force: true });
+    cy.get(SELECTORS.MENU_BUTTON).first().should("have.text", classType);
+}

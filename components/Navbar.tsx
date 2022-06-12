@@ -18,13 +18,13 @@ export default function Nav() {
         <Box bg={useColorModeValue("black", "gray.900")} px={4} flexGrow={0}>
             <Flex alignItems={"center"} justifyContent={"space-between"}>
                 <Box>
-                    <Stack direction="row">
-                        <Box grow="0">
+                    <Stack direction={"row"}>
+                        <Box>
                             <Search2Icon
                                 w={16}
                                 h={16}
-                                color="white"
-                                float="left"
+                                color={"white"}
+                                float={"left"}
                                 m={2}
                                 sx={{
                                     filter: "drop-shadow(3px 3px 3px #333);",
@@ -51,7 +51,7 @@ export default function Nav() {
                             >
                                 Course Analytics
                             </Heading>
-                            <Text color="white" textShadow="1px 1px #333">
+                            <Text color={"white"} textShadow={"1px 1px #333"}>
                                 for Oregon State University&apos;s Computer
                                 Science Post-Bacc Program
                             </Text>
@@ -59,7 +59,7 @@ export default function Nav() {
                     </Stack>
                 </Box>
 
-                <Button onClick={toggleColorMode} grow="0">
+                <Button onClick={toggleColorMode}>
                     {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                 </Button>
             </Flex>
