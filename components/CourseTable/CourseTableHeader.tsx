@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Flex, Thead, Tr, Th } from "@chakra-ui/react";
+import { Flex, Thead, Tr, Th, useColorModeValue } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { IColumnState } from "./CourseTable";
 
@@ -53,7 +53,7 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
     }
 
     return (
-        <Thead>
+        <Thead bg={useColorModeValue("orange.100", "gray.700")}>
             <Tr>
                 {columns.map((column) => (
                     <Th
@@ -64,7 +64,10 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
                             textDecoration: "underline",
                         }}
                     >
-                        <Flex gap={4}>
+                        <Flex
+                            gap={4}
+                            color={useColorModeValue("gray.800", "white")}
+                        >
                             {column.header}
                             {handleArrowRender(column.filter)}
                         </Flex>

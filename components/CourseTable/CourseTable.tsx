@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { ISummary } from "../../util/models/summary";
-import { Center, Table } from "@chakra-ui/react";
+import { Box, Center, Table, useColorModeValue } from "@chakra-ui/react";
 import CourseTableHeader from "./CourseTableHeader";
 import CourseTableBody from "./CourseTableBody";
 
@@ -31,7 +31,7 @@ const columns: IColumnState[] = [
         filter: null,
     },
     {
-        header: "Time Commitment (Hours)",
+        header: "Time Commitment",
         accessor: "time commitment",
         filter: null,
     },
@@ -118,13 +118,21 @@ const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
 
     return (
         <Center>
-            <Table maxW="container.xl" colorScheme={"orange"}>
-                <CourseTableHeader
-                    columns={columnState}
-                    setColumnState={setColumnState}
-                />
-                <CourseTableBody jsonData={sortedData} columns={columns} />
-            </Table>
+            <Box
+                borderRadius={"md"}
+                border={"1px solid"}
+                borderColor={useColorModeValue("gray.100", "gray.700")}
+                overflowX={"auto"}
+                mx={4}
+            >
+                <Table maxW={"container.xl"}>
+                    <CourseTableHeader
+                        columns={columnState}
+                        setColumnState={setColumnState}
+                    />
+                    <CourseTableBody jsonData={sortedData} />
+                </Table>
+            </Box>
         </Center>
     );
 };
