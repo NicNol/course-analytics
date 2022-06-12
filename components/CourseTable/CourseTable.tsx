@@ -43,27 +43,20 @@ const columns: IColumnState[] = [
 ];
 
 const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
-    const data = jsonData.data
-        .map((summary) => {
-            const newSummary = { ...summary };
-
+    const data: ISummary[] = jsonData.data
+        .filter((summary) => {
             let inFilter = false;
-            if (!newSummary.tags) return;
-            for (const tag of newSummary.tags) {
+            for (const tag of summary.tags) {
                 if (filter.includes(tag)) {
                     inFilter = true;
                 }
             }
 
-            if (inFilter) {
-                delete newSummary.tags;
-                return newSummary;
-            }
-            return null;
+            return inFilter;
         })
-        .filter((value) => value !== null);
+        .filter((value) => value !== null && value !== undefined);
     const [columnState, setColumnState] = useState(columns);
-    const [sortedData, setSortedData] = useState(data);
+    const [sortedData, setSortedData] = useState<ISummary[]>(data);
 
     useEffect(() => {
         const [accessor, direction] = findAccessor(columnState);
