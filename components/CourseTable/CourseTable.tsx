@@ -43,18 +43,32 @@ const columns: IColumnState[] = [
 ];
 
 const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
-    const data = jsonData.data.map((summary) => {
-        const newSummary = { ...summary };
-        delete newSummary.tags;
-        return newSummary;
-    });
+    const data = jsonData.data
+        .map((summary) => {
+            const newSummary = { ...summary };
+
+            let inFilter = false;
+            if (!newSummary.tags) return;
+            for (const tag of newSummary.tags) {
+                if (filter.includes(tag)) {
+                    inFilter = true;
+                }
+            }
+
+            if (inFilter) {
+                delete newSummary.tags;
+                return newSummary;
+            }
+            return null;
+        })
+        .filter((value) => value !== null);
     const [columnState, setColumnState] = useState(columns);
     const [sortedData, setSortedData] = useState(data);
 
     useEffect(() => {
         const [accessor, direction] = findAccessor(columnState);
         sortOnAccessor(accessor, direction);
-    }, [columnState]);
+    }, [columnState, filter]);
 
     function findAccessor(columns: IColumnState[]): [string, number] {
         for (const column of columns) {
