@@ -19,15 +19,12 @@ const MenuItemOption: FC<MenuItemOptionProps> = ({
     clickHandler,
     currentMenuItem,
 }) => {
+    const bgColor = useColorModeValue("orange.100", "gray.600");
     return (
         <MenuItem
             icon={icon}
             onClick={() => clickHandler(title)}
-            bg={
-                currentMenuItem === title
-                    ? useColorModeValue("orange.100", "gray.600")
-                    : "inherit"
-            }
+            bg={currentMenuItem === title ? bgColor : "inherit"}
             data-cy={"MenuOption"}
         >
             {title}

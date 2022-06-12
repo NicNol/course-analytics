@@ -40,6 +40,7 @@ const CourseList: FC<CourseListProps> = ({ jsonData, filter }) => {
         }
 
         let in_filter = false;
+        if (!tags) return; // prevent TypeScript build error
         for (const tag of tags) {
             if (filter.includes(tag)) {
                 in_filter = true;
