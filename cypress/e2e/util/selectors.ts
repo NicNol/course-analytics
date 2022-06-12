@@ -5,4 +5,5 @@ export const SELECTORS = {
     COURSE_NUMBER: '[data-cy="CourseNumber"]',
     COURSE_STATS: '[data-cy="CourseStats"]',
     COURSE_REVIEWS: '[data-cy="CourseReviews"]',
+    MENU_BUTTON: '[data-cy="MenuButton"]',
 };
