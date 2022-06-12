@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { Flex, Thead, Tr, Th, useColorModeValue } from "@chakra-ui/react";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { Thead, Tr, useColorModeValue } from "@chakra-ui/react";
 import { IColumnState } from "./CourseTable";
+import CourseTableHeaderCell from "./CourseTableHeaderCell";
 
 interface CourseTableHeaderProps {
     columns: IColumnState[];
@@ -40,38 +40,15 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
         setColumnState(newColumnState);
     }
 
-    function handleArrowRender(columnFilter: string | null): JSX.Element {
-        const asc = <TriangleUpIcon w={4} h={4} />;
-        const desc = <TriangleDownIcon w={4} h={4} />;
-        const inv = <TriangleUpIcon w={4} h={4} visibility={"hidden"} />;
-
-        if (columnFilter) {
-            const icon = columnFilter === "asc" ? asc : desc;
-            return icon;
-        }
-        return inv;
-    }
-
     return (
         <Thead bg={useColorModeValue("orange.100", "gray.700")}>
             <Tr>
                 {columns.map((column) => (
-                    <Th
+                    <CourseTableHeaderCell
                         key={column.accessor}
-                        onClick={() => handleHeaderClick(column.header)}
-                        _hover={{
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                        }}
-                    >
-                        <Flex
-                            gap={4}
-                            color={useColorModeValue("gray.800", "white")}
-                        >
-                            {column.header}
-                            {handleArrowRender(column.filter)}
-                        </Flex>
-                    </Th>
+                        column={column}
+                        handleHeaderClick={handleHeaderClick}
+                    />
                 ))}
             </Tr>
         </Thead>
