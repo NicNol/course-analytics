@@ -32,7 +32,11 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
 
     return (
         <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                data-cy={"MenuButton"}
+            >
                 {currentMenuItem}
             </MenuButton>
             <MenuList>

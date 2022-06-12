@@ -24,7 +24,11 @@ const ViewLayoutMenu: FC<ViewLayoutMenuProps> = ({ setLayoutView }) => {
 
     return (
         <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                data-cy={"MenuButton"}
+            >
                 {currentMenuItem}
             </MenuButton>
             <MenuList>

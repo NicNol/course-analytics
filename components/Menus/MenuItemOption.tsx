@@ -28,6 +28,7 @@ const MenuItemOption: FC<MenuItemOptionProps> = ({
                     ? useColorModeValue("orange.100", "gray.600")
                     : "inherit"
             }
+            data-cy={"MenuOption"}
         >
             {title}
         </MenuItem>
