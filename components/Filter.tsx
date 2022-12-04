@@ -1,30 +1,24 @@
 import React, { FC } from "react";
-import { Box, Wrap, useColorModeValue, ButtonGroup } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import ClassMenu from "./Menus/ClassMenu";
 import ViewLayoutMenu from "./Menus/ViewLayoutMenu";
+import DateMenu from "./Menus/DateMenu";
+import { DateFilter } from "../pages/index";
 
 interface FilterProps {
-    handleFilter: (filter: string) => void;
-    setLayoutView: (filter: string) => void;
+  classFilter: (filter: string) => void;
+  setLayoutView: (filter: string) => void;
+  dateFilter: (criteria: DateFilter) => void;
 }
 
-const Filter: FC<FilterProps> = ({ handleFilter, setLayoutView }) => {
-    return (
-        <>
-            <ButtonGroup
-                colorScheme={useColorModeValue("orange", "black")}
-                size="lg"
-                variant="ghost"
-            >
-                <Box w="90%" my={4} ml="5%">
-                    <Wrap spacing={2} justify="center">
-                        <ClassMenu handleFilter={handleFilter} />
-                        <ViewLayoutMenu setLayoutView={setLayoutView} />
-                    </Wrap>
-                </Box>
-            </ButtonGroup>
-        </>
-    );
+const Filter: FC<FilterProps> = ({ classFilter, setLayoutView, dateFilter }) => {
+  return (
+    <Flex justifyContent="center" gap={2} my={2}>
+      <ClassMenu handleFilter={classFilter} />
+      <ViewLayoutMenu setLayoutView={setLayoutView} />
+      <DateMenu handleFilter={dateFilter} />
+    </Flex>
+  );
 };
 
 export default Filter;

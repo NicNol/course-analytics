@@ -1,24 +1,24 @@
 import React, { FC, useState } from "react";
 import { Button, Menu, MenuButton, MenuList, useColorModeValue } from "@chakra-ui/react";
-import { ChevronDownIcon, ArrowDownIcon, ArrowUpIcon, SettingsIcon, StarIcon, ViewIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ViewIcon } from "@chakra-ui/icons";
+import { MdCalendarToday } from "react-icons/md";
 import MenuItemOption, { IMenuOption } from "./MenuItemOption";
+import { DateFilter } from "../../pages/index";
 
-interface ClassMenuProps {
-  handleFilter: (filter: string) => void;
+interface DateMenuProps {
+  handleFilter: (criteria: DateFilter) => void;
 }
 
 const MenuOptions: IMenuOption[] = [
-  { title: "All Classes", icon: <ViewIcon /> },
-  { title: "Lower Division", icon: <ArrowDownIcon /> },
-  { title: "Upper Division", icon: <ArrowUpIcon /> },
-  { title: "Core Classes", icon: <SettingsIcon /> },
-  { title: "Electives", icon: <StarIcon /> },
+  { title: "All Time", icon: <ViewIcon /> },
+  { title: "Past 2 Years", icon: <MdCalendarToday /> },
+  { title: "Past 6 Months", icon: <MdCalendarToday /> },
 ];
 
-const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
-  const [currentMenuItem, setCurrentMenuItem] = useState("All Classes");
+const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
+  const [currentMenuItem, setCurrentMenuItem] = useState(MenuOptions[0].title);
 
-  function handleMenuItemClick(menuItem: string) {
+  function handleMenuItemClick(menuItem: DateFilter) {
     handleFilter(menuItem);
     setCurrentMenuItem(menuItem);
   }
@@ -43,7 +43,7 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
               key={title}
               title={title}
               icon={icon}
-              clickHandler={handleMenuItemClick}
+              clickHandler={() => handleMenuItemClick(title as DateFilter)}
               currentMenuItem={currentMenuItem}
             />
           );
@@ -53,4 +53,4 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
   );
 };
 
-export default ClassMenu;
+export default DateMenu;
