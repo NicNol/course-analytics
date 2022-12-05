@@ -7,18 +7,8 @@ interface TimeAvg {
   [key: string]: number;
 }
 
-interface CourseNames {
+interface CourseCodes {
   [key: string]: SummaryObject;
-}
-
-interface TagsMap {
-  [key: string]: [] | string[];
-}
-
-const tagsMap: TagsMap = {};
-for (const course of classList) {
-  const { number, tags } = course;
-  tagsMap[number] = tags;
 }
 
 const timeAvg: TimeAvg = {
@@ -29,15 +19,17 @@ const timeAvg: TimeAvg = {
 };
 
 class SummaryObject {
-  name: string;
+  code: string;
+  title: string;
   difficulty: number = 0;
   time: number = 0;
   reviews: number = 0;
   tags: [] | string[] = [];
 
-  constructor(name: string, tags: string[]) {
-    this.name = name;
-    this.tags = tags;
+  constructor(code: string, title: string) {
+    this.code = code;
+    this.title = title;
+    this.tags = classList.find((classObj) => classObj.code === code)?.tags || [];
   }
 }
 
@@ -62,35 +54,33 @@ async function saveCourses(json: ICourse[]) {
 
 function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
   /* Declare and initialize variables */
-  const courseNames: CourseNames = {};
+  const courseCodes: CourseCodes = {};
   const summaryJSON: ISummary[] = [];
 
   /* Create course summary objects and sum the data from each review */
   for (const course of json) {
     /* Destructure course data */
-    const { difficulty, name, "time commitment": time, "review date": reviewDate } = course;
+    const { difficulty, code, title, "time commitment": time, "review date": reviewDate } = course;
+    if (!code || !title) continue;
 
     /* Add course name to list of possible course names if it doesn't exist yet */
-    if (!courseNames.hasOwnProperty(name)) {
-      const name_array = name.split(" ");
-      const key = `${name_array[0]} ${name_array[1]}`;
-      const tags = tagsMap[key];
-      courseNames[name] = new SummaryObject(name, tags);
+    if (!courseCodes.hasOwnProperty(code)) {
+      courseCodes[code] = new SummaryObject(code, title);
     }
 
     /* Ignore reviews that are older than daysInPast */
     if (Date.parse(reviewDate) <= new Date().getTime() - daysInPast * 1000 * 60 * 60 * 24) continue;
 
     /* Add review details to course totals */
-    courseNames[name].reviews++;
-    courseNames[name].difficulty += parseInt(difficulty);
-    courseNames[name].time += timeAvg[time];
+    courseCodes[code].reviews += 1;
+    courseCodes[code].difficulty += parseInt(difficulty);
+    courseCodes[code].time += timeAvg[time];
   }
 
   /* Average difficulty and time commitment data */
-  for (const course in courseNames) {
+  for (const course in courseCodes) {
     /* Destructure course totals */
-    const { difficulty, name, reviews, tags, time } = courseNames[course];
+    const { difficulty, code, title, reviews, tags, time } = courseCodes[course];
 
     /* Round difficulty to one decimal */
     const avgDifficulty = Math.round((difficulty / reviews) * 10) / 10 || 0;
@@ -100,7 +90,8 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
 
     /* Create a new summary document */
     const courseSummary: ISummary = {
-      name: name,
+      code: code,
+      title: title,
       "average difficulty": avgDifficulty.toString(),
       "time commitment": timeCommitment.toString(),
       "review count": reviews.toString(),
@@ -175,10 +166,22 @@ function formatCourseData(json: ICourse[]) {
   /* Perform formatting on each course within the JSON data */
   for (const course of formattedJson) {
     /* Format course names to account for inconsistent naming in results */
-    course.name = formatCourseName(course.name);
+    const [code, title] = splitNameIntoCodeAndTitle(course?.name);
+    course.code = code;
+    course.title = title;
+    delete course.name;
   }
 
   return formattedJson;
+}
+
+function splitNameIntoCodeAndTitle(name?: string) {
+  if (!name) return ["", ""];
+  const correctedName = formatCourseName(name);
+  const nameArray = correctedName.split(" ");
+  const code = `${nameArray[0]} ${nameArray[1]}`;
+  const title = nameArray.slice(3).join(" "); // Remove "CS ### -" part of string
+  return [code, title];
 }
 
 export { filterAndSummarizeDataByDate, emptyDB, saveCourses, formatCourseName };

@@ -30,8 +30,8 @@ const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
         rightIcon={<ChevronDownIcon />}
         data-cy={"MenuButton"}
         colorScheme={useColorModeValue("orange", "black")}
-        size="lg"
-        variant="ghost"
+        size={"lg"}
+        variant={"ghost"}
       >
         {currentMenuItem}
       </MenuButton>

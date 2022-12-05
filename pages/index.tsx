@@ -1,13 +1,13 @@
 import { GetStaticProps } from "next";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useState } from "react";
 import { getSummary } from "../pages/api/summary/index";
-import Filter from "../components/Filter";
+import AllFilters from "../components/Menus/AllFilters";
 import CourseTable from "../components/CourseTable/CourseTable";
-import CourseList from "../components/CourseList";
+import CourseList from "../components/CourseCard/CourseList";
 import PageWrapper from "../components/PageWrapper";
 import { ISummaryByDate } from "../util/models/summary";
+import PageHead from "../components/PageHead";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   let jsonData = await getSummary();
@@ -57,30 +57,15 @@ const Home: NextPage<SummaryDataJSON> = ({ data }) => {
   }
 
   return (
-    <>
-      <Head>
-        <title>Course Analytics</title>
-        <meta charSet="UTF-8" />
-        <meta
-          name="keywords"
-          content="Oregon State University,Online, Computer Science, Post-Bacc, Course, Analytics, Reviews, Data"
-        />
-        <meta
-          name="description"
-          content="Course Analytics for Oregon State University's Computer Science Post-Bacc Program"
-        />
-        <meta name="author" content="Nic Nolan" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      <PageWrapper>
-        <Filter classFilter={handleClassFilter} setLayoutView={setLayoutView} dateFilter={handleDateFilter} />
-        {layoutView === "Card View" ? (
-          <CourseList filter={classFilter} jsonData={jsonData[dateFilter]} />
-        ) : (
-          <CourseTable filter={classFilter} jsonData={jsonData[dateFilter]} />
-        )}
-      </PageWrapper>
-    </>
+    <PageWrapper>
+      <PageHead />
+      <AllFilters classFilter={handleClassFilter} setLayoutView={setLayoutView} dateFilter={handleDateFilter} />
+      {layoutView === "Card View" ? (
+        <CourseList filter={classFilter} jsonData={jsonData[dateFilter]} />
+      ) : (
+        <CourseTable filter={classFilter} jsonData={jsonData[dateFilter]} />
+      )}
+    </PageWrapper>
   );
 };
 

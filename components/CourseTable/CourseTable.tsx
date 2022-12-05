@@ -40,16 +40,7 @@ const columns: IColumnState[] = [
 
 const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
   const data: ISummary[] = jsonData
-    .filter((summary) => {
-      let inFilter = false;
-      for (const tag of summary.tags) {
-        if (filter.includes(tag)) {
-          inFilter = true;
-        }
-      }
-
-      return inFilter;
-    })
+    .filter((summary) => summary.tags.some((tag) => filter.includes(tag)))
     .filter((value) => value !== null && value !== undefined);
   const [columnState, setColumnState] = useState(columns);
   const [sortedData, setSortedData] = useState<ISummary[]>(data);

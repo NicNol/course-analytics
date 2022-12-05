@@ -1,15 +1,8 @@
 import { Schema, model, Model, models } from "mongoose";
 
 interface ISummary {
-  name: string;
-  "average difficulty": string;
-  "time commitment": string;
-  "review count": string;
-  tags: string[];
-}
-
-interface ISummary {
-  name: string;
+  code: string;
+  title: string;
   "average difficulty": string;
   "time commitment": string;
   "review count": string;
@@ -23,7 +16,11 @@ interface ISummaryByDate {
 }
 
 const summarySchema = new Schema<ISummary>({
-  name: {
+  code: {
+    type: String,
+    required: true,
+  },
+  title: {
     type: String,
     required: true,
   },
