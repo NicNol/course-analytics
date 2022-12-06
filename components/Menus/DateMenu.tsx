@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Button, Menu, MenuButton, MenuList, useColorModeValue } from "@chakra-ui/react";
-import { ChevronDownIcon, ViewIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { MdCalendarToday } from "react-icons/md";
 import MenuItemOption, { IMenuOption } from "./MenuItemOption";
 import { DateFilter } from "../../pages/index";
@@ -10,7 +10,7 @@ interface DateMenuProps {
 }
 
 const MenuOptions: IMenuOption[] = [
-  { title: "All Time", icon: <ViewIcon /> },
+  { title: "All Time", icon: <MdCalendarToday /> },
   { title: "Past 2 Years", icon: <MdCalendarToday /> },
   { title: "Past 6 Months", icon: <MdCalendarToday /> },
 ];

@@ -13,10 +13,18 @@ interface FilterProps {
 
 const AllFilters: FC<FilterProps> = ({ classFilter, setLayoutView, dateFilter }) => {
   return (
-    <Flex justifyContent={"center"} gap={2} my={2}>
-      <ClassMenu handleFilter={classFilter} />
-      <ViewLayoutMenu setLayoutView={setLayoutView} />
-      <DateMenu handleFilter={dateFilter} />
+    <Flex justifyContent={"center"}>
+      <Flex justifyContent={"center"} gap={2} my={2} flexWrap={"wrap"} maxW={"container.xl"}>
+        <Flex flexGrow={"1"} justifyContent={"center"}>
+          <ClassMenu handleFilter={classFilter} />
+        </Flex>
+        <Flex flexGrow={"1"} justifyContent={"center"}>
+          <ViewLayoutMenu setLayoutView={setLayoutView} />
+        </Flex>
+        <Flex flexGrow={"1"} justifyContent={"center"}>
+          <DateMenu handleFilter={dateFilter} />
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

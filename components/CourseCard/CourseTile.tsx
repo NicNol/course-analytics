@@ -1,8 +1,9 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/router";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
-import { Button, Box, Center, Icon, Stack, Text, useColorModeValue, Flex } from "@chakra-ui/react";
+import { Button, Box, Center, Icon, Link, Stack, Text, useColorModeValue, Flex } from "@chakra-ui/react";
 import CourseTag from "./CourseTag";
+import NextLink from "next/link";
 
 interface CourseTileProps {
   tags: Array<string>;
@@ -39,15 +40,19 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         >
           {tagComponents}
         </Stack>
-        <Text
-          align={"center"}
-          fontSize={"5xl"}
-          fontWeight={800}
-          textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
-          data-cy={"CourseNumber"}
-        >
-          {code}
-        </Text>
+        <NextLink href={`/courses/${code.replace(" ", "-")}`} passHref>
+          <Link onClick={() => setLoadingStatus(true)} data-href={`/courses/${code.replace(" ", "-")}`} _hover={{}}>
+            <Text
+              align={"center"}
+              fontSize={"5xl"}
+              fontWeight={800}
+              textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
+              data-cy={"CourseNumber"}
+            >
+              {code}
+            </Text>
+          </Link>
+        </NextLink>
         <Stack
           align={"center"}
           justify={"center"}
@@ -58,9 +63,18 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           h="64px"
           px={8}
         >
-          <Text align={"center"} color={useColorModeValue("white", "black")} fontWeight={"600"} data-cy={"CourseTitle"}>
-            {title}
-          </Text>
+          <NextLink href={`/courses/${code.replace(" ", "-")}`} passHref>
+            <Link onClick={() => setLoadingStatus(true)} data-href={`/courses/${code.replace(" ", "-")}`} _hover={{}}>
+              <Text
+                align={"center"}
+                color={useColorModeValue("white", "black")}
+                fontWeight={"600"}
+                data-cy={"CourseTitle"}
+              >
+                {title}
+              </Text>
+            </Link>
+          </NextLink>
         </Stack>
         <Flex
           bg={useColorModeValue("#f5f5f5", "gray.900")}

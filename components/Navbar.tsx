@@ -6,7 +6,7 @@ export default function Nav() {
   const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
   return (
-    <Box bg={useColorModeValue("black", "gray.900")} px={4} flexGrow={0}>
+    <Box bg={useColorModeValue("black", "gray.900")} px={4} flexGrow={0} pb={1}>
       <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <Stack direction={"row"}>
