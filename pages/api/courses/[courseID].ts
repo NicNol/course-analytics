@@ -3,20 +3,25 @@ import { connectToDatabase } from "../../../util/mongodb";
 import { Course, ICourse } from "../../../util/models/course";
 
 async function getCourses(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "GET") {
-        try {
-            await connectToDatabase();
-            const { courseID } = req.query;
+  if (req.method === "GET") {
+    try {
+      connectToDatabase();
+      const { courseID } = req.query;
 
-            const courses: ICourse[] = await Course.find({
-                /* Hacky Type Fix */
-                name: { $regex: courseID, $options: "i" } as unknown as string,
-            });
-            res.status(200).json(courses);
-        } catch (err) {
-            res.status(500).send(err);
-        }
+      // courseID may be undefined, a string, or an array of strings
+      if (!courseID) throw "CourseID not provided";
+      const idString: string = typeof courseID === "object" ? courseID[0] : courseID;
+      const code = idString.replace("-", " ");
+
+      const courses: ICourse[] = await Course.find({
+        /* Hacky Type Fix */
+        code: { $regex: code, $options: "i" } as unknown as string,
+      });
+      res.status(200).json(courses);
+    } catch (err) {
+      res.status(500).send(err);
     }
+  }
 }
 
 export default getCourses;

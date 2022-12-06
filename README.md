@@ -18,11 +18,11 @@ Get all course summaries using:
 
 Get a specific course summary using:
 
-`/api/summaries/CS <number>`
+`/api/summaries/CS-<number>`
 
 Where `<number>` is the course number. For example, to get the course summary for CS 271, use:
 
-`/api/summaries/CS 271`
+`/api/summaries/CS-271`
 
 ## Get Course Review Data
 
@@ -32,11 +32,11 @@ Get all course review data using:
 
 Get specific course review data using:
 
-`/api/courses/CS <number>`
+`/api/courses/CS-<number>`
 
 Where `<number>` is the course number. For example, to get the course summary for CS 271, use:
 
-`/api/courses/CS 271`
+`/api/courses/CS-271`
 
 # ⚙️ Development
 
