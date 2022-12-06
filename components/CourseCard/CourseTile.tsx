@@ -73,7 +73,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             <Box>
               <Stack direction={"row"} justifyContent={"flex-start"} align={"baseline"}>
                 <Icon as={MdFeedback} w={8} h={8} pos={"relative"} top={"8px"} />
-                <Text fontSize={"3xl"} fontWeight={"100"}>
+                <Text fontSize={"3xl"} fontWeight={"100"} data-cy={"CourseReviewCount"}>
                   {reviews}
                 </Text>
                 <Text fontWeight={"700"}>Reviews</Text>
