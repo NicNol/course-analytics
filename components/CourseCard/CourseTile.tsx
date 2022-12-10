@@ -40,19 +40,23 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         >
           {tagComponents}
         </Stack>
-        <NextLink href={`/courses/${code.replace(" ", "-")}`} passHref>
-          <Link onClick={() => setLoadingStatus(true)} data-href={`/courses/${code.replace(" ", "-")}`} _hover={{}}>
-            <Text
-              align={"center"}
-              fontSize={"5xl"}
-              fontWeight={800}
-              textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
-              data-cy={"CourseNumber"}
-            >
-              {code}
-            </Text>
-          </Link>
-        </NextLink>
+        <Link
+          as={NextLink}
+          onClick={() => setLoadingStatus(true)}
+          data-href={`/courses/${code.replace(" ", "-")}`}
+          _hover={{}}
+          href={`/courses/${code.replace(" ", "-")}`}
+        >
+          <Text
+            align={"center"}
+            fontSize={"5xl"}
+            fontWeight={800}
+            textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
+            data-cy={"CourseNumber"}
+          >
+            {code}
+          </Text>
+        </Link>
         <Stack
           align={"center"}
           justify={"center"}
@@ -63,18 +67,22 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           h="64px"
           px={8}
         >
-          <NextLink href={`/courses/${code.replace(" ", "-")}`} passHref>
-            <Link onClick={() => setLoadingStatus(true)} data-href={`/courses/${code.replace(" ", "-")}`} _hover={{}}>
-              <Text
-                align={"center"}
-                color={useColorModeValue("white", "black")}
-                fontWeight={"600"}
-                data-cy={"CourseTitle"}
-              >
-                {title}
-              </Text>
-            </Link>
-          </NextLink>
+          <Link
+            as={NextLink}
+            onClick={() => setLoadingStatus(true)}
+            data-href={`/courses/${code.replace(" ", "-")}`}
+            href={`/courses/${code.replace(" ", "-")}`}
+            _hover={{}}
+          >
+            <Text
+              align={"center"}
+              color={useColorModeValue("white", "black")}
+              fontWeight={"600"}
+              data-cy={"CourseTitle"}
+            >
+              {title}
+            </Text>
+          </Link>
         </Stack>
         <Flex
           bg={useColorModeValue("#f5f5f5", "gray.900")}
@@ -108,36 +116,39 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               </Stack>
             </Box>
           </Stack>
-
-          <Button
-            onClick={() => {
-              router.push(`/courses/${code.replace(" ", "-")}`);
-              setLoadingStatus(true);
-            }}
+          <Link
+            as={NextLink}
+            onClick={() => setLoadingStatus(true)}
             data-href={`/courses/${code.replace(" ", "-")}`}
-            mt={4}
-            variant={"outline"}
-            borderColor={useColorModeValue("orange.300", "gray.500")}
-            color={useColorModeValue("orange.400", "white")}
-            backgroundColor={useColorModeValue("orange.50", "gray.700")}
-            rounded={"xl"}
-            shadow={"md"}
-            _hover={{
-              bg: useColorModeValue("orange.100", "gray.600"),
-              color: useColorModeValue("orange.500", "white"),
-            }}
-            _focus={{
-              bg: useColorModeValue("orange.100", "gray.600"),
-              color: useColorModeValue("orange.500", "white"),
-            }}
-            _active={{
-              bg: useColorModeValue("orange.200", "gray.400"),
-            }}
-            isLoading={loadingStatus}
-            loadingText="Loading"
+            href={`/courses/${code.replace(" ", "-")}`}
+            _hover={{}}
           >
-            View Details
-          </Button>
+            <Button
+              data-href={`/courses/${code.replace(" ", "-")}`}
+              mt={4}
+              variant={"outline"}
+              borderColor={useColorModeValue("orange.300", "gray.500")}
+              color={useColorModeValue("orange.400", "white")}
+              backgroundColor={useColorModeValue("orange.50", "gray.700")}
+              rounded={"xl"}
+              shadow={"md"}
+              _hover={{
+                bg: useColorModeValue("orange.100", "gray.600"),
+                color: useColorModeValue("orange.500", "white"),
+              }}
+              _focus={{
+                bg: useColorModeValue("orange.100", "gray.600"),
+                color: useColorModeValue("orange.500", "white"),
+              }}
+              _active={{
+                bg: useColorModeValue("orange.200", "gray.400"),
+              }}
+              isLoading={loadingStatus}
+              loadingText="Loading"
+            >
+              View Details
+            </Button>
+          </Link>
         </Flex>
       </Box>
     </Center>
