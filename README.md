@@ -1,4 +1,4 @@
-# 🔍 [Course Analytics](https://course-analytics.vercel.app/)
+# 🔍 [Course Analytics](https://www.osu-cs-ca.com/)
 
 ![Preview of Course Analytics Home Page](/public/images/preview-home.png?raw=true)
 ![Preview of Course Analytics Course Page](/public/images/preview-course.png?raw=true)
@@ -8,7 +8,7 @@ Course Analytics was developed for students of Oregon State University's Compute
 
 At this time, the API does not require an API key. Make requests by making http get requests to the desired URI.
 
-URIs are relative to the hosting domain, currently: `https://course-analytics.vercel.app`
+URIs are relative to the hosting domain, currently: `https://www.osu-cs-ca.com`
 
 ## Get Course Summary Data
 

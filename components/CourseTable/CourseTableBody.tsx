@@ -23,9 +23,11 @@ const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
         return (
           <Tr key={r_index} data-cy={"CourseTableRow"}>
             <Td key={`${r_index}-0`} textAlign={"left"}>
-              <NextLink href={`/courses/${code.replace(" ", "-")}`} passHref>
-                <Link fontWeight={"600"}>{`${code} - ${title}`}</Link>
-              </NextLink>
+              <Link
+                as={NextLink}
+                href={`/courses/${code.replace(" ", "-")}`}
+                fontWeight={"600"}
+              >{`${code} - ${title}`}</Link>
             </Td>
             <Td key={`${r_index}-1`} textAlign={"center"} position={"relative"} right={"15px"}>
               <Flex gap={2} justifyContent={"center"}>
