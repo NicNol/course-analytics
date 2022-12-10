@@ -8,8 +8,8 @@ interface CourseListProps {
   jsonData: ISummary[];
 }
 
-const CourseList: FC<CourseListProps> = ({ jsonData: data, filter }) => {
-  const sortedCourses = data.sort((a, b) => {
+export function sortCourses(summaryData: ISummary[]) {
+  return summaryData.sort((a, b) => {
     const key = "code";
     const a_title = a[key].split(" ");
     const a_number = parseInt(a_title[1]);
@@ -17,6 +17,10 @@ const CourseList: FC<CourseListProps> = ({ jsonData: data, filter }) => {
     const b_number = parseInt(b_title[1]);
     return a_number - b_number;
   });
+}
+
+const CourseList: FC<CourseListProps> = ({ jsonData: data, filter }) => {
+  const sortedCourses = sortCourses(data);
 
   const courseTiles = sortedCourses.map((classSummary: ISummary) => {
     const {
