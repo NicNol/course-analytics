@@ -1,10 +1,11 @@
-import React, { FC } from "react";
-import { Box, Center, Heading, Stack, Text, useColorModeValue, Flex } from "@chakra-ui/react";
+import React, { ChangeEvent, FC, useState } from "react";
+import { Center, Flex, Heading, Select, Text, useColorModeValue } from "@chakra-ui/react";
 import type { ICourse } from "../../util/models/course";
 import { classList } from "../../classList";
 import CourseTag from "../CourseCard/CourseTag";
 import CourseReview from "./CourseReview";
 import CourseStats from "./CourseStats";
+import Pagination from "./Pagination";
 
 interface CourseDetailBodyProps {
   courseData: ICourse[];
@@ -14,6 +15,8 @@ interface CourseDetailBodyProps {
 const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
   const { courseData, courseid } = props;
   const CourseListing = classList.filter((course) => course.code === courseid);
+  const [tipsPerPage, setTipsPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const { tags, title } = CourseListing[0];
   const tagElements = tags.map((tag) => <CourseTag key={courseid + tag}>{tag}</CourseTag>);
@@ -26,21 +29,33 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
   });
 
   const reviews =
-    sortedReviews.length === 0 ? (
-      <Text>None</Text>
-    ) : (
-      sortedReviews
-        .map((review) => {
-          if (review.review?.length > 0) {
-            return <CourseReview key={review["review date"]} courseData={review} />;
-          }
-        })
-        .reverse()
-    );
+    sortedReviews.length === 0
+      ? [<Text key="none">None</Text>]
+      : sortedReviews
+          .filter((review) => review.review?.length) // remove blanks
+          .map((review, index) => <CourseReview key={`${index}-${review["review date"]}`} courseData={review} />)
+          .reverse();
+
+  function handleChangeTipsPerPage(e: ChangeEvent<HTMLSelectElement>) {
+    setTipsPerPage(parseInt(e.target.value));
+    setPageNumber(1);
+  }
+
+  function changePage(delta: number) {
+    setPageNumber(pageNumber + delta);
+    scrollToTopOfTips();
+  }
+
+  function scrollToTopOfTips() {
+    document.querySelector("#TipsHeader")?.scrollIntoView({
+      block: "center",
+    });
+  }
 
   return (
     <Center p={2}>
-      <Box
+      <Flex
+        direction={"column"}
         maxW={"1054px"}
         w={["auto", null, null, "1054px"]}
         bg={useColorModeValue("orange.100", "gray.700")}
@@ -48,15 +63,9 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         rounded={"md"}
         overflow={"hidden"}
       >
-        <Stack
-          justify={"center"}
-          pt={6}
-          color={useColorModeValue("gray.800", "white")}
-          align={"center"}
-          direction={"row"}
-        >
+        <Flex justify={"center"} pt={6} color={useColorModeValue("gray.800", "white")} align={"center"} gap={2}>
           {tagElements}
-        </Stack>
+        </Flex>
         <Text
           align={"center"}
           fontSize={"5xl"}
@@ -66,7 +75,8 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         >
           {courseid}
         </Text>
-        <Stack
+        <Flex
+          direction={"column"}
           align={"center"}
           justify={"center"}
           bg={useColorModeValue(
@@ -86,21 +96,34 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           >
             {title}
           </Text>
-        </Stack>
-        <Box bg={useColorModeValue("#f5f5f5", "gray.900")} px={6} py={4}>
-          <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"}>
-            <Stack mt={[0, null, null, 12]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
+        </Flex>
+        <Flex direction={"column"} bg={useColorModeValue("#f5f5f5", "gray.900")} px={2} py={4}>
+          <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
+            <Flex direction={"column"} mt={[0, null, null, 2]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
               <CourseStats courseData={courseData} />
-            </Stack>
-            <Stack flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"}>
-              <Heading size={"lg"} mt={[2, null, null, 0]} textAlign={"center"}>
-                Tips from Students
-              </Heading>
-              {reviews}
-            </Stack>
+            </Flex>
+            <Flex direction={"column"} flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"} gap={2}>
+              <Flex justifyContent={"space-between"} alignItems={"center"} flexWrap={"wrap"} gap={1}>
+                <Heading size={"md"} mt={[2, null, null, 0]} id={"TipsHeader"}>
+                  Tips from Students
+                </Heading>
+                <Select w={48} onChange={handleChangeTipsPerPage}>
+                  <option value="10">10 Tips per Page</option>
+                  <option value="25">25 Tips per Page</option>
+                  <option value="100">100 Tips per Page</option>
+                </Select>
+              </Flex>
+              {reviews.slice(tipsPerPage * (pageNumber - 1), tipsPerPage * pageNumber)}
+              <Pagination
+                pageNumber={pageNumber}
+                totalTipCount={reviews.length}
+                tipsPerPage={tipsPerPage}
+                changePage={changePage}
+              />
+            </Flex>
           </Flex>
-        </Box>
-      </Box>
+        </Flex>
+      </Flex>
     </Center>
   );
 };
