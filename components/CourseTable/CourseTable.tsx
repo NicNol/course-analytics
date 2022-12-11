@@ -9,34 +9,50 @@ interface CourseTableProps {
   jsonData: ISummary[];
 }
 
+enum ColumnAccessor {
+  code = "code",
+  averageDifficulty = "average difficulty",
+  timeCommitment = "time commitment",
+  reviewCount = "review count",
+}
+
 export interface IColumnState {
   header: string;
-  accessor: string;
+  accessor: ColumnAccessor;
   filter: "asc" | "desc" | null;
 }
 
 const columns: IColumnState[] = [
   {
     header: "Course Name",
-    accessor: "name",
+    accessor: ColumnAccessor.code,
     filter: "asc",
   },
   {
     header: "Difficulty",
-    accessor: "average difficulty",
+    accessor: ColumnAccessor.averageDifficulty,
     filter: null,
   },
   {
     header: "Time Commitment",
-    accessor: "time commitment",
+    accessor: ColumnAccessor.timeCommitment,
     filter: null,
   },
   {
     header: "Review Count",
-    accessor: "review count",
+    accessor: ColumnAccessor.reviewCount,
     filter: null,
   },
 ];
+
+function sortCoursesByColumnAccessor(courseData: ISummary[], columnAccessor: ColumnAccessor, direction: number) {
+  const arr = courseData.sort((a: ISummary, b: ISummary) => {
+    const x = isNaN(a[columnAccessor] as any) ? a[columnAccessor] : parseFloat(a[columnAccessor]);
+    const y = isNaN(b[columnAccessor] as any) ? b[columnAccessor] : parseFloat(b[columnAccessor]);
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+  return direction >= 0 ? arr : arr.reverse();
+}
 
 const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
   const data: ISummary[] = jsonData
@@ -45,49 +61,20 @@ const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
   const [columnState, setColumnState] = useState(columns);
   const [sortedData, setSortedData] = useState<ISummary[]>(data);
 
-  function sortOnAccessor(columnAccessor: string, direction: number): void {
-    const isNumeric = !isNaN(((data as any)[0] as any)[columnAccessor]);
-    function sortOnAccessorAlpha(summaryA: ISummary, summaryB: ISummary): number {
-      if ((summaryA as any)[columnAccessor] < (summaryB as any)[columnAccessor]) {
-        return -1;
-      }
-      if ((summaryA as any)[columnAccessor] > (summaryB as any)[columnAccessor]) {
-        return 1;
-      }
-      return 0;
-    }
-
-    function sortOnAccessorNumeric(summaryA: ISummary, summaryB: ISummary): number {
-      if (parseFloat((summaryA as any)[columnAccessor]) < parseFloat((summaryB as any)[columnAccessor])) {
-        return -1;
-      }
-      if (parseFloat((summaryA as any)[columnAccessor]) > parseFloat((summaryB as any)[columnAccessor])) {
-        return 1;
-      }
-      return 0;
-    }
-    const sortMethod = isNumeric ? sortOnAccessorNumeric : sortOnAccessorAlpha;
-    const sortedData = [...data].sort(sortMethod);
-    if (direction < 0) {
-      sortedData.reverse();
-    }
-    setSortedData(sortedData);
-  }
-
   useEffect(() => {
     const [accessor, direction] = findAccessor(columnState);
-    sortOnAccessor(accessor, direction);
+    const sortedData = sortCoursesByColumnAccessor(data, accessor, direction);
+    setSortedData(sortedData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columnState, filter, jsonData]);
 
-  function findAccessor(columns: IColumnState[]): [string, number] {
-    for (const column of columns) {
-      if (column.filter) {
-        const { accessor } = column;
-        const direction = column.filter === "asc" ? 1 : -1;
-        return [accessor, direction];
-      }
-    }
-    return ["", 0];
+  function findAccessor(columns: IColumnState[]): [ColumnAccessor, number] {
+    const column = columns.find((column) => column.filter);
+    if (!column) return [ColumnAccessor.code, 0];
+
+    const { accessor, filter } = column;
+    const direction = filter === "asc" ? 1 : -1;
+    return [accessor, direction];
   }
 
   return (

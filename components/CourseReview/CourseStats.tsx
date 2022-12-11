@@ -85,6 +85,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
           );
         });
 
+  const buttonHoverColor = useColorModeValue("orange.400", "blue.200");
   const coursePairsCollapse = (
     <>
       {coursePairs.slice(0, 3)}
@@ -93,7 +94,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
           <Collapse in={isOpen} animateOpacity>
             <Stack>{coursePairs.slice(3)}</Stack>
           </Collapse>
-          <Button onClick={onToggle} variant={"link"} _focus={{ outline: "none" }}>
+          <Button onClick={onToggle} variant={"link"} _focus={{ outline: "none" }} _hover={{ color: buttonHoverColor }}>
             {isOpen ? "Show Less" : "Show More"}
           </Button>
         </>
