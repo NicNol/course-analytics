@@ -122,7 +122,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   }
 
   return (
-    <Stack color={useColorModeValue("#333", "#ccc")} w={["100%", null, null, "208px"]}>
+    <Stack color={useColorModeValue("#333", "#ccc")} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
       <Heading size={"md"} pb={2}>
         Data Summary
       </Heading>
