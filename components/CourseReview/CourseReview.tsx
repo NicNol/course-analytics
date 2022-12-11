@@ -28,12 +28,14 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
   } = courseData;
 
   const formattedReviewDate = new Date(reviewDate);
-  const [isWiderThan400px] = useMediaQuery("(min-width: 400px)");
+
+  // Use max-width instead of min-width because layout shift is visible on desktop but not mobile
+  const [isNarrowerThan400px] = useMediaQuery("(max-width: 400px)");
 
   return (
     <Box bg={useColorModeValue("orange.50", "gray.600")} p={2} px={3} rounded={"md"} maxW={"100%"}>
       <Flex gridGap={4} maxW={"100%"}>
-        {isWiderThan400px && <Avatar mt={1} />}
+        {!isNarrowerThan400px && <Avatar mt={1} />}
         <Box maxW={"100%"} w={"100%"}>
           <Flex gridGap={2} pb={2} flexWrap={"wrap"} maxW={"100%"}>
             <Tag>

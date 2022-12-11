@@ -1,6 +1,4 @@
-import { useState } from "react";
 import CourseDetailBody from "../../components/CourseReview/CourseDetailBody";
-import DateFilter from "../../components/CourseReview/DateFilter";
 import { getCourseData } from "../api/courses";
 import type { ICourse } from "../../util/models/course";
 import { classList } from "../../classList";
@@ -46,23 +44,11 @@ const Course = (data: any) => {
   const courseData = data.data as ICourse[];
   const courseid = data.courseid;
 
-  const [filteredData, setFilter] = useState([...courseData]);
-
-  function handleFilter(days: number) {
-    const filteredData = courseData.filter((course) => {
-      const reviewDate = Date.parse(course["review date"]);
-      const currentDate = new Date();
-      return reviewDate > currentDate.getTime() - days * 1000 * 60 * 60 * 24;
-    });
-    setFilter(filteredData);
-  }
-
   return (
     <PageWrapper>
       <PageHead pageTitle={courseid} />
       <BackBreadcrumb />
-      <DateFilter handleFilter={handleFilter} />
-      <CourseDetailBody courseData={filteredData} courseid={courseid} />
+      <CourseDetailBody courseData={courseData} courseid={courseid} />
     </PageWrapper>
   );
 };

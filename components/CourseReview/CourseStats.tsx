@@ -1,12 +1,13 @@
-import React, { FC } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import { MdAccessTime, MdExtension, MdFeedback, MdInfo, MdMode } from "react-icons/md";
 import {
-  Box,
   Button,
   Collapse,
   Divider,
+  Flex,
   Heading,
   Icon,
+  Select,
   Stack,
   Text,
   Tooltip,
@@ -33,6 +34,17 @@ interface TimeAvg {
 const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   const { isOpen, onToggle } = useDisclosure();
   const { courseData } = props;
+  const [filteredData, setFilter] = useState(courseData);
+
+  function handleFilter(days: number) {
+    const filteredData = courseData.filter((course) => {
+      const reviewDate = Date.parse(course["review date"]);
+      const currentDate = new Date();
+      return reviewDate > currentDate.getTime() - days * 1000 * 60 * 60 * 24;
+    });
+    setFilter(filteredData);
+  }
+
   const timeAvg: TimeAvg = {
     "0-5 hours": 3,
     "6-12 hours": 9,
@@ -42,14 +54,14 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
 
   let totalDifficulty = 0;
   let totalHours = 0;
-  const totalReviews = courseData.length;
-  for (const course of courseData) {
+  const totalReviews = filteredData.length;
+  for (const course of filteredData) {
     totalDifficulty += parseInt(course.difficulty);
     totalHours += (timeAvg as any)[course["time commitment"]];
   }
 
   const coursePairings: CoursePairings = {};
-  for (const course of courseData) {
+  for (const course of filteredData) {
     for (const pairing of course["other courses"]) {
       if (!coursePairings.hasOwnProperty(pairing)) {
         coursePairings[pairing] = 0;
@@ -105,8 +117,25 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   const difficulty = totalDifficulty ? (Math.round((totalDifficulty / totalReviews) * 10) / 10).toFixed(1) : "0.0";
   const timeCommitment = totalHours ? Math.round(totalHours / totalReviews) : 0;
 
+  function handleChangeDateFilter(e: ChangeEvent<HTMLSelectElement>) {
+    handleFilter(parseInt(e.target.value));
+  }
+
   return (
-    <Stack color={useColorModeValue("#333", "#ccc")} w={["100%", null, null, 56]}>
+    <Stack color={useColorModeValue("#333", "#ccc")} w={["100%", null, null, "208px"]}>
+      <Heading size={"md"} pb={2}>
+        Data Summary
+      </Heading>
+      <Flex justifyContent={"space-between"} alignItems={"center"} gap={4}>
+        <Text>Filter:</Text>
+        <Flex flexGrow={"1"}>
+          <Select onChange={handleChangeDateFilter} w={"100%"}>
+            <option value="99999">All Time</option>
+            <option value="730">Past 2 Years</option>
+            <option value="183">Past 6 Months</option>
+          </Select>
+        </Flex>
+      </Flex>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdFeedback} w={8} h={8} pos={"relative"} top={"8px"} />
         <Text fontSize={"3xl"} fontWeight={"100"}>

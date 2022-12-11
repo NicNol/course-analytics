@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
-import { Box, Center, Flex, Heading, Select, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import React, { ChangeEvent, FC, useState } from "react";
+import { Center, Flex, Heading, Select, Text, useColorModeValue } from "@chakra-ui/react";
 import type { ICourse } from "../../util/models/course";
 import { classList } from "../../classList";
 import CourseTag from "../CourseCard/CourseTag";
@@ -32,12 +32,8 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
     sortedReviews.length === 0
       ? [<Text key="none">None</Text>]
       : sortedReviews
-          .map((review) => {
-            if (review.review?.length > 0) {
-              return <CourseReview key={review["review date"]} courseData={review} />;
-            }
-          })
-          .filter((review) => review) // remove blanks
+          .filter((review) => review.review?.length) // remove blanks
+          .map((review, index) => <CourseReview key={`${index}-${review["review date"]}`} courseData={review} />)
           .reverse();
 
   function handleChangeTipsPerPage(e: ChangeEvent<HTMLSelectElement>) {
@@ -50,10 +46,6 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
     scrollToTopOfTips();
   }
 
-  useEffect(() => {
-    setPageNumber(1);
-  }, [courseData]);
-
   function scrollToTopOfTips() {
     document.querySelector("#TipsHeader")?.scrollIntoView({
       block: "center",
@@ -62,7 +54,8 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
 
   return (
     <Center p={2}>
-      <Box
+      <Flex
+        direction={"column"}
         maxW={"1054px"}
         w={["auto", null, null, "1054px"]}
         bg={useColorModeValue("orange.100", "gray.700")}
@@ -70,15 +63,9 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         rounded={"md"}
         overflow={"hidden"}
       >
-        <Stack
-          justify={"center"}
-          pt={6}
-          color={useColorModeValue("gray.800", "white")}
-          align={"center"}
-          direction={"row"}
-        >
+        <Flex justify={"center"} pt={6} color={useColorModeValue("gray.800", "white")} align={"center"} gap={2}>
           {tagElements}
-        </Stack>
+        </Flex>
         <Text
           align={"center"}
           fontSize={"5xl"}
@@ -88,7 +75,8 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         >
           {courseid}
         </Text>
-        <Stack
+        <Flex
+          direction={"column"}
           align={"center"}
           justify={"center"}
           bg={useColorModeValue(
@@ -108,13 +96,13 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           >
             {title}
           </Text>
-        </Stack>
-        <Box bg={useColorModeValue("#f5f5f5", "gray.900")} px={6} py={4}>
-          <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"}>
-            <Stack mt={[0, null, null, 12]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
+        </Flex>
+        <Flex direction={"column"} bg={useColorModeValue("#f5f5f5", "gray.900")} px={2} py={4}>
+          <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
+            <Flex direction={"column"} mt={[0, null, null, 2]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
               <CourseStats courseData={courseData} />
-            </Stack>
-            <Stack flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"}>
+            </Flex>
+            <Flex direction={"column"} flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"} gap={2}>
               <Flex justifyContent={"space-between"} alignItems={"center"} flexWrap={"wrap"} gap={1}>
                 <Heading size={"md"} mt={[2, null, null, 0]} id={"TipsHeader"}>
                   Tips from Students
@@ -132,10 +120,10 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 tipsPerPage={tipsPerPage}
                 changePage={changePage}
               />
-            </Stack>
+            </Flex>
           </Flex>
-        </Box>
-      </Box>
+        </Flex>
+      </Flex>
     </Center>
   );
 };
