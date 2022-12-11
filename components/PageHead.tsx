@@ -9,7 +9,6 @@ const PageHead: FC<PageHeadProps> = ({ pageTitle }) => {
   const fullPageTitle = pageTitle ? `Course Analytics | ${pageTitle}` : "Course Analytics";
   return (
     <Head>
-      <html lang="en" />
       <title>{fullPageTitle}</title>
       <meta charSet="UTF-8" />
       <meta
