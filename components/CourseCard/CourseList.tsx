@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Container, Wrap } from "@chakra-ui/react";
+import { Container, Wrap, WrapItem } from "@chakra-ui/react";
 import CourseTile from "./CourseTile";
 import { ISummary } from "../../util/models/summary";
 
@@ -36,15 +36,9 @@ const CourseList: FC<CourseListProps> = ({ jsonData: data, filter }) => {
 
     if (in_filter) {
       return (
-        <CourseTile
-          key={code}
-          tags={tags}
-          code={code}
-          title={title}
-          reviews={reviews}
-          difficulty={difficulty}
-          time={time}
-        />
+        <WrapItem key={code}>
+          <CourseTile tags={tags} code={code} title={title} reviews={reviews} difficulty={difficulty} time={time} />
+        </WrapItem>
       );
     }
   });
