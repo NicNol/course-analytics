@@ -30,8 +30,9 @@ const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
         rightIcon={<ChevronDownIcon />}
         data-cy={"MenuButton"}
         colorScheme={useColorModeValue("orange", "black")}
-        size={"lg"}
+        size={"md"}
         variant={"ghost"}
+        px={2}
       >
         {currentMenuItem}
       </MenuButton>
@@ -44,7 +45,6 @@ const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
               title={title}
               icon={icon}
               clickHandler={() => handleMenuItemClick(title as DateFilter)}
-              currentMenuItem={currentMenuItem}
             />
           );
         })}
