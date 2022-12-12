@@ -43,13 +43,6 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
 
   function changePage(delta: number) {
     setPageNumber(pageNumber + delta);
-    scrollToTopOfTips();
-  }
-
-  function scrollToTopOfTips() {
-    document.querySelector("#TipsHeader")?.scrollIntoView({
-      block: "center",
-    });
   }
 
   return (
@@ -113,6 +106,12 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                   <option value="100">100 Tips per Page</option>
                 </Select>
               </Flex>
+              <Pagination
+                pageNumber={pageNumber}
+                totalTipCount={reviews.length}
+                tipsPerPage={tipsPerPage}
+                changePage={changePage}
+              />
               {reviews.slice(tipsPerPage * (pageNumber - 1), tipsPerPage * pageNumber)}
               <Pagination
                 pageNumber={pageNumber}

@@ -1,9 +1,10 @@
 import React, { FC, useState } from "react";
-import { useRouter } from "next/router";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
-import { Button, Box, Center, Icon, Link, Stack, Text, useColorModeValue, Flex } from "@chakra-ui/react";
+import { Button, Box, Center, Flex, Link, Text, useColorModeValue } from "@chakra-ui/react";
 import CourseTag from "./CourseTag";
 import NextLink from "next/link";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import Stat from "./Stat";
 
 interface CourseTileProps {
   tags: Array<string>;
@@ -17,7 +18,6 @@ interface CourseTileProps {
 const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficulty, time }) => {
   const tagComponents = tags.map((tag) => <CourseTag key={Number + tag}>{tag}</CourseTag>);
 
-  const router = useRouter();
   const [loadingStatus, setLoadingStatus] = useState(false);
 
   return (
@@ -31,15 +31,9 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         overflow={"hidden"}
         _hover={{}}
       >
-        <Stack
-          justify={"center"}
-          pt={6}
-          color={useColorModeValue("gray.800", "white")}
-          align={"center"}
-          direction={"row"}
-        >
+        <Flex justify={"center"} pt={6} color={useColorModeValue("gray.800", "white")} gap={2}>
           {tagComponents}
-        </Stack>
+        </Flex>
         <Link
           as={NextLink}
           onClick={() => setLoadingStatus(true)}
@@ -57,14 +51,14 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             {code}
           </Text>
         </Link>
-        <Stack
+        <Flex
           align={"center"}
           justify={"center"}
           bg={useColorModeValue(
             "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)",
             "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)"
           )}
-          h="64px"
+          h={16}
           px={8}
         >
           <Link
@@ -83,7 +77,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               {title}
             </Text>
           </Link>
-        </Stack>
+        </Flex>
         <Flex
           bg={useColorModeValue("#f5f5f5", "gray.900")}
           px={6}
@@ -91,31 +85,18 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           flexDirection={"column"}
           alignItems={"center"}
         >
-          <Stack color={useColorModeValue("#333", "#ccc")} alignItems={"center"}>
-            <Box>
-              <Stack direction={"row"} justifyContent={"flex-start"} align={"baseline"}>
-                <Icon as={MdFeedback} w={8} h={8} pos={"relative"} top={"8px"} />
-                <Text fontSize={"3xl"} fontWeight={"100"} data-cy={"CourseReviewCount"}>
-                  {reviews}
-                </Text>
-                <Text fontWeight={"700"}>Reviews</Text>
-              </Stack>
-              <Stack direction={"row"} justify={"flex-start"} align={"baseline"}>
-                <Icon as={MdAccessTime} w={8} h={8} pos={"relative"} top={"5px"} />
-                <Text fontSize={"3xl"} fontWeight={"100"}>
-                  {time}
-                </Text>
-                <Text fontWeight={"700"}> Hours per Week</Text>
-              </Stack>
-              <Stack direction={"row"} justifyContent={"flex-start"} align={"baseline"}>
-                <Icon as={MdExtension} w={8} h={8} pos={"relative"} top={"3px"} />
-                <Text fontSize={"3xl"} fontWeight={"100"}>
-                  {parseFloat(difficulty).toFixed(1)}
-                </Text>
-                <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
-              </Stack>
-            </Box>
-          </Stack>
+          <Flex color={useColorModeValue("#333", "#ccc")} alignItems={"center"}>
+            <Flex direction={"column"}>
+              <Stat icon={MdFeedback} iconPosition={"8px"} stat={reviews} label={"Reviews"} />
+              <Stat icon={MdAccessTime} iconPosition={"5px"} stat={time} label={"Hours per Week"} />
+              <Stat
+                icon={MdExtension}
+                iconPosition={"3px"}
+                stat={parseFloat(difficulty).toFixed(1)}
+                label={"/ 5.0 Difficulty"}
+              />
+            </Flex>
+          </Flex>
           <Link
             as={NextLink}
             onClick={() => setLoadingStatus(true)}
@@ -125,26 +106,25 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           >
             <Button
               data-href={`/courses/${code.replace(" ", "-")}`}
-              mt={4}
-              variant={"outline"}
-              borderColor={useColorModeValue("orange.300", "gray.500")}
-              color={useColorModeValue("orange.400", "white")}
-              backgroundColor={useColorModeValue("orange.50", "gray.700")}
+              mt={2}
+              variant={"link"}
+              color={useColorModeValue("#CC3F04", "blue.200")}
               rounded={"xl"}
-              shadow={"md"}
+              p={2}
               _hover={{
                 bg: useColorModeValue("orange.100", "gray.600"),
-                color: useColorModeValue("orange.500", "white"),
+                color: useColorModeValue("#C83602", "white"),
               }}
               _focus={{
                 bg: useColorModeValue("orange.100", "gray.600"),
-                color: useColorModeValue("orange.500", "white"),
+                color: useColorModeValue("#C83602", "white"),
               }}
               _active={{
                 bg: useColorModeValue("orange.200", "gray.400"),
               }}
               isLoading={loadingStatus}
               loadingText="Loading"
+              rightIcon={<ArrowForwardIcon />}
             >
               View Details
             </Button>

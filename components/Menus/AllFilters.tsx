@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import ClassMenu from "./ClassMenu";
 import ViewLayoutMenu from "./ViewLayoutMenu";
 import DateMenu from "./DateMenu";
@@ -14,14 +14,11 @@ interface FilterProps {
 const AllFilters: FC<FilterProps> = ({ classFilter, setLayoutView, dateFilter }) => {
   return (
     <Flex justifyContent={"center"}>
-      <Flex justifyContent={"center"} gap={2} my={2} flexWrap={"wrap"} maxW={"container.xl"}>
-        <Flex flexGrow={"1"} justifyContent={"center"}>
+      <Flex gap={1} flexWrap={"wrap"} w={"100%"} maxW={"container.xl"} alignItems={"center"} p={2}>
+        <Text fontWeight={600}>Filter Data:</Text>
+        <Flex>
           <ClassMenu handleFilter={classFilter} />
-        </Flex>
-        <Flex flexGrow={"1"} justifyContent={"center"}>
           <ViewLayoutMenu setLayoutView={setLayoutView} />
-        </Flex>
-        <Flex flexGrow={"1"} justifyContent={"center"}>
           <DateMenu handleFilter={dateFilter} />
         </Flex>
       </Flex>

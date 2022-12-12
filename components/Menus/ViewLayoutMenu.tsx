@@ -29,23 +29,16 @@ const ViewLayoutMenu: FC<ViewLayoutMenuProps> = ({ setLayoutView }) => {
         rightIcon={<ChevronDownIcon />}
         data-cy={"MenuButton"}
         colorScheme={useColorModeValue("orange", "black")}
-        size="lg"
-        variant="ghost"
+        size={"md"}
+        variant={"ghost"}
+        px={2}
       >
         {currentMenuItem}
       </MenuButton>
       <MenuList>
         {MenuOptions.map((option) => {
           const { title, icon } = option;
-          return (
-            <MenuItemOption
-              key={title}
-              title={title}
-              icon={icon}
-              clickHandler={handleMenuItemClick}
-              currentMenuItem={currentMenuItem}
-            />
-          );
+          return <MenuItemOption key={title} title={title} icon={icon} clickHandler={handleMenuItemClick} />;
         })}
       </MenuList>
     </Menu>
