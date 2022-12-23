@@ -43,24 +43,22 @@ async function emptyDB() {
 
 async function upsertNewCourses(json: ICourse[]) {
   const formattedJson = formatCourseData(json);
-  connectToDatabase();
+
   for (const course of formattedJson) {
     const matchQuery = { "review date": course["review date"], code: course.code };
     await Course.findOneAndUpdate(matchQuery, course, { upsert: true });
     await sleep(1000);
   }
-  await disconnectFromDatabase();
 }
 
 async function updateCourseSummary(json: ICourse[]) {
+  const formattedJSON = formatCourseData(json);
   const summaryData = {
-    "All Time": filterAndSummarizeDataByDate(json, 99999),
-    "Past 2 Years": filterAndSummarizeDataByDate(json, 730),
-    "Past 6 Months": filterAndSummarizeDataByDate(json, 183),
+    "All Time": filterAndSummarizeDataByDate(formattedJSON, 99999),
+    "Past 2 Years": filterAndSummarizeDataByDate(formattedJSON, 730),
+    "Past 6 Months": filterAndSummarizeDataByDate(formattedJSON, 183),
   };
-  connectToDatabase();
   await upsertSummaryData(summaryData);
-  await disconnectFromDatabase();
 }
 
 function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
@@ -121,7 +119,7 @@ async function upsertSummaryData(summaryJSON: ISummaryByDate) {
     /* Update the summary document -or- Insert if not found */
     await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 }
 

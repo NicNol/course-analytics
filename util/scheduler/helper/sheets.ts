@@ -87,6 +87,13 @@ async function prepareMasterSpreadsheetIfNeeded(spreadsheet: GoogleSpreadsheet) 
   if (!master.headerValues) await master.setHeaderRow(HEADER_ROW);
 }
 
+async function copyRowsToMasterSheet(rows: GoogleSpreadsheetRow[]) {
+  const masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
+  await prepareMasterSpreadsheetIfNeeded(masterSpreadsheet);
+  const masterResultsSheet = masterSpreadsheet.sheetsByIndex[0];
+  await copyRowsToSheet(rows, masterResultsSheet);
+}
+
 async function copyRowsToSheet(rows: GoogleSpreadsheetRow[], sheet: GoogleSpreadsheetWorksheet) {
   for (const row of rows) {
     await sheet.addRow(row);
@@ -127,4 +134,4 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export { getNewSurveyResponsesAsRows, convertRowsToJSON, copyRowsToSheet, sleep, getMasterRows };
+export { getNewSurveyResponsesAsRows, convertRowsToJSON, copyRowsToSheet, sleep, getMasterRows, copyRowsToMasterSheet };
