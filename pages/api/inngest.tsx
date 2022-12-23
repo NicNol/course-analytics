@@ -4,7 +4,7 @@ import { serve } from "inngest/next";
 
 const scrape = createScheduledFunction(
   "Scrape Google Sheets", // The name of your function, used for observability.
-  "0 * * * *", // The cron syntax for the function
+  "16 * * * *", // The cron syntax for the function
   updateDB // The function code, defined above.
 );
 

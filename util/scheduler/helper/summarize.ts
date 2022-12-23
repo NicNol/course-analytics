@@ -2,6 +2,7 @@ import { connectToDatabase, disconnectFromDatabase } from "../../mongodb";
 import { Course, ICourse } from "../../models/course";
 import { ISummary, ISummaryByDate, Summary } from "../../models/summary";
 import { classList } from "../../../classList";
+import { sleep } from "./sheets";
 
 interface TimeAvg {
   [key: string]: number;
@@ -37,19 +38,27 @@ async function emptyDB() {
   connectToDatabase();
   await Course.deleteMany({});
   await Summary.deleteMany({});
+  await disconnectFromDatabase();
 }
 
-async function saveCourses(json: ICourse[]) {
+async function upsertNewCourses(json: ICourse[]) {
   const formattedJson = formatCourseData(json);
-  connectToDatabase();
-  await Course.insertMany(formattedJson);
+
+  for (const course of formattedJson) {
+    const matchQuery = { "review date": course["review date"], code: course.code };
+    await Course.findOneAndUpdate(matchQuery, course, { upsert: true });
+    await sleep(1000);
+  }
+}
+
+async function updateCourseSummary(json: ICourse[]) {
+  const formattedJSON = formatCourseData(json);
   const summaryData = {
-    "All Time": filterAndSummarizeDataByDate(json, 99999),
-    "Past 2 Years": filterAndSummarizeDataByDate(json, 730),
-    "Past 6 Months": filterAndSummarizeDataByDate(json, 183),
+    "All Time": filterAndSummarizeDataByDate(formattedJSON, 99999),
+    "Past 2 Years": filterAndSummarizeDataByDate(formattedJSON, 730),
+    "Past 6 Months": filterAndSummarizeDataByDate(formattedJSON, 183),
   };
-  await saveSummaryData(summaryData);
-  await disconnectFromDatabase();
+  await upsertSummaryData(summaryData);
 }
 
 function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
@@ -105,12 +114,12 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
   return summaryJSON;
 }
 
-async function saveSummaryData(summaryJSON: ISummaryByDate) {
+async function upsertSummaryData(summaryJSON: ISummaryByDate) {
   try {
     /* Update the summary document -or- Insert if not found */
-    await Summary.insertMany(summaryJSON);
+    await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 }
 
@@ -184,4 +193,4 @@ function splitNameIntoCodeAndTitle(name?: string) {
   return [code, title];
 }
 
-export { filterAndSummarizeDataByDate, emptyDB, saveCourses, formatCourseName };
+export { filterAndSummarizeDataByDate, formatCourseName, upsertNewCourses, updateCourseSummary };
