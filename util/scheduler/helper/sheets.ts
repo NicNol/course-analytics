@@ -49,22 +49,28 @@ async function getNewSurveyResponsesAsRows(): Promise<GoogleSpreadsheetRow[]> {
     const rawResultsSheet = surveySpreadsheet.sheetsByIndex[0];
 
     /* Load our version of the spreadsheet */
-    const masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
-    const masterSheets = masterSpreadsheet.sheetsByIndex;
-    const masterResultsSheet = masterSheets[0];
+    let masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
+    const masterResultsSheet = masterSpreadsheet.sheetsByIndex[0];
     await prepareMasterSpreadsheetIfNeeded(masterSpreadsheet);
     const masterRowCount = (await masterResultsSheet.getRows()).length;
 
     /* Delete all but the first worksheet */
-    for (let i = masterSheets.length - 1; i > 0; i--) {
-      await masterSheets[i].delete();
+    for (let i = masterSpreadsheet.sheetsByIndex.length - 1; i > 0; i--) {
+      try {
+        masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
+        await masterSpreadsheet.sheetsByIndex[i].delete();
+      } catch (err) {}
     }
 
     /* Copy raw survey data to our master spreadsheet */
     await rawResultsSheet.copyToSpreadsheet(MASTER_SPREADSHEET_ID);
+    masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID); // API won't find temp sheet unless we re-load
 
     /* Update temp sheet headers to remove duplicate column names from original */
-    const tempResultsSheet = masterSheets[1];
+    const tempResultsSheet = masterSpreadsheet.sheetsByIndex[1];
+    await tempResultsSheet.updateProperties({
+      title: `Temp from ${new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" })}`,
+    });
     await tempResultsSheet.setHeaderRow(HEADER_ROW);
 
     /* Get rows that aren't in our master spreadSheet */
