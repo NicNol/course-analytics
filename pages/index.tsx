@@ -6,7 +6,7 @@ import AllFilters from "../components/Menus/AllFilters";
 import CourseTable from "../components/CourseTable/CourseTable";
 import CourseList from "../components/CourseCard/CourseList";
 import PageWrapper from "../components/PageWrapper";
-import { ISummaryByDate } from "../util/models/summary";
+import { ISummaryByDate } from "../scraper/src/models/summary";
 import PageHead from "../components/PageHead";
 
 export const getStaticProps: GetStaticProps = async (context) => {
