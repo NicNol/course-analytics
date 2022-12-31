@@ -1,0 +1,4 @@
+runtime: nodejs18
+
+includes:
+  - credentials.yaml
