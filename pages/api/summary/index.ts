@@ -1,15 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { connectToDatabase } from "../../../util/mongodb";
-import { Summary } from "../../../util/models/summary";
+import { connectToDatabase } from "../../../scraper/src/mongodb";
+import { Summary } from "../../../scraper/src/models/summary";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
-    try {
-      const summaryJson = await getSummary();
-      res.status(200).json(summaryJson);
-    } catch (err) {
-      res.status(500).send(err);
-    }
+  if (req.method !== "GET") {
+    res.status(405).end("HTTP method not accepted");
+    return;
+  }
+  try {
+    const summaryJson = await getSummary();
+    res.status(200).json(summaryJson);
+  } catch (err) {
+    res.status(500).send(err);
   }
 }
 

@@ -1,7 +1,7 @@
 import CourseDetailBody from "../../components/CourseReview/CourseDetailBody";
 import { getCourseData } from "../api/courses";
-import type { ICourse } from "../../util/models/course";
-import { classList } from "../../classList";
+import type { ICourse } from "../../scraper/src/models/course";
+import { classList } from "../../scraper/src/classList";
 import PageWrapper from "../../components/PageWrapper";
 import BackBreadcrumb from "../../components/CourseReview/BackBreadcrumb";
 import PageHead from "../../components/PageHead";

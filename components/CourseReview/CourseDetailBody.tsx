@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import { Center, Flex, Heading, Select, Text, useColorModeValue } from "@chakra-ui/react";
-import type { ICourse } from "../../util/models/course";
-import { classList } from "../../classList";
+import type { ICourse } from "../../scraper/src/models/course";
+import { classList } from "../../scraper/src/classList";
 import CourseTag from "../CourseCard/CourseTag";
 import CourseReview from "./CourseReview";
 import CourseStats from "./CourseStats";

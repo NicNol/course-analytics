@@ -1,7 +1,7 @@
 import { connectToDatabase, disconnectFromDatabase } from "../../mongodb";
 import { Course, ICourse } from "../../models/course";
 import { ISummary, ISummaryByDate, Summary } from "../../models/summary";
-import { classList } from "../../../classList";
+import { classList } from "../../classList";
 import { sleep } from "./sheets";
 
 interface TimeAvg {

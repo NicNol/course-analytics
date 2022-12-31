@@ -10,7 +10,7 @@ import {
   useColorModeValue,
   useMediaQuery,
 } from "@chakra-ui/react";
-import type { ICourse } from "../../util/models/course";
+import type { ICourse } from "../../scraper/src/models/course";
 import { MdAccessTime, MdCalendarToday, MdExtension, MdMode } from "react-icons/md";
 
 interface CourseReviewProps {

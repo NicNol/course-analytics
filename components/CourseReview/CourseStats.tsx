@@ -14,7 +14,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { ICourse } from "../../util/models/course";
+import type { ICourse } from "../../scraper/src/models/course";
 
 interface CourseDetailBodyProps {
   courseData: ICourse[];
