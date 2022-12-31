@@ -12,7 +12,8 @@
     "clean": "rm -rf dist",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
-    "gcp-build": "npm run build"
+    "gcp-build": "npm run build",
+    "deploy": "gcloud app deploy --no-cache"
   },
   "author": "Nic Nolan",
   "license": "ISC",
