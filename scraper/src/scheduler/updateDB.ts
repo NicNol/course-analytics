@@ -19,7 +19,7 @@ export default async function updateDB() {
 
     await disconnectFromDatabase();
   } catch (err) {
-    throw err;
+    console.error(err);
   }
 }
 
