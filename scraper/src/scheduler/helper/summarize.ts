@@ -1,8 +1,6 @@
-import { connectToDatabase, disconnectFromDatabase } from "../../mongodb";
 import { Course, ICourse } from "../../models/course";
 import { ISummary, ISummaryByDate, Summary } from "../../models/summary";
 import { classList } from "../../classList";
-import { sleep } from "./sheets";
 
 interface TimeAvg {
   [key: string]: number;
@@ -34,31 +32,16 @@ class SummaryObject {
   }
 }
 
-async function emptyDB() {
-  connectToDatabase();
-  await Course.deleteMany({});
-  await Summary.deleteMany({});
-  await disconnectFromDatabase();
-}
-
-async function upsertNewCourses(json: ICourse[]) {
+export async function saveCourses(json: ICourse[]) {
   const formattedJson = formatCourseData(json);
-
-  for (const course of formattedJson) {
-    const matchQuery = { "review date": course["review date"], code: course.code };
-    await Course.findOneAndUpdate(matchQuery, course, { upsert: true });
-    await sleep(1000);
-  }
-}
-
-async function updateCourseSummary(json: ICourse[]) {
-  const formattedJSON = formatCourseData(json);
+  await Course.deleteMany({});
+  await Course.insertMany(formattedJson);
   const summaryData = {
-    "All Time": filterAndSummarizeDataByDate(formattedJSON, 99999),
-    "Past 2 Years": filterAndSummarizeDataByDate(formattedJSON, 730),
-    "Past 6 Months": filterAndSummarizeDataByDate(formattedJSON, 183),
+    "All Time": filterAndSummarizeDataByDate(formattedJson, 99999),
+    "Past 2 Years": filterAndSummarizeDataByDate(formattedJson, 730),
+    "Past 6 Months": filterAndSummarizeDataByDate(formattedJson, 183),
   };
-  await upsertSummaryData(summaryData);
+  await saveSummaryData(summaryData);
 }
 
 function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
@@ -114,7 +97,7 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
   return summaryJSON;
 }
 
-async function upsertSummaryData(summaryJSON: ISummaryByDate) {
+async function saveSummaryData(summaryJSON: ISummaryByDate) {
   try {
     /* Update the summary document -or- Insert if not found */
     await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
@@ -123,7 +106,7 @@ async function upsertSummaryData(summaryJSON: ISummaryByDate) {
   }
 }
 
-function formatCourseName(courseName: string) {
+export function formatCourseName(courseName: string) {
   /* Course name(s) found in spreadsheet */
   const CS161 = ["CS 161 - Intro to Computer Science I"];
   const CS162 = ["CS 162 - Intro to Computer Science II"];
@@ -192,5 +175,3 @@ function splitNameIntoCodeAndTitle(name?: string) {
   const title = nameArray.slice(3).join(" "); // Remove "CS ### -" part of string
   return [code, title];
 }
-
-export { filterAndSummarizeDataByDate, formatCourseName, upsertNewCourses, updateCourseSummary };
