@@ -31,6 +31,10 @@ const HEADER_ROW = [
   "tips3",
 ];
 
+const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 async function loadSpreadsheet(id: string): Promise<GoogleSpreadsheet> {
   try {
     const spreadsheet = new GoogleSpreadsheet(id);
@@ -44,24 +48,29 @@ async function loadSpreadsheet(id: string): Promise<GoogleSpreadsheet> {
 
 export async function prepareSheet(): Promise<void> {
   try {
-    /* Load our duplicate Workbook */
-    const newSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
-
-    /* Delete all but the first worksheet */
-    newSpreadsheet.sheetsByIndex.forEach(async (sheet) => await sheet.delete());
-
     /* Load the course reviews source Workbook */
     const originalSpreadsheet = await loadSpreadsheet(SURVEY_SPREADSHEET_ID);
 
-    /* Copy original data to newSpreadsheet */
+    /* Copy original data to masterSpreadsheet */
     await originalSpreadsheet.sheetsByIndex[0].copyToSpreadsheet(MASTER_SPREADSHEET_ID);
 
-    /* Reload newSpreadsheet data to prevent errors */
-    await newSpreadsheet.loadInfo();
-    const newSheet: GoogleSpreadsheetWorksheet = newSpreadsheet.sheetsByIndex[0];
+    /* Reload masterSpreadsheet data to prevent errors */
+    const masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
+    const newSheetIndex = masterSpreadsheet.sheetCount - 1;
+    const newSheet: GoogleSpreadsheetWorksheet = masterSpreadsheet.sheetsByIndex[newSheetIndex];
+    const newSheetId = newSheet.sheetId;
 
     /* Update newSheet headers to remove duplicates from original */
     await newSheet.setHeaderRow(HEADER_ROW);
+
+    /* Rename newSheet */
+    const spreadsheetTitle = new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
+    newSheet.updateProperties({ title: spreadsheetTitle });
+
+    /* Delete all but the last worksheet */
+    Object.values(masterSpreadsheet.sheetsById).forEach(async (sheet) => {
+      if (sheet.sheetId !== newSheetId) await sheet.delete();
+    });
   } catch (err) {
     throw err;
   }
@@ -69,6 +78,9 @@ export async function prepareSheet(): Promise<void> {
 
 export async function getJSON(): Promise<ICourse[]> {
   try {
+    /* Add sleep to prevent race condition with deleted spreadsheets */
+    await sleep(1000);
+
     /* Load our duplicate spreadsheet */
     const newSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
 
