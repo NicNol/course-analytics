@@ -1,4 +1,5 @@
-import { Schema, model, Model, models } from "mongoose";
+import mongoose from "mongoose";
+const { Schema, model, Model, models } = mongoose;
 
 interface ISummary {
   code: string;
@@ -60,8 +61,8 @@ const summaryByDateSchema = new Schema<ISummaryByDate>(
   { collection: "summary-data-by-date", versionKey: false }
 );
 
-const Summary: Model<ISummaryByDate> =
-  models.SummaryByDate || model<ISummaryByDate>("SummaryByDate", summaryByDateSchema);
+const Summary: typeof Model<ISummaryByDate> =
+  models?.SummaryByDate || model<ISummaryByDate>("SummaryByDate", summaryByDateSchema);
 
 export { Summary };
 export type { ISummary, ISummaryByDate };
