@@ -1,13 +1,34 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { ICourse } from "../../models/course";
 import { formatCourseName } from "./summarize";
+import { JWT } from "google-auth-library";
+
+type SurveyRow = {
+  timestamp: string;
+  course1: string;
+  difficulty1: string;
+  time1: string;
+  tips1: string;
+  when1: string;
+  secondBool: string;
+  course2: string;
+  difficulty2: string;
+  time2: string;
+  tips2: string;
+  thirdBool: string;
+  course3: string;
+  difficulty3: string;
+  time3: string;
+  tips3: string;
+};
 
 /* Get credentials from process.env */
 const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
-const AUTH_CREDENTIALS = {
-  client_email: GOOGLE_CLIENT_EMAIL || "GOOGLE_CLIENT_EMAIL is missing",
-  private_key: GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n") || "GOOGLE_PRIVATE_KEY is missing",
-};
+const googleJWT = new JWT({
+  email: GOOGLE_CLIENT_EMAIL || "GOOGLE_CLIENT_EMAIL is missing",
+  key: GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n") || "GOOGLE_PRIVATE_KEY is missing",
+  scopes: ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file"],
+});
 
 /* Declare and initialize spreadsheet objects */
 const SURVEY_SPREADSHEET_ID = "1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU";
@@ -37,8 +58,7 @@ const sleep = (ms: number) => {
 
 async function loadSpreadsheet(id: string): Promise<GoogleSpreadsheet> {
   try {
-    const spreadsheet = new GoogleSpreadsheet(id);
-    await spreadsheet.useServiceAccountAuth(AUTH_CREDENTIALS);
+    const spreadsheet = new GoogleSpreadsheet(id, googleJWT);
     await spreadsheet.loadInfo();
     return spreadsheet;
   } catch (err) {
@@ -86,40 +106,40 @@ export async function getJSON(): Promise<ICourse[]> {
 
     /* Declare and initialize variables */
     const worksheet = newSpreadsheet.sheetsByIndex[0];
-    const rows = await worksheet.getRows();
+    const rows = await worksheet.getRows<SurveyRow>();
     const output = [];
 
     /* Create objects from each row of the spreadsheet */
     for (const row of rows) {
       /* All rows have at least one course review */
       let courses = 1;
-      const firstCourse = formatCourseName(row.course1);
+      const firstCourse = formatCourseName(row.get("course1"));
       const courseNames = [firstCourse];
 
       /* Check for second course review */
-      if (row.secondBool === "Yes") {
-        const secondCourse = formatCourseName(row.course2);
+      if (row.get("secondBool") === "Yes") {
+        const secondCourse = formatCourseName(row.get("course2"));
         courseNames.push(secondCourse);
         courses += 1;
       }
 
       /* Check for third course review */
-      if (row.thirdBool === "Yes") {
-        const thirdCourse = formatCourseName(row.course3);
+      if (row.get("thirdBool") === "Yes") {
+        const thirdCourse = formatCourseName(row.get("course3"));
         courseNames.push(thirdCourse);
         courses += 1;
       }
 
       /* Create an ICourse object for each review in the spreadsheet row*/
       for (let i = 1; i <= courses; i++) {
-        const formattedName = formatCourseName(row[`course${i}`]);
+        const formattedName = formatCourseName(row.get(`course${i}` as keyof SurveyRow));
         const course: ICourse = {
           name: formattedName,
-          difficulty: row[`difficulty${i}`],
-          "time commitment": row[`time${i}`],
-          review: row[`tips${i}`],
-          "review date": row.timestamp,
-          quarter: row.when1,
+          difficulty: row.get(`difficulty${i}` as keyof SurveyRow),
+          "time commitment": row.get(`time${i}` as keyof SurveyRow),
+          review: row.get(`tips${i}` as keyof SurveyRow),
+          "review date": row.get("timestamp"),
+          quarter: row.get("when1"),
           "other courses": courseNames.filter((courseName) => courseName !== formattedName),
         };
 
