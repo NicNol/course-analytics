@@ -1,3 +1,3 @@
-import updateDB from "./index";
+import updateDB from "./index.js";
 
 updateDB();

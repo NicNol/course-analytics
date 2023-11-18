@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import { ICourse } from "../../models/course";
-import { formatCourseName } from "./summarize";
+import { ICourse } from "../../models/course.js";
+import { formatCourseName } from "./summarize.js";
 import { JWT } from "google-auth-library";
 
 type SurveyRow = {
@@ -99,7 +99,7 @@ export async function prepareSheet(): Promise<void> {
 export async function getJSON(): Promise<ICourse[]> {
   try {
     /* Add sleep to prevent race condition with deleted spreadsheets */
-    await sleep(1000);
+    await sleep(2000);
 
     /* Load our duplicate spreadsheet */
     const newSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
