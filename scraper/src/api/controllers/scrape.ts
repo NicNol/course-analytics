@@ -1,5 +1,5 @@
 import { Router } from "express";
-import updateDB from "../../scheduler/updateDB";
+import updateDB from "../../scheduler/updateDB/index.js";
 
 const router = Router();
 

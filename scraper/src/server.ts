@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
-import routes from "./api/routes";
+import routes from "./api/routes.js";
 import { config } from "dotenv";
 
 config();

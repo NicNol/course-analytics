@@ -9,11 +9,11 @@
     "lint": "next lint",
     "prescrape": "npm run transpile",
     "scrape": "node ./scraper/src/scheduler/updateDB/run.js",
-    "prescrape-dev": "npx tsc ./scraper/src/scheduler/updateDB/run.ts --target es2020 --moduleResolution node",
+    "prescrape-dev": "npx tsc ./scraper/src/scheduler/updateDB/run.ts --target es2020 --module commonjs --moduleResolution node",
     "scrape-dev": "node -r dotenv/config ./scraper/src/scheduler/updateDB/run.js dotenv_config_path=./.env.local",
     "postscrape-dev": "bash ./cleanup.sh",
     "pretranspile": "npm install -g typescript",
-    "transpile": "npx tsc ./scraper/src/scheduler/updateDB/run.ts --target es2020 --moduleResolution node",
+    "transpile": "npx tsc ./scraper/src/scheduler/updateDB/run.ts --target es2020 --module commonjs --moduleResolution node",
     "cypress-dev": "cypress open",
     "cypress": "cypress run"
   },
