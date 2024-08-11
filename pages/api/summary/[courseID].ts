@@ -8,7 +8,7 @@ async function getSummary(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { courseID } = req.query;
     const summary = await Summary.find(
