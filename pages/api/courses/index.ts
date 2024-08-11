@@ -16,7 +16,7 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getCourseData(courseCode = "") {
-  connectToDatabase();
+  await connectToDatabase();
   const courseData = await Course.find(
     { code: { $regex: courseCode, $options: "i" } },
     { _id: false, versionKey: false }

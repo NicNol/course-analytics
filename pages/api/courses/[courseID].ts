@@ -8,7 +8,7 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { courseID } = req.query;
 
     // courseID may be undefined, a string, or an array of strings

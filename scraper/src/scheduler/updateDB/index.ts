@@ -4,7 +4,7 @@ import { connectToDatabase, disconnectFromDatabase } from "../../mongodb.js";
 
 export default async function updateDB() {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     await prepareSheet();
     const json = await getJSON();
     await saveCourses(json);

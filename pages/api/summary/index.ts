@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getSummary() {
-  connectToDatabase();
+  await connectToDatabase();
   const summary = await Summary.find({}, { _id: false, versionKey: false });
   return summary;
 }
