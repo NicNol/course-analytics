@@ -18,9 +18,9 @@
   "author": "Nic Nolan",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.0",
+    "body-parser": "^1.20.3",
     "dotenv": "^16.0.3",
-    "express": "^4.19.2",
+    "express": "^4.21.0",
     "google-auth-library": "^9.2.0",
     "google-spreadsheet": "^4.1.1",
     "mongoose": "^7.5.0"
