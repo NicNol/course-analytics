@@ -1,6 +1,6 @@
-import { Course, ICourse } from "../../models/course.js";
-import { ISummary, ISummaryByDate, Summary } from "../../models/summary.js";
-import { classList } from "../../classList.js";
+import { Course, ICourse } from "../../models/course";
+import { ISummary, ISummaryByDate, Summary } from "../../models/summary";
+import { classList } from "../../classList";
 
 interface TimeAvg {
   [key: string]: number;
