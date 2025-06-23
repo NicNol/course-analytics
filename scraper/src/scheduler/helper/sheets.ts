@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import { ICourse } from "../../models/course.js";
-import { formatCourseName } from "./summarize.js";
+import { ICourse } from "../../models/course";
+import { formatCourseName } from "./summarize";
 import { JWT } from "google-auth-library";
 
 type SurveyRow = {

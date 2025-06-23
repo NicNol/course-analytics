@@ -1,6 +1,6 @@
-import { prepareSheet, getJSON } from "../helper/sheets.js";
-import { saveCourses } from "../helper/summarize.js";
-import { connectToDatabase, disconnectFromDatabase } from "../../mongodb.js";
+import { prepareSheet, getJSON } from "../helper/sheets";
+import { saveCourses } from "../helper/summarize";
+import { connectToDatabase, disconnectFromDatabase } from "../../mongodb";
 
 export default async function updateDB() {
   try {
