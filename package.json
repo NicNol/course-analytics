@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
-    "@chakra-ui/react": "^2.4.2",
+    "@chakra-ui/react": "^2.10.9",
     "@vercel/analytics": "^0.1.5",
     "@vercel/speed-insights": "^1.0.12",
     "body-parser": "^1.20.2",
