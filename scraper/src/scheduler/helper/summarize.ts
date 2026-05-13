@@ -20,9 +20,9 @@ const timeAvg: TimeAvg = {
 class SummaryObject {
   code: string;
   title: string;
-  difficulty: number = 0;
-  time: number = 0;
-  reviews: number = 0;
+  difficulty = 0;
+  time = 0;
+  reviews = 0;
   tags: [] | string[] = [];
 
   constructor(code: string, title: string) {
@@ -56,7 +56,7 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
     if (!code || !title) continue;
 
     /* Add course name to list of possible course names if it doesn't exist yet */
-    if (!courseCodes.hasOwnProperty(code)) {
+    if (!Object.prototype.hasOwnProperty.call(courseCodes, code)) {
       courseCodes[code] = new SummaryObject(code, title);
     }
 
@@ -98,12 +98,8 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
 }
 
 async function saveSummaryData(summaryJSON: ISummaryByDate) {
-  try {
-    /* Update the summary document -or- Insert if not found */
-    await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
-  } catch (err) {
-    throw err;
-  }
+  /* Update the summary document -or- Insert if not found */
+  await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
 }
 
 export function formatCourseName(courseName: string) {
