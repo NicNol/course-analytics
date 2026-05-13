@@ -4,32 +4,29 @@ import { config } from "dotenv";
 
 config();
 
+type MongooseCache = {
+  conn: mongoose.Mongoose | null;
+  promise: Promise<mongoose.Mongoose> | null;
+};
+
 declare global {
-  var mongoose: any;
+  // This must be a `var` and not a `let / const` — global augmentation requires var.
+  // eslint-disable-next-line no-var
+  var mongoose: MongooseCache | undefined;
 }
 
-declare var process: {
-  env: {
-    MONGODB_URI: string;
-  };
-};
-
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-const options: any = {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-};
+const cached: MongooseCache = global.mongoose ?? (global.mongoose = { conn: null, promise: null });
 
 export const connectToDatabase = async () => {
+  const MONGODB_URI = process.env.MONGODB_URI;
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+  }
+
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, options).then((mongoose) => mongoose);
+    cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false }).then((mongoose) => mongoose);
   }
 
   try {
@@ -47,5 +44,5 @@ export const disconnectFromDatabase = async () => {
 
   await cached.promise;
 
-  await cached.conn.connection.close();
+  await cached.conn?.connection.close();
 };
