@@ -28,7 +28,7 @@
     "framer-motion": "^6.2.8",
     "google-auth-library": "^9.2.0",
     "google-spreadsheet": "^4.1.1",
-    "mongoose": "^8.9.5",
+    "mongoose": "^8.22.1",
     "next": "^16.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
