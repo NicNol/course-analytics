@@ -23,7 +23,7 @@
     "express": "^4.22.2",
     "google-auth-library": "^9.2.0",
     "google-spreadsheet": "^4.1.1",
-    "mongoose": "^8.22.1"
+    "mongoose": "^8.24.1"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.61",
