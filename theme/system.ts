@@ -132,6 +132,14 @@ const config = defineConfig({
 
       separator: {
         base: { opacity: 0.6, borderColor: "inherit" },
+        variants: {
+          orientation: {
+            horizontal: {
+              borderTopWidth: "0",
+              borderBottomWidth: "var(--separator-thickness)",
+            },
+          },
+        },
       },
 
       spinner: {
