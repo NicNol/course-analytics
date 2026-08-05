@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
-import { Button, Menu, MenuButton, MenuList, useColorModeValue } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Button, Menu, Portal } from "@chakra-ui/react";
+import { ChevronDownIcon } from "../icons";
 import { MdCalendarToday } from "react-icons/md";
 import MenuItemOption, { IMenuOption } from "./MenuItemOption";
 import { DateFilter } from "../../pages/index";
@@ -24,32 +24,37 @@ const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
   }
 
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rightIcon={<ChevronDownIcon />}
-        data-cy={"MenuButton"}
-        colorScheme={useColorModeValue("orange", "black")}
-        size={"md"}
-        variant={"ghost"}
-        px={2}
-      >
-        {currentMenuItem}
-      </MenuButton>
-      <MenuList>
-        {MenuOptions.map((option) => {
-          const { title, icon } = option;
-          return (
-            <MenuItemOption
-              key={title}
-              title={title}
-              icon={icon}
-              clickHandler={() => handleMenuItemClick(title as DateFilter)}
-            />
-          );
-        })}
-      </MenuList>
-    </Menu>
+    <Menu.Root>
+      <Menu.Trigger asChild>
+        <Button
+          data-cy={"MenuButton"}
+          colorPalette={"orange"}
+          size={"md"}
+          variant={"ghost"}
+          px={2}
+        >
+          {currentMenuItem}
+          <ChevronDownIcon />
+        </Button>
+      </Menu.Trigger>
+      <Portal>
+        <Menu.Positioner>
+          <Menu.Content>
+            {MenuOptions.map((option) => {
+              const { title, icon } = option;
+              return (
+                <MenuItemOption
+                  key={title}
+                  title={title}
+                  icon={icon}
+                  clickHandler={() => handleMenuItemClick(title as DateFilter)}
+                />
+              );
+            })}
+          </Menu.Content>
+        </Menu.Positioner>
+      </Portal>
+    </Menu.Root>
   );
 };
 

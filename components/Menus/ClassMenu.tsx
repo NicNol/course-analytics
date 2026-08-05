@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
-import { Button, Menu, MenuButton, MenuList, useColorModeValue } from "@chakra-ui/react";
-import { ChevronDownIcon, ArrowDownIcon, ArrowUpIcon, SettingsIcon, StarIcon, ViewIcon } from "@chakra-ui/icons";
+import { Button, Menu, Portal } from "@chakra-ui/react";
+import { ChevronDownIcon, ArrowDownIcon, ArrowUpIcon, SettingsIcon, StarIcon, ViewIcon } from "../icons";
 import MenuItemOption, { IMenuOption } from "./MenuItemOption";
 
 interface ClassMenuProps {
@@ -24,25 +24,30 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
   }
 
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rightIcon={<ChevronDownIcon />}
-        data-cy={"MenuButton"}
-        colorScheme={useColorModeValue("orange", "black")}
-        size={"md"}
-        variant={"ghost"}
-        px={2}
-      >
-        {currentMenuItem}
-      </MenuButton>
-      <MenuList>
-        {MenuOptions.map((option) => {
-          const { title, icon } = option;
-          return <MenuItemOption key={title} title={title} icon={icon} clickHandler={handleMenuItemClick} />;
-        })}
-      </MenuList>
-    </Menu>
+    <Menu.Root>
+      <Menu.Trigger asChild>
+        <Button
+          data-cy={"MenuButton"}
+          colorPalette={"orange"}
+          size={"md"}
+          variant={"ghost"}
+          px={2}
+        >
+          {currentMenuItem}
+          <ChevronDownIcon />
+        </Button>
+      </Menu.Trigger>
+      <Portal>
+        <Menu.Positioner>
+          <Menu.Content>
+            {MenuOptions.map((option) => {
+              const { title, icon } = option;
+              return <MenuItemOption key={title} title={title} icon={icon} clickHandler={handleMenuItemClick} />;
+            })}
+          </Menu.Content>
+        </Menu.Positioner>
+      </Portal>
+    </Menu.Root>
   );
 };
 

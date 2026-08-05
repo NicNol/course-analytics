@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useState } from "react";
-import { Center, Flex, Heading, Select, Text, useColorModeValue } from "@chakra-ui/react";
+import { Center, Flex, Heading, NativeSelect, Text } from "@chakra-ui/react";
 import type { ICourse } from "../../scraper/src/models/course";
 import { classList } from "../../scraper/src/classList";
 import CourseTag from "../CourseCard/CourseTag";
@@ -51,19 +51,19 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         direction={"column"}
         maxW={"1054px"}
         w={["auto", null, null, "1054px"]}
-        bg={useColorModeValue("orange.100", "gray.700")}
+        bg={{ base: "orange.100", _dark: "gray.700" }}
         boxShadow={"lg"}
         rounded={"md"}
         overflow={"hidden"}
       >
-        <Flex justify={"center"} pt={6} color={useColorModeValue("gray.800", "white")} align={"center"} gap={2}>
+        <Flex justify={"center"} pt={6} color={{ base: "gray.800", _dark: "white" }} align={"center"} gap={2}>
           {tagElements}
         </Flex>
         <Text
-          align={"center"}
+          textAlign={"center"}
           fontSize={"5xl"}
           fontWeight={800}
-          textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
+          textShadow={{ base: "2px 2px #eee", _dark: "2px 2px #333" }}
           data-cy={"CourseNumber"}
         >
           {courseid}
@@ -72,16 +72,13 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           direction={"column"}
           align={"center"}
           justify={"center"}
-          bg={useColorModeValue(
-            "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)",
-            "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)"
-          )}
+          bg={{ base: "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)", _dark: "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)" }}
           h="64px"
           px={8}
         >
           <Text
-            align={"center"}
-            color={useColorModeValue("white", "black")}
+            textAlign={"center"}
+            color={{ base: "white", _dark: "black" }}
             fontSize={"2xl"}
             fontWeight={"600"}
             lineHeight={".75"}
@@ -90,7 +87,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
             {title}
           </Text>
         </Flex>
-        <Flex direction={"column"} bg={useColorModeValue("#f5f5f5", "gray.900")} px={2} py={4}>
+        <Flex direction={"column"} bg={{ base: "#f5f5f5", _dark: "gray.900" }} px={2} py={4}>
           <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
             <Flex direction={"column"} mt={[0, null, null, 2]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
               <CourseStats courseData={courseData} />
@@ -100,11 +97,14 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 <Heading size={"md"} mt={[2, null, null, 0]} id={"TipsHeader"}>
                   Tips from Students
                 </Heading>
-                <Select w={48} onChange={handleChangeTipsPerPage}>
-                  <option value="10">10 Tips per Page</option>
-                  <option value="25">25 Tips per Page</option>
-                  <option value="100">100 Tips per Page</option>
-                </Select>
+                <NativeSelect.Root w={48}>
+                  <NativeSelect.Field onChange={handleChangeTipsPerPage}>
+                    <option value="10">10 Tips per Page</option>
+                    <option value="25">25 Tips per Page</option>
+                    <option value="100">100 Tips per Page</option>
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator />
+                </NativeSelect.Root>
               </Flex>
               <Pagination
                 pageNumber={pageNumber}

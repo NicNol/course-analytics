@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Flex, Th, useColorModeValue } from "@chakra-ui/react";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { Flex, Table } from "@chakra-ui/react";
+import { TriangleDownIcon, TriangleUpIcon } from "../icons";
 import { IColumnState } from "./CourseTable";
 
 interface CourseTableHeaderCellProps {
@@ -25,18 +25,18 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({
     }
 
     return (
-        <Th
+        <Table.ColumnHeader
             onClick={() => handleHeaderClick(column.header)}
             _hover={{
                 cursor: "pointer",
                 textDecoration: "underline",
             }}
         >
-            <Flex gap={4} color={useColorModeValue("gray.800", "white")}>
+            <Flex gap={4} color={{ base: "gray.800", _dark: "white" }}>
                 {column.header}
                 {handleArrowRender(column.filter)}
             </Flex>
-        </Th>
+        </Table.ColumnHeader>
     );
 };
 

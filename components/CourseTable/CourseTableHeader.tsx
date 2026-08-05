@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Thead, Tr, useColorModeValue } from "@chakra-ui/react";
+import { Table } from "@chakra-ui/react";
 import { IColumnState } from "./CourseTable";
 import CourseTableHeaderCell from "./CourseTableHeaderCell";
 
@@ -41,8 +41,8 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
     }
 
     return (
-        <Thead bg={useColorModeValue("orange.100", "gray.700")}>
-            <Tr>
+        <Table.Header bg={{ base: "orange.100", _dark: "gray.700" }}>
+            <Table.Row>
                 {columns.map((column) => (
                     <CourseTableHeaderCell
                         key={column.accessor}
@@ -50,8 +50,8 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
                         handleHeaderClick={handleHeaderClick}
                     />
                 ))}
-            </Tr>
-        </Thead>
+            </Table.Row>
+        </Table.Header>
     );
 };
 

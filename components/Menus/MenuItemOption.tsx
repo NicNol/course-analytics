@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { MenuItem, useColorModeValue } from "@chakra-ui/react";
+import { Menu, Span } from "@chakra-ui/react";
 
 interface MenuItemOptionProps {
   title: string;
@@ -13,17 +13,20 @@ export interface IMenuOption {
 }
 
 const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) => {
-  const bgColor = useColorModeValue("orange.100", "gray.600");
+  const bgColor = { base: "orange.100", _dark: "gray.600" };
   return (
-    <MenuItem
-      icon={icon}
+    <Menu.Item
+      value={title}
       onClick={() => clickHandler(title)}
       _hover={{ backgroundColor: bgColor }}
-      _focus={{ backgroundColor: bgColor }}
+      _highlighted={{ backgroundColor: bgColor }}
       data-cy={"MenuOption"}
     >
+      <Span display={"inline-flex"} alignItems={"center"} justifyContent={"center"} flexShrink={0} fontSize={"0.8em"} me={"0.75rem"}>
+        {icon}
+      </Span>
       {title}
-    </MenuItem>
+    </Menu.Item>
   );
 };
 
