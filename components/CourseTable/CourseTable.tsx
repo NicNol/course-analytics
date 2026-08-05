@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { ISummary } from "../../scraper/src/models/summary";
 import { Box, Center, Table } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import CourseTableHeader from "./CourseTableHeader";
 import CourseTableBody from "./CourseTableBody";
 
@@ -81,7 +80,7 @@ const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
       <Box
         borderRadius={"md"}
         border={"1px solid"}
-        borderColor={useColorModeValue("gray.100", "gray.700")}
+        borderColor={{ base: "gray.100", _dark: "gray.700" }}
         overflowX={"auto"}
         mx={4}
       >

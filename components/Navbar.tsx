@@ -1,12 +1,12 @@
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
 import { Search2Icon, MoonIcon, SunIcon } from "./icons";
-import { useColorMode, useColorModeValue } from "./ui/color-mode";
+import { useColorMode } from "./ui/color-mode";
 import NextLink from "next/link";
 
 export default function Nav() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { toggleColorMode } = useColorMode();
   return (
-    <Box bg={useColorModeValue("black", "gray.900")} px={4} flexGrow={0} pb={1}>
+    <Box bg={{ base: "black", _dark: "gray.900" }} px={4} flexGrow={0} pb={1}>
       <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <Stack direction={"row"}>
@@ -28,12 +28,12 @@ export default function Nav() {
                   <Heading
                     _hover={{
                       cursor: "pointer",
-                      color: useColorModeValue("orange.300", "blue.200"),
+                      color: { base: "orange.300", _dark: "blue.200" },
                       textShadow: "1px 1px #999",
                     }}
                     transition={".2s"}
                     textShadow="2px 2px #333"
-                    color={useColorModeValue("orange.400", "rgb(160,174,192)")}
+                    color={{ base: "orange.400", _dark: "rgb(160,174,192)" }}
                   >
                     Course Analytics
                   </Heading>
@@ -46,8 +46,11 @@ export default function Nav() {
           </Stack>
         </Box>
 
+        {/* Both icons render and CSS picks one. Branching on colorMode here would
+            mismatch during hydration, because the theme isn't known on the server. */}
         <Button aria-label="Toggle Darkmode" onClick={toggleColorMode}>
-          {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+          <MoonIcon display={{ base: "inline-block", _dark: "none" }} />
+          <SunIcon display={{ base: "none", _dark: "inline-block" }} />
         </Button>
       </Flex>
     </Box>

@@ -13,7 +13,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Tooltip } from "../ui/tooltip";
-import { useColorModeValue } from "../ui/color-mode";
 import type { ICourse } from "../../scraper/src/models/course";
 
 interface CourseDetailBodyProps {
@@ -97,7 +96,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
           );
         });
 
-  const buttonHoverColor = useColorModeValue("orange.400", "blue.200");
+  const buttonHoverColor = { base: "orange.400", _dark: "blue.200" };
   const coursePairsCollapse = (
     <>
       {coursePairs.slice(0, 3)}
@@ -124,7 +123,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   }
 
   return (
-    <Stack color={useColorModeValue("#333", "#ccc")} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
+    <Stack color={{ base: "#333", _dark: "#ccc" }} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
       <Heading size={"md"} pb={2}>
         Data Summary
       </Heading>

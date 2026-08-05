@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import { ArrowBackIcon, ArrowForwardIcon } from "../icons";
 
 interface PaginationProps {
@@ -11,7 +10,7 @@ interface PaginationProps {
 }
 
 const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPage, changePage }) => {
-  const buttonHoverColor = useColorModeValue("orange.400", "blue.200");
+  const buttonHoverColor = { base: "orange.400", _dark: "blue.200" };
   const pageCount = Math.ceil(totalTipCount / tipsPerPage);
 
   return (

@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Box, Flex, Icon, Link, Table } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import NextLink from "next/link";
 import { ISummary } from "../../scraper/src/models/summary";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
@@ -11,7 +10,7 @@ interface CourseTableBodyProps {
 
 const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
   return (
-    <Table.Body bg={useColorModeValue("#fcfcfc", "gray.900")} color={useColorModeValue("#333", "#ccc")}>
+    <Table.Body bg={{ base: "#fcfcfc", _dark: "gray.900" }} color={{ base: "#333", _dark: "#ccc" }}>
       {jsonData.map((row, r_index) => {
         const {
           code,

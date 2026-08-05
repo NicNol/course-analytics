@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Table } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import { IColumnState } from "./CourseTable";
 import CourseTableHeaderCell from "./CourseTableHeaderCell";
 
@@ -42,7 +41,7 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
     }
 
     return (
-        <Table.Header bg={useColorModeValue("orange.100", "gray.700")}>
+        <Table.Header bg={{ base: "orange.100", _dark: "gray.700" }}>
             <Table.Row>
                 {columns.map((column) => (
                     <CourseTableHeaderCell

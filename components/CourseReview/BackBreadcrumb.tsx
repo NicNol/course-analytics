@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Button, Flex, Link } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import { ArrowLeftIcon } from "../icons";
 import NextLink from "next/link";
 
@@ -16,7 +15,7 @@ const BackBreadcrumb: FC<BackBreadcrumbProps> = () => {
               mt={4}
               variant={"ghost"}
               rounded={"xl"}
-              colorPalette={useColorModeValue("orange", "black")}
+              colorPalette={{ base: "orange", _dark: "black" }}
               w={48}
             >
               <ArrowLeftIcon />

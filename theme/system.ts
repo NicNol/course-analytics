@@ -114,10 +114,19 @@ const config = defineConfig({
     },
 
     recipes: {
-      // v2 Icon baseStyle sized icons at 1em; v3's default `size="inherit"` variant
-      // applies no box size at all.
-      icon: {
-        base: { width: "1em", height: "1em" },
+      // v2's Link was a plain inline <a>; v3's recipe makes it inline-flex, which
+      // shrink-wraps the anchor and breaks `textAlign: center` on block children
+      // (the course code and title on each card).
+      link: {
+        base: {
+          display: "inline",
+          color: "inherit",
+          textDecoration: "none",
+          transitionProperty: "common",
+          transitionDuration: "fast",
+          transitionTimingFunction: "ease-out",
+          _hover: { textDecoration: "underline" },
+        },
       },
 
       // v2 Heading: bold, and sizes that map onto much larger font sizes than v3's
@@ -150,7 +159,15 @@ const config = defineConfig({
         },
         variants: {
           size: {
-            md: { h: "10", minW: "10", fontSize: "md", px: "4" },
+            // v3 forces icons inside buttons to 1.25rem via _icon; v2 left them at
+            // 1em, so they tracked the button's font size.
+            md: {
+              h: "10",
+              minW: "10",
+              fontSize: "md",
+              px: "4",
+              _icon: { width: "1em", height: "1em" },
+            },
           },
           variant: {
             // v2's ghost variant for a non-gray colorScheme. The menus and

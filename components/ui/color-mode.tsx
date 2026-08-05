@@ -6,8 +6,14 @@ import * as React from "react";
 
 /**
  * Chakra v3 removed its own colour-mode system in favour of next-themes.
- * These re-exports keep the v2 `useColorMode` / `useColorModeValue` API so the
- * ~30 existing call sites only had to change their import path.
+ *
+ * Deliberately no `useColorModeValue` here. The theme is unknown during SSR but
+ * read from localStorage on the client's first render, so a hook that returns a
+ * different value on each side makes Emotion emit a different class name and
+ * React fails hydration. Use CSS conditional values instead —
+ * `bg={{ base: "white", _dark: "gray.800" }}` — which resolve at paint time.
+ *
+ * `useColorMode` is safe because it is only read inside event handlers.
  */
 
 export type ColorMode = "light" | "dark";
@@ -38,9 +44,4 @@ export function useColorMode() {
     setColorMode: setTheme,
     toggleColorMode,
   };
-}
-
-export function useColorModeValue<Light, Dark>(light: Light, dark: Dark) {
-  const { colorMode } = useColorMode();
-  return colorMode === "dark" ? dark : light;
 }

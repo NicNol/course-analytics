@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Avatar, Box, Flex, Tag, Text, useMediaQuery } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import type { ICourse } from "../../scraper/src/models/course";
 import { MdAccessTime, MdCalendarToday, MdExtension, MdMode } from "react-icons/md";
 
@@ -24,7 +23,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
   const [isNarrowerThan400px] = useMediaQuery(["(max-width: 400px)"]);
 
   return (
-    <Box bg={useColorModeValue("orange.50", "gray.600")} p={2} px={3} rounded={"md"} maxW={"100%"}>
+    <Box bg={{ base: "orange.50", _dark: "gray.600" }} p={2} px={3} rounded={"md"} maxW={"100%"}>
       <Flex gap={4} maxW={"100%"}>
         {!isNarrowerThan400px && (
           <Avatar.Root mt={1}>

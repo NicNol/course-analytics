@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Flex, Table } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import { TriangleDownIcon, TriangleUpIcon } from "../icons";
 import { IColumnState } from "./CourseTable";
 
@@ -33,7 +32,7 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({
                 textDecoration: "underline",
             }}
         >
-            <Flex gap={4} color={useColorModeValue("gray.800", "white")}>
+            <Flex gap={4} color={{ base: "gray.800", _dark: "white" }}>
                 {column.header}
                 {handleArrowRender(column.filter)}
             </Flex>

@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Menu, Span } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 
 interface MenuItemOptionProps {
   title: string;
@@ -14,7 +13,7 @@ export interface IMenuOption {
 }
 
 const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) => {
-  const bgColor = useColorModeValue("orange.100", "gray.600");
+  const bgColor = { base: "orange.100", _dark: "gray.600" };
   return (
     <Menu.Item
       value={title}

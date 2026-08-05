@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { Button, Menu, Portal } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import { ChevronDownIcon, ArrowDownIcon, ArrowUpIcon, SettingsIcon, StarIcon, ViewIcon } from "../icons";
 import MenuItemOption, { IMenuOption } from "./MenuItemOption";
 
@@ -29,7 +28,7 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
       <Menu.Trigger asChild>
         <Button
           data-cy={"MenuButton"}
-          colorPalette={useColorModeValue("orange", "black")}
+          colorPalette={{ base: "orange", _dark: "black" }}
           size={"md"}
           variant={"ghost"}
           px={2}

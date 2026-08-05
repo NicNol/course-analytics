@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { Button, Menu, Portal } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
 import { ChevronDownIcon } from "../icons";
 import { CgCardHearts } from "react-icons/cg";
 import { BsTable } from "react-icons/bs";
@@ -28,7 +27,7 @@ const ViewLayoutMenu: FC<ViewLayoutMenuProps> = ({ setLayoutView }) => {
       <Menu.Trigger asChild>
         <Button
           data-cy={"MenuButton"}
-          colorPalette={useColorModeValue("orange", "black")}
+          colorPalette={{ base: "orange", _dark: "black" }}
           size={"md"}
           variant={"ghost"}
           px={2}
