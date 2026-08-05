@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema, model, Model, models } = mongoose;
+const { Schema, model, models } = mongoose;
 
 interface ICourse {
   name?: string;
@@ -53,7 +53,7 @@ const schema = new Schema<ICourse>(
   { collection: "course-data-v2", versionKey: false, _id: false }
 );
 
-const Course: typeof Model<ICourse> = models?.Course || model<ICourse>("Course", schema);
+const Course: typeof mongoose.Model<ICourse> = models?.Course || model<ICourse>("Course", schema);
 
 export { Course };
 export type { ICourse };

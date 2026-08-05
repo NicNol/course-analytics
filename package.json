@@ -38,8 +38,8 @@
     "@types/node": "^18.11.10",
     "@types/react": "^18.3.0",
     "cypress": "^15.17.0",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.5.18",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.0",
     "prettier": "^2.8.8",
     "typescript": "^5.9.0"
   },
