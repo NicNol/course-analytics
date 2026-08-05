@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { ISummary } from "../../scraper/src/models/summary";
 import { Box, Center, Table, useColorModeValue } from "@chakra-ui/react";
 import CourseTableHeader from "./CourseTableHeader";
@@ -45,6 +45,15 @@ const columns: IColumnState[] = [
   },
 ];
 
+function findAccessor(columns: IColumnState[]): [ColumnAccessor, number] {
+  const column = columns.find((column) => column.filter);
+  if (!column) return [ColumnAccessor.code, 0];
+
+  const { accessor, filter } = column;
+  const direction = filter === "asc" ? 1 : -1;
+  return [accessor, direction];
+}
+
 function sortCoursesByColumnAccessor(courseData: ISummary[], columnAccessor: ColumnAccessor, direction: number) {
   const arr = courseData.sort((a: ISummary, b: ISummary) => {
     const x = isNaN(a[columnAccessor] as any) ? a[columnAccessor] : parseFloat(a[columnAccessor]);
@@ -55,29 +64,14 @@ function sortCoursesByColumnAccessor(courseData: ISummary[], columnAccessor: Col
 }
 
 const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
+  const [columnState, setColumnState] = useState(columns);
+
   const data: ISummary[] = jsonData
     .filter((summary) => summary.tags.some((tag) => filter.includes(tag)))
     .filter((value) => value !== null && value !== undefined);
-  const [columnState, setColumnState] = useState(columns);
-  const [sortedData, setSortedData] = useState<ISummary[]>(data);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
-    const [accessor, direction] = findAccessor(columnState);
-    const sortedData = sortCoursesByColumnAccessor(data, accessor, direction);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSortedData(sortedData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columnState, filter, jsonData]);
-
-  function findAccessor(columns: IColumnState[]): [ColumnAccessor, number] {
-    const column = columns.find((column) => column.filter);
-    if (!column) return [ColumnAccessor.code, 0];
-
-    const { accessor, filter } = column;
-    const direction = filter === "asc" ? 1 : -1;
-    return [accessor, direction];
-  }
+  const [accessor, direction] = findAccessor(columnState);
+  const sortedData = sortCoursesByColumnAccessor(data, accessor, direction);
 
   return (
     <Center>
