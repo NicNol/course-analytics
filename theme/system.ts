@@ -86,6 +86,7 @@ const config = defineConfig({
       buttonV2Md: { value: { fontSize: "md" } },
       selectV2Md: { value: { fontSize: "md", lineHeight: "normal" } },
       tagLabelV2Md: { value: { fontSize: "sm", lineHeight: "1.2" } },
+      menuItemV2Md: { value: { fontSize: "md" } },
     },
 
     semanticTokens: {
@@ -128,10 +129,17 @@ const config = defineConfig({
           transitionProperty: "common",
           transitionDuration: "fast",
           transitionTimingFunction: "ease-out",
-          _hover: {
-            textDecoration: "underline",
-            textDecorationColor: "currentColor",
-            textUnderlineOffset: "auto",
+        },
+        variants: {
+          variant: {
+            plain: {
+              color: "inherit",
+              _hover: {
+                textDecoration: "underline",
+                textDecorationColor: "currentColor",
+                textUnderlineOffset: "auto",
+              },
+            },
           },
         },
       },
@@ -182,6 +190,7 @@ const config = defineConfig({
               color: { base: "colorPalette.600", _dark: "inherit" },
               _hover: { bg: { base: "colorPalette.50", _dark: "rgba(0, 0, 0, 0.12)" } },
               _active: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.24)" } },
+              _expanded: { bg: "transparent" },
             },
             link: {
               padding: 0,
@@ -314,6 +323,14 @@ const config = defineConfig({
             px: "3",
             _highlighted: { bg: { base: "gray.100", _dark: "whiteAlpha.100" } },
             _disabled: { opacity: 0.4, cursor: "not-allowed" },
+          },
+        },
+        variants: {
+          size: {
+            md: {
+              content: { minW: "3xs", padding: "0.5rem 0" },
+              item: { textStyle: "menuItemV2Md", py: "1.5", px: "3", gap: "0" },
+            },
           },
         },
       },
