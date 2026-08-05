@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import { Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { useColorModeValue } from "../ui/color-mode";
+import { ArrowBackIcon, ArrowForwardIcon } from "../icons";
 
 interface PaginationProps {
   pageNumber: number;
@@ -16,25 +17,25 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"}>
       <Button
-        isDisabled={pageNumber === 1}
+        disabled={pageNumber === 1}
         onClick={() => changePage(-1)}
-        leftIcon={<ArrowBackIcon />}
         variant={"link"}
         _hover={{ color: pageNumber === 1 ? "inherit" : buttonHoverColor }}
       >
+        <ArrowBackIcon />
         <Text pb={1}>Previous</Text>
       </Button>
       <Text textAlign={"center"}>{`Page ${pageNumber} of ${pageCount}`}</Text>
       <Button
-        isDisabled={pageNumber === pageCount}
+        disabled={pageNumber === pageCount}
         onClick={() => changePage(1)}
-        rightIcon={<ArrowForwardIcon />}
         variant={"link"}
         _hover={{
           color: pageNumber === pageCount ? "inherit" : buttonHoverColor,
         }}
       >
         <Text pb={1}>Next</Text>
+        <ArrowForwardIcon />
       </Button>
     </Flex>
   );

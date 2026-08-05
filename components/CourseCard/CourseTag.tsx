@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { Text, useColorModeValue } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { useColorModeValue } from "../ui/color-mode";
 
 interface CourseTagProps {
     children: string;

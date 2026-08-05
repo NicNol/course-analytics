@@ -2,18 +2,18 @@ import React, { ChangeEvent, FC, useState } from "react";
 import { MdAccessTime, MdExtension, MdFeedback, MdInfo, MdMode } from "react-icons/md";
 import {
   Button,
-  Collapse,
-  Divider,
+  Collapsible,
   Flex,
   Heading,
   Icon,
-  Select,
+  NativeSelect,
+  Separator,
   Stack,
   Text,
-  Tooltip,
-  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { Tooltip } from "../ui/tooltip";
+import { useColorModeValue } from "../ui/color-mode";
 import type { ICourse } from "../../scraper/src/models/course";
 
 interface CourseDetailBodyProps {
@@ -32,7 +32,7 @@ interface TimeAvg {
 }
 
 const CourseStats: FC<CourseDetailBodyProps> = (props) => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { open, onToggle } = useDisclosure();
   const { courseData } = props;
   const [filteredData, setFilter] = useState(courseData);
 
@@ -86,7 +86,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               align={"baseline"}
               justifyContent={["center", null, null, "flex-start"]}
             >
-              <Tooltip hasArrow label={pair} placement="top" shouldWrapChildren>
+              <Tooltip showArrow content={pair} positioning={{ placement: "top" }}>
                 <Icon as={MdInfo} w={4} h={4} />
               </Tooltip>
               <Text fontWeight={"bold"}>{courseID}:</Text>
@@ -103,11 +103,13 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
       {coursePairs.slice(0, 3)}
       {coursePairs.length > 3 ? (
         <>
-          <Collapse in={isOpen} animateOpacity>
-            <Stack>{coursePairs.slice(3)}</Stack>
-          </Collapse>
+          <Collapsible.Root open={open}>
+            <Collapsible.Content>
+              <Stack>{coursePairs.slice(3)}</Stack>
+            </Collapsible.Content>
+          </Collapsible.Root>
           <Button onClick={onToggle} variant={"link"} _focus={{ outline: "none" }} _hover={{ color: buttonHoverColor }}>
-            {isOpen ? "Show Less" : "Show More"}
+            {open ? "Show Less" : "Show More"}
           </Button>
         </>
       ) : null}
@@ -129,11 +131,14 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
       <Flex justifyContent={"space-between"} alignItems={"center"} gap={4}>
         <Text>Filter:</Text>
         <Flex flexGrow={"1"}>
-          <Select onChange={handleChangeDateFilter} w={"100%"}>
-            <option value="99999">All Time</option>
-            <option value="730">Past 2 Years</option>
-            <option value="183">Past 6 Months</option>
-          </Select>
+          <NativeSelect.Root w={"100%"}>
+            <NativeSelect.Field onChange={handleChangeDateFilter}>
+              <option value="99999">All Time</option>
+              <option value="730">Past 2 Years</option>
+              <option value="183">Past 6 Months</option>
+            </NativeSelect.Field>
+            <NativeSelect.Indicator />
+          </NativeSelect.Root>
         </Flex>
       </Flex>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
@@ -158,7 +163,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
 
         <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
       </Stack>
-      <Divider w={["auto", null, null, 48]} />
+      <Separator w={["auto", null, null, 48]} />
       <Stack>
         <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
           <Icon as={MdMode} w={8} h={8} pos={"relative"} top={"3px"} />
@@ -167,7 +172,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
           </Heading>
         </Stack>
         <Stack alignItems={"center"}>{coursePairsCollapse}</Stack>
-        <Divider w={["auto", null, null, 48]} />
+        <Separator w={["auto", null, null, 48]} />
       </Stack>
     </Stack>
   );

@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import { Button, Flex, Link, useColorModeValue } from "@chakra-ui/react";
-import { ArrowLeftIcon } from "@chakra-ui/icons";
+import { Button, Flex, Link } from "@chakra-ui/react";
+import { useColorModeValue } from "../ui/color-mode";
+import { ArrowLeftIcon } from "../icons";
 import NextLink from "next/link";
 
 interface BackBreadcrumbProps {}
@@ -9,17 +10,19 @@ const BackBreadcrumb: FC<BackBreadcrumbProps> = () => {
   return (
     <Flex justifyContent={"center"}>
       <Flex maxW={"1054px"} w={["100%", null, null, "1054px"]} p={2}>
-        <Link as={NextLink} data-href={"/"} href={"/"} _hover={{}}>
-          <Button
-            leftIcon={<ArrowLeftIcon />}
-            mt={4}
-            variant={"ghost"}
-            rounded={"xl"}
-            colorScheme={useColorModeValue("orange", "black")}
-            w={48}
-          >
-            Return to Courses
-          </Button>
+        <Link asChild _hover={{}}>
+          <NextLink data-href={"/"} href={"/"}>
+            <Button
+              mt={4}
+              variant={"ghost"}
+              rounded={"xl"}
+              colorPalette={useColorModeValue("orange", "black")}
+              w={48}
+            >
+              <ArrowLeftIcon />
+              Return to Courses
+            </Button>
+          </NextLink>
         </Link>
       </Flex>
     </Flex>

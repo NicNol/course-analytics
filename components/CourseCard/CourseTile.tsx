@@ -1,9 +1,10 @@
 import React, { FC, useState } from "react";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
-import { Button, Box, Center, Flex, Link, Text, useColorModeValue } from "@chakra-ui/react";
+import { Button, Box, Center, Flex, Link, Text } from "@chakra-ui/react";
+import { useColorModeValue } from "../ui/color-mode";
 import CourseTag from "./CourseTag";
 import NextLink from "next/link";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon } from "../icons";
 import Stat from "./Stat";
 
 interface CourseTileProps {
@@ -34,22 +35,22 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         <Flex justify={"center"} pt={6} color={useColorModeValue("gray.800", "white")} gap={2}>
           {tagComponents}
         </Flex>
-        <Link
-          as={NextLink}
-          onClick={() => setLoadingStatus(true)}
-          data-href={`/courses/${code.replace(" ", "-")}`}
-          _hover={{}}
-          href={`/courses/${code.replace(" ", "-")}`}
-        >
-          <Text
-            align={"center"}
-            fontSize={"5xl"}
-            fontWeight={800}
-            textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
-            data-cy={"CourseNumber"}
+        <Link asChild _hover={{}}>
+          <NextLink
+            onClick={() => setLoadingStatus(true)}
+            data-href={`/courses/${code.replace(" ", "-")}`}
+            href={`/courses/${code.replace(" ", "-")}`}
           >
-            {code}
-          </Text>
+            <Text
+              textAlign={"center"}
+              fontSize={"5xl"}
+              fontWeight={800}
+              textShadow={useColorModeValue("2px 2px #eee", "2px 2px #333")}
+              data-cy={"CourseNumber"}
+            >
+              {code}
+            </Text>
+          </NextLink>
         </Link>
         <Flex
           align={"center"}
@@ -61,21 +62,21 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           h={16}
           px={8}
         >
-          <Link
-            as={NextLink}
-            onClick={() => setLoadingStatus(true)}
-            data-href={`/courses/${code.replace(" ", "-")}`}
-            href={`/courses/${code.replace(" ", "-")}`}
-            _hover={{}}
-          >
-            <Text
-              align={"center"}
-              color={useColorModeValue("white", "black")}
-              fontWeight={"600"}
-              data-cy={"CourseTitle"}
+          <Link asChild _hover={{}}>
+            <NextLink
+              onClick={() => setLoadingStatus(true)}
+              data-href={`/courses/${code.replace(" ", "-")}`}
+              href={`/courses/${code.replace(" ", "-")}`}
             >
-              {title}
-            </Text>
+              <Text
+                textAlign={"center"}
+                color={useColorModeValue("white", "black")}
+                fontWeight={"600"}
+                data-cy={"CourseTitle"}
+              >
+                {title}
+              </Text>
+            </NextLink>
           </Link>
         </Flex>
         <Flex
@@ -97,37 +98,37 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               />
             </Flex>
           </Flex>
-          <Link
-            as={NextLink}
-            onClick={() => setLoadingStatus(true)}
-            data-href={`/courses/${code.replace(" ", "-")}`}
-            href={`/courses/${code.replace(" ", "-")}`}
-            _hover={{}}
-          >
-            <Button
+          <Link asChild _hover={{}}>
+            <NextLink
+              onClick={() => setLoadingStatus(true)}
               data-href={`/courses/${code.replace(" ", "-")}`}
-              mt={2}
-              variant={"link"}
-              color={useColorModeValue("#CC3F04", "blue.200")}
-              rounded={"xl"}
-              p={2}
-              _hover={{
-                bg: useColorModeValue("orange.100", "gray.600"),
-                color: useColorModeValue("#C83602", "white"),
-              }}
-              _focus={{
-                bg: useColorModeValue("orange.100", "gray.600"),
-                color: useColorModeValue("#C83602", "white"),
-              }}
-              _active={{
-                bg: useColorModeValue("orange.200", "gray.400"),
-              }}
-              isLoading={loadingStatus}
-              loadingText="Loading"
-              rightIcon={<ArrowForwardIcon />}
+              href={`/courses/${code.replace(" ", "-")}`}
             >
-              View Details
-            </Button>
+              <Button
+                data-href={`/courses/${code.replace(" ", "-")}`}
+                mt={2}
+                variant={"link"}
+                color={useColorModeValue("#CC3F04", "blue.200")}
+                rounded={"xl"}
+                p={2}
+                _hover={{
+                  bg: useColorModeValue("orange.100", "gray.600"),
+                  color: useColorModeValue("#C83602", "white"),
+                }}
+                _focus={{
+                  bg: useColorModeValue("orange.100", "gray.600"),
+                  color: useColorModeValue("#C83602", "white"),
+                }}
+                _active={{
+                  bg: useColorModeValue("orange.200", "gray.400"),
+                }}
+                loading={loadingStatus}
+                loadingText="Loading"
+              >
+                View Details
+                <ArrowForwardIcon />
+              </Button>
+            </NextLink>
           </Link>
         </Flex>
       </Box>

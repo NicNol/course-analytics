@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Heading, Link, Stack, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { Search2Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { Search2Icon, MoonIcon, SunIcon } from "./icons";
+import { useColorMode, useColorModeValue } from "./ui/color-mode";
 import NextLink from "next/link";
 
 export default function Nav() {
@@ -16,25 +17,27 @@ export default function Nav() {
                 color={"white"}
                 float={"left"}
                 m={2}
-                sx={{
-                  filter: "drop-shadow(3px 3px 3px #333);",
+                css={{
+                  filter: "drop-shadow(3px 3px 3px #333)",
                 }}
               />
             </Box>
             <Box>
-              <Link as={NextLink} data-href={"/"} href={"/"} _hover={{}}>
-                <Heading
-                  _hover={{
-                    cursor: "pointer",
-                    color: useColorModeValue("orange.300", "blue.200"),
-                    textShadow: "1px 1px #999",
-                  }}
-                  transition={".2s"}
-                  textShadow="2px 2px #333"
-                  color={useColorModeValue("orange.400", "rgb(160,174,192)")}
-                >
-                  Course Analytics
-                </Heading>
+              <Link asChild _hover={{}}>
+                <NextLink data-href={"/"} href={"/"}>
+                  <Heading
+                    _hover={{
+                      cursor: "pointer",
+                      color: useColorModeValue("orange.300", "blue.200"),
+                      textShadow: "1px 1px #999",
+                    }}
+                    transition={".2s"}
+                    textShadow="2px 2px #333"
+                    color={useColorModeValue("orange.400", "rgb(160,174,192)")}
+                  >
+                    Course Analytics
+                  </Heading>
+                </NextLink>
               </Link>
               <Text color={"white"} textShadow={"1px 1px #333"}>
                 for Oregon State University&apos;s Computer Science Post-Bacc Program

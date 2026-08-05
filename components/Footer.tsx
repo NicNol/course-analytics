@@ -1,4 +1,5 @@
-import { Box, Link, useColorModeValue, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Link, Heading, Stack, Text } from "@chakra-ui/react";
+import { useColorModeValue } from "./ui/color-mode";
 
 export default function Footer() {
   return (

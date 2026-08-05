@@ -45,7 +45,7 @@ const CourseList: FC<CourseListProps> = ({ jsonData: data, filter }) => {
 
   return (
     <Container maxW="container.xl">
-      <Wrap spacing={4} justify="center">
+      <Wrap gap={4} justifyContent="center">
         {courseTiles}
       </Wrap>
     </Container>

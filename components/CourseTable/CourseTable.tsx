@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { ISummary } from "../../scraper/src/models/summary";
-import { Box, Center, Table, useColorModeValue } from "@chakra-ui/react";
+import { Box, Center, Table } from "@chakra-ui/react";
+import { useColorModeValue } from "../ui/color-mode";
 import CourseTableHeader from "./CourseTableHeader";
 import CourseTableBody from "./CourseTableBody";
 
@@ -84,10 +85,10 @@ const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
         overflowX={"auto"}
         mx={4}
       >
-        <Table maxW={"container.xl"}>
+        <Table.Root maxW={"container.xl"}>
           <CourseTableHeader columns={columnState} setColumnState={setColumnState} />
           <CourseTableBody jsonData={sortedData} />
-        </Table>
+        </Table.Root>
       </Box>
     </Center>
   );

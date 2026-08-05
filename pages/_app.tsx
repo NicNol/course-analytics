@@ -1,15 +1,15 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "../components/ui/provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ChakraProvider>
+      <Provider>
         <Component {...pageProps} />
-      </ChakraProvider>
+      </Provider>
       <Analytics />
       <SpeedInsights />
     </>
