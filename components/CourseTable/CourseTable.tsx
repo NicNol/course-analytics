@@ -62,8 +62,10 @@ const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
   const [sortedData, setSortedData] = useState<ISummary[]>(data);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
     const [accessor, direction] = findAccessor(columnState);
     const sortedData = sortCoursesByColumnAccessor(data, accessor, direction);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSortedData(sortedData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columnState, filter, jsonData]);

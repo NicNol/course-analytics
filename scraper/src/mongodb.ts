@@ -11,7 +11,6 @@ type MongooseCache = {
 
 declare global {
   // This must be a `var` and not a `let / const` — global augmentation requires var.
-  // eslint-disable-next-line no-var
   var mongoose: MongooseCache | undefined;
 }
 
