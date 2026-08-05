@@ -87,6 +87,7 @@ const config = defineConfig({
       selectV2Md: { value: { fontSize: "md", lineHeight: "normal" } },
       tagLabelV2Md: { value: { fontSize: "sm", lineHeight: "1.2" } },
       menuItemV2Md: { value: { fontSize: "md" } },
+      tooltipV2: { value: { fontSize: "sm" } },
     },
 
     semanticTokens: {
@@ -119,6 +120,20 @@ const config = defineConfig({
     recipes: {
       icon: {
         base: { verticalAlign: "baseline" },
+      },
+
+      container: {
+        base: { px: "4" },
+      },
+
+      separator: {
+        base: { opacity: 0.6, borderColor: "inherit" },
+      },
+
+      spinner: {
+        variants: {
+          size: { md: { "--spinner-size": "sizes.6" } },
+        },
       },
 
       link: {
@@ -207,6 +222,22 @@ const config = defineConfig({
     },
 
     slotRecipes: {
+      tooltip: {
+        slots: ["content"],
+        base: {
+          content: {
+            "--tooltip-bg": { base: "colors.gray.700", _dark: "colors.gray.300" },
+            bg: "var(--tooltip-bg)",
+            color: { base: "whiteAlpha.900", _dark: "gray.900" },
+            px: "2",
+            py: "0.5",
+            borderRadius: "sm",
+            textStyle: "tooltipV2",
+            fontWeight: "medium",
+          },
+        },
+      },
+
       table: {
         slots: ["root", "header", "body", "row", "columnHeader", "cell", "caption", "footer"],
         base: {
