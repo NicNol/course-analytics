@@ -56,8 +56,10 @@ function findAccessor(columns: IColumnState[]): [ColumnAccessor, number] {
 
 function sortCoursesByColumnAccessor(courseData: ISummary[], columnAccessor: ColumnAccessor, direction: number) {
   const arr = courseData.sort((a: ISummary, b: ISummary) => {
-    const x = isNaN(a[columnAccessor] as any) ? a[columnAccessor] : parseFloat(a[columnAccessor]);
-    const y = isNaN(b[columnAccessor] as any) ? b[columnAccessor] : parseFloat(b[columnAccessor]);
+    const aValue = a[columnAccessor];
+    const bValue = b[columnAccessor];
+    const x = Number.isNaN(Number(aValue)) ? aValue : parseFloat(aValue);
+    const y = Number.isNaN(Number(bValue)) ? bValue : parseFloat(bValue);
     return x < y ? -1 : x > y ? 1 : 0;
   });
   return direction >= 0 ? arr : arr.reverse();

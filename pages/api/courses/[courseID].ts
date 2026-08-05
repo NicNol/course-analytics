@@ -17,8 +17,7 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
     const code = idString.replace("-", " ");
 
     const courses: ICourse[] = await Course.find({
-      /* Hacky Type Fix */
-      code: { $regex: code, $options: "i" } as unknown as string,
+      code: { $regex: code, $options: "i" },
     });
     res.status(200).json(courses);
   } catch (err) {

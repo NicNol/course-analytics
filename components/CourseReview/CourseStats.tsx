@@ -25,10 +25,10 @@ interface CoursePairings {
 }
 
 interface TimeAvg {
-  "0-5 hours": Number;
-  "6-12 hours": Number;
-  "13-18 hours": Number;
-  "18+ hours": Number;
+  "0-5 hours": number;
+  "6-12 hours": number;
+  "13-18 hours": number;
+  "18+ hours": number;
 }
 
 const CourseStats: FC<CourseDetailBodyProps> = (props) => {
@@ -57,7 +57,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   const totalReviews = filteredData.length;
   for (const course of filteredData) {
     totalDifficulty += parseInt(course.difficulty);
-    totalHours += (timeAvg as any)[course["time commitment"]];
+    totalHours += timeAvg[course["time commitment"] as keyof TimeAvg];
   }
 
   const coursePairings: CoursePairings = {};
