@@ -88,6 +88,7 @@ const config = defineConfig({
       tagLabelV2Md: { value: { fontSize: "sm", lineHeight: "1.2" } },
       menuItemV2Md: { value: { fontSize: "md" } },
       tooltipV2: { value: { fontSize: "sm" } },
+      selectIndicatorV2: { value: { fontSize: "xl" } },
     },
 
     semanticTokens: {
@@ -97,6 +98,9 @@ const config = defineConfig({
         },
         fg: {
           DEFAULT: { value: { _light: "{colors.gray.800}", _dark: "{colors.whiteAlpha.900}" } },
+        },
+        border: {
+          DEFAULT: { value: { _light: "{colors.gray.200}", _dark: "{colors.whiteAlpha.300}" } },
         },
       },
       shadows: {
@@ -205,7 +209,7 @@ const config = defineConfig({
               color: { base: "colorPalette.600", _dark: "inherit" },
               _hover: { bg: { base: "colorPalette.50", _dark: "rgba(0, 0, 0, 0.12)" } },
               _active: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.24)" } },
-              _expanded: { bg: "transparent" },
+              _expanded: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.24)" } },
             },
             link: {
               padding: 0,
@@ -293,6 +297,7 @@ const config = defineConfig({
                 pe: "8",
                 borderRadius: "md",
               },
+              indicator: { textStyle: "selectIndicatorV2", color: "currentColor" },
             },
           },
         },
