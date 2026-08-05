@@ -1,18 +1,5 @@
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
-/**
- * Chakra UI v2 compatibility layer.
- *
- * v3 ships a different default theme than v2 — a neutral (zinc) gray ramp instead of
- * v2's blue-tinted slate, a different orange, Inter as the default font, smaller
- * Heading steps, and new shadow values. This app was designed against v2's defaults and
- * never declared a custom theme, so those defaults *are* the design.
- *
- * Everything below is copied from @chakra-ui/theme@2 to keep the app looking identical.
- * When a visual difference turns up, fix it here rather than in component markup.
- */
-
-// @chakra-ui/theme v2 foundations/colors
 const grayV2 = {
   50: { value: "#F7FAFC" },
   100: { value: "#EDF2F7" },
@@ -24,7 +11,6 @@ const grayV2 = {
   700: { value: "#2D3748" },
   800: { value: "#1A202C" },
   900: { value: "#171923" },
-  // v2 stopped at 900; v3's own recipes reference gray.950, so extend the ramp.
   950: { value: "#0D0F14" },
 };
 
@@ -66,13 +52,9 @@ const config = defineConfig({
         gray: grayV2,
         orange: orangeV2,
         blue: blueV2,
-        // v3 redefines black as #09090B; v2 used true black.
         black: { value: "#000000" },
         white: { value: "#FFFFFF" },
       },
-      // v3 dropped v2's numeric lineHeight steps and its `base`/`none` aliases.
-      // Without them `lineHeight: "4"` is read as a unitless 4x multiplier rather
-      // than 1rem, which made the table's header row twice as tall as it should be.
       lineHeights: {
         3: { value: "0.75rem" },
         4: { value: "1rem" },
@@ -86,13 +68,10 @@ const config = defineConfig({
         none: { value: "1" },
         base: { value: "1.5" },
       },
-      // v3 prepends "Inter" to both stacks; v2 did not.
       fonts: {
         heading: { value: systemFontStack },
         body: { value: systemFontStack },
       },
-      // v3 dropped container.* in favour of breakpoint-*. Re-added so the existing
-      // maxW="container.xl" call sites keep their exact widths.
       sizes: {
         container: {
           sm: { value: "640px" },
@@ -103,16 +82,14 @@ const config = defineConfig({
       },
     },
 
-    // v3's Button size md pulls in textStyle "sm" (20px line-height). Inside a
-    // recipe that textStyle beats a sibling lineHeight, so swap the whole
-    // textStyle out for v2's metrics rather than trying to override it.
     textStyles: {
-      buttonV2Md: { value: { fontSize: "md", lineHeight: "1.2" } },
+      buttonV2Md: { value: { fontSize: "md" } },
+      selectV2Md: { value: { fontSize: "md", lineHeight: "normal" } },
+      tagLabelV2Md: { value: { fontSize: "sm", lineHeight: "1.2" } },
     },
 
     semanticTokens: {
       colors: {
-        // v2 chakra-body-bg / chakra-body-text. v3 defaults to pure black in dark mode.
         bg: {
           DEFAULT: { value: { _light: "{colors.white}", _dark: "{colors.gray.800}" } },
         },
@@ -120,7 +97,6 @@ const config = defineConfig({
           DEFAULT: { value: { _light: "{colors.gray.800}", _dark: "{colors.whiteAlpha.900}" } },
         },
       },
-      // v2 foundations/shadows
       shadows: {
         sm: { value: "0 1px 2px 0 rgba(0, 0, 0, 0.05)" },
         md: {
@@ -140,17 +116,10 @@ const config = defineConfig({
     },
 
     recipes: {
-      // v3 adds vertical-align: middle to icons; v2 left them on the baseline,
-      // which makes inline icons slightly taller line boxes. Visible as 4px
-      // shorter table rows. Deliberately no width/height here — the recipe is
-      // emitted after inline style props, so it would beat an explicit w/h.
       icon: {
         base: { verticalAlign: "baseline" },
       },
 
-      // v2's Link was a plain inline <a>; v3's recipe makes it inline-flex, which
-      // shrink-wraps the anchor and breaks `textAlign: center` on block children
-      // (the course code and title on each card).
       link: {
         base: {
           display: "inline",
@@ -159,14 +128,14 @@ const config = defineConfig({
           transitionProperty: "common",
           transitionDuration: "fast",
           transitionTimingFunction: "ease-out",
-          _hover: { textDecoration: "underline" },
+          _hover: {
+            textDecoration: "underline",
+            textDecorationColor: "currentColor",
+            textUnderlineOffset: "auto",
+          },
         },
       },
 
-      // v2 Heading: bold, and sizes that map onto much larger font sizes than v3's
-      // textStyle-based scale (v3 size="lg" is 1.125rem; v2's was 1.5rem/1.875rem).
-      // Merging leaves v3's `textStyle` in place, but explicit fontSize/lineHeight
-      // take precedence over it, so these values are what render.
       heading: {
         base: { fontWeight: "bold" },
         variants: {
@@ -183,20 +152,16 @@ const config = defineConfig({
         },
       },
 
-      // v2 Button: semibold, radius md (v3 uses l2 = 0.25rem), no border.
       button: {
         base: {
           borderRadius: "md",
           fontWeight: "semibold",
           borderWidth: "0",
           transitionDuration: "normal",
-          // v3's size md carries textStyle "sm" (20px); v2 used a 1.2 ratio.
           lineHeight: "1.2",
         },
         variants: {
           size: {
-            // v3 forces icons inside buttons to 1.25rem via _icon; v2 left them at
-            // 1em, so they tracked the button's font size.
             md: {
               h: "10",
               minW: "10",
@@ -206,21 +171,12 @@ const config = defineConfig({
             },
           },
           variant: {
-            // v2's solid gray button — a light chip. v3's solid uses
-            // colorPalette.solid, which for gray is near-black, inverting the
-            // dark-mode toggle in the navbar.
             solid: {
               bg: { base: "gray.100", _dark: "whiteAlpha.200" },
               color: "inherit",
               _hover: { bg: { base: "gray.200", _dark: "whiteAlpha.300" } },
               _active: { bg: { base: "gray.300", _dark: "whiteAlpha.400" } },
             },
-            // Every ghost button in this app passed colorScheme="orange" in light and
-            // "black" in dark. "black" is not a colour scale, so in v2 the dark values
-            // resolved to nothing and the button inherited its colour, with only the
-            // transparentised black hover surviving. Encoded here so call sites can
-            // pass a plain colorPalette — a conditional colorPalette does not work,
-            // which is why these stayed orange in dark mode.
             ghost: {
               bg: "transparent",
               color: { base: "colorPalette.600", _dark: "inherit" },
@@ -233,8 +189,6 @@ const config = defineConfig({
               lineHeight: "normal",
               verticalAlign: "baseline",
               color: { base: "colorPalette.500", _dark: "colorPalette.200" },
-              // Deliberate deviation from v2, which underlined these on hover:
-              // underlines are for links, not buttons.
               _hover: { textDecoration: "none" },
               _active: { color: { base: "colorPalette.700", _dark: "colorPalette.500" } },
             },
@@ -244,8 +198,6 @@ const config = defineConfig({
     },
 
     slotRecipes: {
-      // v2 Table baseStyle + "simple" variant + size md. v3's default `line` variant
-      // drops the uppercase column headers entirely.
       table: {
         slots: ["root", "header", "body", "row", "columnHeader", "cell", "caption", "footer"],
         base: {
@@ -253,8 +205,6 @@ const config = defineConfig({
             fontVariantNumeric: "lining-nums tabular-nums",
             borderCollapse: "collapse",
             width: "full",
-            // v3 sets verticalAlign: top on the root; v2 left cells at the browser
-            // default, which centres the icon/label pairs in each row.
             verticalAlign: "middle",
           },
           columnHeader: {
@@ -269,8 +219,6 @@ const config = defineConfig({
         variants: {
           size: {
             md: {
-              // v3's size md puts textStyle "sm" on the root, shrinking every cell
-              // to 14px; v2 cells inherited the 16px body size.
               root: { fontSize: "md" },
               columnHeader: { px: "6", py: "3", lineHeight: "4", fontSize: "xs" },
               cell: { px: "6", py: "4", lineHeight: "5" },
@@ -287,16 +235,65 @@ const config = defineConfig({
                 borderBottomWidth: "1px",
                 borderColor: { base: "gray.100", _dark: "gray.700" },
               },
-              // v3's line variant paints every row with the page background, which
-              // would cover the bg set on Table.Header / Table.Body. v2 rows were
-              // transparent.
               row: { bg: "transparent" },
             },
           },
         },
       },
 
-      // v2 Menu list/item.
+      nativeSelect: {
+        slots: ["root", "field", "indicator"],
+        variants: {
+          size: {
+            md: {
+              field: {
+                textStyle: "selectV2Md",
+                h: "10",
+                ps: "4",
+                pe: "8",
+                borderRadius: "md",
+              },
+            },
+          },
+        },
+      },
+
+      tag: {
+        slots: ["root", "label"],
+        variants: {
+          size: {
+            md: {
+              root: { minH: "6", minW: "6", px: "2" },
+              label: { textStyle: "tagLabelV2Md" },
+            },
+          },
+        },
+      },
+
+      avatar: {
+        slots: ["root", "fallback"],
+        base: {
+          root: {
+            bg: "gray.400",
+            color: "white",
+          },
+        },
+        variants: {
+          size: {
+            md: {
+              root: {
+                "--avatar-size": "sizes.12",
+                "--avatar-font-size": "calc(3rem / 2.5)",
+                width: "12",
+                height: "12",
+                fontSize: "calc(3rem / 2.5)",
+              },
+              fallback: { fontSize: "calc(3rem / 2.5)", lineHeight: "3rem" },
+            },
+          },
+        },
+      },
+
       menu: {
         slots: ["content", "item"],
         base: {
@@ -321,8 +318,6 @@ const config = defineConfig({
   },
 
   globalCss: {
-    // v2 set both of these on body. v3 sets neither, so the font stack from
-    // styles/globals.css was winning instead of the theme's.
     body: {
       fontFamily: "body",
       lineHeight: "base",
