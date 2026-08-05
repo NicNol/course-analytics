@@ -133,6 +133,14 @@ const config = defineConfig({
     },
 
     recipes: {
+      // v3 adds vertical-align: middle to icons; v2 left them on the baseline,
+      // which makes inline icons slightly taller line boxes. Visible as 4px
+      // shorter table rows. Deliberately no width/height here — the recipe is
+      // emitted after inline style props, so it would beat an explicit w/h.
+      icon: {
+        base: { verticalAlign: "baseline" },
+      },
+
       // v2's Link was a plain inline <a>; v3's recipe makes it inline-flex, which
       // shrink-wraps the anchor and breaks `textAlign: center` on block children
       // (the course code and title on each card).
@@ -187,6 +195,9 @@ const config = defineConfig({
               minW: "10",
               fontSize: "md",
               px: "4",
+              // v3's size md carries textStyle "sm" (20px line-height), which
+              // outranks anything set on the recipe base.
+              lineHeight: "1.2",
               _icon: { width: "1em", height: "1em" },
             },
           },

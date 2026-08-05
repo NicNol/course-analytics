@@ -1,9 +1,10 @@
+/* font-family intentionally omitted: the Chakra theme owns the body stack via
+   globalCss. Under v2 the theme's stack won the cascade; under v3 this file
+   loads later and would override it with a different list. */
 html,
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
