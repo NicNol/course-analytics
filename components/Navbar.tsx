@@ -23,7 +23,7 @@ export default function Nav() {
               />
             </Box>
             <Box>
-              <Link asChild _hover={{}}>
+              <Link asChild _hover={{ textDecoration: "none" }}>
                 <NextLink data-href={"/"} href={"/"}>
                   <Heading
                     _hover={{

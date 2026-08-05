@@ -9,13 +9,13 @@ const BackBreadcrumb: FC<BackBreadcrumbProps> = () => {
   return (
     <Flex justifyContent={"center"}>
       <Flex maxW={"1054px"} w={["100%", null, null, "1054px"]} p={2}>
-        <Link asChild _hover={{}}>
+        <Link asChild _hover={{ textDecoration: "none" }}>
           <NextLink data-href={"/"} href={"/"}>
             <Button
               mt={4}
               variant={"ghost"}
               rounded={"xl"}
-              colorPalette={{ base: "orange", _dark: "black" }}
+              colorPalette={"orange"}
               w={48}
             >
               <ArrowLeftIcon />

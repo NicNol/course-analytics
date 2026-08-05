@@ -29,12 +29,12 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         boxShadow={"lg"}
         rounded={"md"}
         overflow={"hidden"}
-        _hover={{}}
+        _hover={{ textDecoration: "none" }}
       >
         <Flex justify={"center"} pt={6} color={{ base: "gray.800", _dark: "white" }} gap={2}>
           {tagComponents}
         </Flex>
-        <Link asChild _hover={{}}>
+        <Link asChild _hover={{ textDecoration: "none" }}>
           <NextLink
             onClick={() => setLoadingStatus(true)}
             data-href={`/courses/${code.replace(" ", "-")}`}
@@ -58,7 +58,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           h={16}
           px={8}
         >
-          <Link asChild _hover={{}}>
+          <Link asChild _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
               data-href={`/courses/${code.replace(" ", "-")}`}
@@ -94,7 +94,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               />
             </Flex>
           </Flex>
-          <Link asChild _hover={{}}>
+          <Link asChild _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
               data-href={`/courses/${code.replace(" ", "-")}`}

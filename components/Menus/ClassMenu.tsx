@@ -28,7 +28,7 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
       <Menu.Trigger asChild>
         <Button
           data-cy={"MenuButton"}
-          colorPalette={{ base: "orange", _dark: "black" }}
+          colorPalette={"orange"}
           size={"md"}
           variant={"ghost"}
           px={2}

@@ -66,6 +66,25 @@ const config = defineConfig({
         gray: grayV2,
         orange: orangeV2,
         blue: blueV2,
+        // v3 redefines black as #09090B; v2 used true black.
+        black: { value: "#000000" },
+        white: { value: "#FFFFFF" },
+      },
+      // v3 dropped v2's numeric lineHeight steps and its `base`/`none` aliases.
+      // Without them `lineHeight: "4"` is read as a unitless 4x multiplier rather
+      // than 1rem, which made the table's header row twice as tall as it should be.
+      lineHeights: {
+        3: { value: "0.75rem" },
+        4: { value: "1rem" },
+        5: { value: "1.25rem" },
+        6: { value: "1.5rem" },
+        7: { value: "1.75rem" },
+        8: { value: "2rem" },
+        9: { value: "2.25rem" },
+        10: { value: "2.5rem" },
+        normal: { value: "normal" },
+        none: { value: "1" },
+        base: { value: "1.5" },
       },
       // v3 prepends "Inter" to both stacks; v2 did not.
       fonts: {
@@ -156,6 +175,8 @@ const config = defineConfig({
           fontWeight: "semibold",
           borderWidth: "0",
           transitionDuration: "normal",
+          // v3's size md carries textStyle "sm" (20px); v2 used a 1.2 ratio.
+          lineHeight: "1.2",
         },
         variants: {
           size: {
@@ -170,15 +191,26 @@ const config = defineConfig({
             },
           },
           variant: {
-            // v2's ghost variant for a non-gray colorScheme. The menus and
-            // BackBreadcrumb pass colorScheme="black", which is not a real palette in
-            // either version — every token below resolves to nothing and the button
-            // falls back to inherited colour with no hover fill, exactly as in v2.
+            // v2's solid gray button — a light chip. v3's solid uses
+            // colorPalette.solid, which for gray is near-black, inverting the
+            // dark-mode toggle in the navbar.
+            solid: {
+              bg: { base: "gray.100", _dark: "whiteAlpha.200" },
+              color: "inherit",
+              _hover: { bg: { base: "gray.200", _dark: "whiteAlpha.300" } },
+              _active: { bg: { base: "gray.300", _dark: "whiteAlpha.400" } },
+            },
+            // Every ghost button in this app passed colorScheme="orange" in light and
+            // "black" in dark. "black" is not a colour scale, so in v2 the dark values
+            // resolved to nothing and the button inherited its colour, with only the
+            // transparentised black hover surviving. Encoded here so call sites can
+            // pass a plain colorPalette — a conditional colorPalette does not work,
+            // which is why these stayed orange in dark mode.
             ghost: {
               bg: "transparent",
-              color: { base: "colorPalette.600", _dark: "colorPalette.200" },
-              _hover: { bg: { base: "colorPalette.50", _dark: "colorPalette.200/12" } },
-              _active: { bg: { base: "colorPalette.100", _dark: "colorPalette.200/24" } },
+              color: { base: "colorPalette.600", _dark: "inherit" },
+              _hover: { bg: { base: "colorPalette.50", _dark: "rgba(0, 0, 0, 0.12)" } },
+              _active: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.24)" } },
             },
             link: {
               padding: 0,
@@ -186,7 +218,9 @@ const config = defineConfig({
               lineHeight: "normal",
               verticalAlign: "baseline",
               color: { base: "colorPalette.500", _dark: "colorPalette.200" },
-              _hover: { textDecoration: "underline", _disabled: { textDecoration: "none" } },
+              // Deliberate deviation from v2, which underlined these on hover:
+              // underlines are for links, not buttons.
+              _hover: { textDecoration: "none" },
               _active: { color: { base: "colorPalette.700", _dark: "colorPalette.500" } },
             },
           },
@@ -220,6 +254,9 @@ const config = defineConfig({
         variants: {
           size: {
             md: {
+              // v3's size md puts textStyle "sm" on the root, shrinking every cell
+              // to 14px; v2 cells inherited the 16px body size.
+              root: { fontSize: "md" },
               columnHeader: { px: "6", py: "3", lineHeight: "4", fontSize: "xs" },
               cell: { px: "6", py: "4", lineHeight: "5" },
             },
@@ -269,7 +306,10 @@ const config = defineConfig({
   },
 
   globalCss: {
+    // v2 set both of these on body. v3 sets neither, so the font stack from
+    // styles/globals.css was winning instead of the theme's.
     body: {
+      fontFamily: "body",
       lineHeight: "base",
     },
   },

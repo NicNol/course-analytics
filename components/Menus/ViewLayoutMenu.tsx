@@ -27,7 +27,7 @@ const ViewLayoutMenu: FC<ViewLayoutMenuProps> = ({ setLayoutView }) => {
       <Menu.Trigger asChild>
         <Button
           data-cy={"MenuButton"}
-          colorPalette={{ base: "orange", _dark: "black" }}
+          colorPalette={"orange"}
           size={"md"}
           variant={"ghost"}
           px={2}
