@@ -1,10 +1,3 @@
-/**
- * Icons ported from @chakra-ui/icons v1, which has no Chakra UI v3 equivalent.
- *
- * Path data is copied verbatim from the v2 package so the glyphs stay pixel-identical
- * across the migration. Names match the originals so call sites only changed their
- * import path.
- */
 import { createIcon } from "@chakra-ui/react";
 
 export const Search2Icon = createIcon({

@@ -46,8 +46,6 @@ export default function Nav() {
           </Stack>
         </Box>
 
-        {/* Both icons render and CSS picks one. Branching on colorMode here would
-            mismatch during hydration, because the theme isn't known on the server. */}
         <Button aria-label="Toggle Darkmode" onClick={toggleColorMode}>
           <MoonIcon display={{ base: "inline-block", _dark: "none" }} />
           <SunIcon display={{ base: "none", _dark: "inline-block" }} />

@@ -19,11 +19,9 @@ const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) 
       value={title}
       onClick={() => clickHandler(title)}
       _hover={{ backgroundColor: bgColor }}
-      /* v3 drives the keyboard/pointer highlight off data-highlighted rather than focus. */
       _highlighted={{ backgroundColor: bgColor }}
       data-cy={"MenuOption"}
     >
-      {/* v2's MenuItem `icon` prop rendered the icon in this wrapper. */}
       <Span display={"inline-flex"} alignItems={"center"} justifyContent={"center"} flexShrink={0} fontSize={"0.8em"} me={"0.75rem"}>
         {icon}
       </Span>

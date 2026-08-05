@@ -1,6 +1,3 @@
-/* font-family intentionally omitted: the Chakra theme owns the body stack via
-   globalCss. Under v2 the theme's stack won the cascade; under v3 this file
-   loads later and would override it with a different list. */
 html,
 body {
     padding: 0;
