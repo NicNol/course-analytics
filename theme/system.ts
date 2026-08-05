@@ -291,6 +291,9 @@ const config = defineConfig({
               fallback: { fontSize: "calc(3rem / 2.5)", lineHeight: "3rem" },
             },
           },
+          variant: {
+            subtle: { root: { bg: "gray.400", color: "white" } },
+          },
         },
       },
 
