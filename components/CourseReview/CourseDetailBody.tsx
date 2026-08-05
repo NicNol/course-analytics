@@ -49,45 +49,33 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
     <Center p={2}>
       <Flex
         direction={"column"}
-        maxW={"1054px"}
-        w={["auto", null, null, "1054px"]}
-        bg={{ base: "orange.100", _dark: "gray.700" }}
+        maxW={"content"}
+        w={["auto", null, null, "content"]}
+        bg={"bg.panel"}
+        borderWidth={"1px"}
+        borderColor={"border"}
         boxShadow={"lg"}
-        rounded={"md"}
+        rounded={"l3"}
         overflow={"hidden"}
       >
-        <Flex justify={"center"} pt={6} color={{ base: "gray.800", _dark: "white" }} align={"center"} gap={2}>
+        <Flex justify={"center"} pt={6} align={"center"} gap={2}>
           {tagElements}
         </Flex>
-        <Text
-          textAlign={"center"}
-          fontSize={"5xl"}
-          fontWeight={800}
-          textShadow={{ base: "2px 2px #eee", _dark: "2px 2px #333" }}
-          data-cy={"CourseNumber"}
-        >
+        <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} data-cy={"CourseNumber"}>
           {courseid}
         </Text>
-        <Flex
-          direction={"column"}
-          align={"center"}
-          justify={"center"}
-          bg={{ base: "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)", _dark: "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)" }}
-          h="64px"
-          px={8}
-        >
+        <Flex direction={"column"} align={"center"} justify={"center"} bg={"colorPalette.solid"} h={16} px={8}>
           <Text
             textAlign={"center"}
-            color={{ base: "white", _dark: "black" }}
+            color={"colorPalette.contrast"}
             fontSize={"2xl"}
-            fontWeight={"600"}
-            lineHeight={".75"}
+            fontWeight={"semibold"}
             data-cy={"CourseTitle"}
           >
             {title}
           </Text>
         </Flex>
-        <Flex direction={"column"} bg={{ base: "#f5f5f5", _dark: "gray.900" }} px={2} py={4}>
+        <Flex direction={"column"} bg={"bg.muted"} px={2} py={4}>
           <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
             <Flex direction={"column"} mt={[0, null, null, 2]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
               <CourseStats courseData={courseData} />

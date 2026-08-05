@@ -9,8 +9,9 @@ const CourseTag: FC<CourseTagProps> = ({ children }) => {
     return (
         <Text
             fontSize={"sm"}
-            fontWeight={500}
-            bg={{ base: "orange.50", _dark: "gray.600" }}
+            fontWeight={"medium"}
+            bg={"colorPalette.subtle"}
+            color={"colorPalette.fg"}
             p={2}
             px={3}
             rounded={"full"}

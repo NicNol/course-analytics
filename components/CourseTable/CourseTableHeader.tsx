@@ -41,7 +41,7 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
     }
 
     return (
-        <Table.Header bg={{ base: "orange.100", _dark: "gray.700" }}>
+        <Table.Header bg={"bg.muted"}>
             <Table.Row>
                 {columns.map((column) => (
                     <CourseTableHeaderCell

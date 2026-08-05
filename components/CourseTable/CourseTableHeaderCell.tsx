@@ -32,7 +32,7 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({
                 textDecoration: "underline",
             }}
         >
-            <Flex gap={4} color={{ base: "gray.800", _dark: "white" }}>
+            <Flex gap={4} color={"fg"}>
                 {column.header}
                 {handleArrowRender(column.filter)}
             </Flex>

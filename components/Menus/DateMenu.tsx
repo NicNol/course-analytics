@@ -28,7 +28,6 @@ const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
       <Menu.Trigger asChild>
         <Button
           data-cy={"MenuButton"}
-          colorPalette={"orange"}
           size={"md"}
           variant={"ghost"}
           px={2}

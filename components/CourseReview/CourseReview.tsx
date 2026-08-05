@@ -23,7 +23,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
   const [isNarrowerThan400px] = useMediaQuery(["(max-width: 400px)"]);
 
   return (
-    <Box bg={{ base: "orange.50", _dark: "gray.600" }} p={2} px={3} rounded={"md"} maxW={"100%"}>
+    <Box bg={"bg.panel"} borderWidth={"1px"} borderColor={"border"} p={2} px={3} rounded={"l3"} maxW={"100%"}>
       <Flex gap={4} maxW={"100%"}>
         {!isNarrowerThan400px && (
           <Avatar.Root mt={1}>
@@ -73,7 +73,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
           >
             {review}
           </Text>
-          <Text fontSize={"sm"} textAlign={"right"} fontStyle={"italic"} opacity={"60%"}>
+          <Text fontSize={"sm"} textAlign={"right"} fontStyle={"italic"} color={"fg.muted"}>
             Submitted {formattedReviewDate.toDateString()}
           </Text>
         </Box>

@@ -25,13 +25,15 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
       <Box
         maxW={"330px"}
         w={"330px"}
-        bg={{ base: "orange.100", _dark: "gray.700" }}
+        bg={"bg.panel"}
+        borderWidth={"1px"}
+        borderColor={"border"}
         boxShadow={"lg"}
-        rounded={"md"}
+        rounded={"l3"}
         overflow={"hidden"}
         _hover={{ textDecoration: "none" }}
       >
-        <Flex justify={"center"} pt={6} color={{ base: "gray.800", _dark: "white" }} gap={2}>
+        <Flex justify={"center"} pt={6} gap={2}>
           {tagComponents}
         </Flex>
         <Link asChild _hover={{ textDecoration: "none" }}>
@@ -40,24 +42,12 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             data-href={`/courses/${code.replace(" ", "-")}`}
             href={`/courses/${code.replace(" ", "-")}`}
           >
-            <Text
-              textAlign={"center"}
-              fontSize={"5xl"}
-              fontWeight={800}
-              textShadow={{ base: "2px 2px #eee", _dark: "2px 2px #333" }}
-              data-cy={"CourseNumber"}
-            >
+            <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} data-cy={"CourseNumber"}>
               {code}
             </Text>
           </NextLink>
         </Link>
-        <Flex
-          align={"center"}
-          justify={"center"}
-          bg={{ base: "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)", _dark: "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)" }}
-          h={16}
-          px={8}
-        >
+        <Flex align={"center"} justify={"center"} bg={"colorPalette.solid"} h={16} px={8}>
           <Link asChild _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
@@ -66,8 +56,8 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             >
               <Text
                 textAlign={"center"}
-                color={{ base: "white", _dark: "black" }}
-                fontWeight={"600"}
+                color={"colorPalette.contrast"}
+                fontWeight={"semibold"}
                 data-cy={"CourseTitle"}
               >
                 {title}
@@ -75,23 +65,12 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             </NextLink>
           </Link>
         </Flex>
-        <Flex
-          bg={{ base: "#f5f5f5", _dark: "gray.900" }}
-          px={6}
-          py={4}
-          flexDirection={"column"}
-          alignItems={"center"}
-        >
-          <Flex color={{ base: "#333", _dark: "#ccc" }} alignItems={"center"}>
+        <Flex bg={"bg.muted"} px={6} py={4} flexDirection={"column"} alignItems={"center"}>
+          <Flex color={"fg.muted"} alignItems={"center"}>
             <Flex direction={"column"}>
-              <Stat icon={MdFeedback} iconPosition={"8px"} stat={reviews} label={"Reviews"} />
-              <Stat icon={MdAccessTime} iconPosition={"5px"} stat={time} label={"Hours per Week"} />
-              <Stat
-                icon={MdExtension}
-                iconPosition={"3px"}
-                stat={parseFloat(difficulty).toFixed(1)}
-                label={"/ 5.0 Difficulty"}
-              />
+              <Stat icon={MdFeedback} stat={reviews} label={"Reviews"} />
+              <Stat icon={MdAccessTime} stat={time} label={"Hours per Week"} />
+              <Stat icon={MdExtension} stat={parseFloat(difficulty).toFixed(1)} label={"/ 5.0 Difficulty"} />
             </Flex>
           </Flex>
           <Link asChild _hover={{ textDecoration: "none" }}>
@@ -103,21 +82,11 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               <Button
                 data-href={`/courses/${code.replace(" ", "-")}`}
                 mt={2}
-                variant={"link"}
-                color={{ base: "#CC3F04", _dark: "blue.200" }}
-                rounded={"xl"}
+                variant={"plain"}
+                color={"colorPalette.fg"}
+                rounded={"l2"}
                 p={2}
-                _hover={{
-                  bg: { base: "orange.100", _dark: "gray.600" },
-                  color: { base: "#C83602", _dark: "white" },
-                }}
-                _focus={{
-                  bg: { base: "orange.100", _dark: "gray.600" },
-                  color: { base: "#C83602", _dark: "white" },
-                }}
-                _active={{
-                  bg: { base: "orange.200", _dark: "gray.400" },
-                }}
+                _hover={{ bg: "colorPalette.muted" }}
                 loading={loadingStatus}
                 loadingText="Loading"
               >

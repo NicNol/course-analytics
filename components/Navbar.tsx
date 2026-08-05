@@ -6,21 +6,12 @@ import NextLink from "next/link";
 export default function Nav() {
   const { toggleColorMode } = useColorMode();
   return (
-    <Box bg={{ base: "black", _dark: "gray.900" }} px={4} flexGrow={0} pb={1}>
+    <Box bg={"chrome.bg"} color={"chrome.fg"} px={4} flexGrow={0} pb={1}>
       <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <Stack direction={"row"}>
             <Box>
-              <Search2Icon
-                w={16}
-                h={16}
-                color={"white"}
-                float={"left"}
-                m={2}
-                css={{
-                  filter: "drop-shadow(3px 3px 3px #333)",
-                }}
-              />
+              <Search2Icon w={16} h={16} color={"chrome.fg"} float={"left"} m={2} />
             </Box>
             <Box>
               <Link asChild _hover={{ textDecoration: "none" }}>
@@ -28,25 +19,30 @@ export default function Nav() {
                   <Heading
                     _hover={{
                       cursor: "pointer",
-                      color: { base: "orange.300", _dark: "blue.200" },
-                      textShadow: "1px 1px #999",
+                      color: "colorPalette.400",
                     }}
-                    transition={".2s"}
-                    textShadow="2px 2px #333"
-                    color={{ base: "orange.400", _dark: "rgb(160,174,192)" }}
+                    transition={"color 0.2s ease-out"}
+                    color={"colorPalette.300"}
                   >
                     Course Analytics
                   </Heading>
                 </NextLink>
               </Link>
-              <Text color={"white"} textShadow={"1px 1px #333"}>
+              <Text color={"chrome.muted"}>
                 for Oregon State University&apos;s Computer Science Post-Bacc Program
               </Text>
             </Box>
           </Stack>
         </Box>
 
-        <Button aria-label="Toggle Darkmode" onClick={toggleColorMode}>
+        <Button
+          aria-label="Toggle Darkmode"
+          onClick={toggleColorMode}
+          variant={"ghost"}
+          colorPalette={"gray"}
+          color={"chrome.fg"}
+          _hover={{ bg: "whiteAlpha.200" }}
+        >
           <MoonIcon display={{ base: "inline-block", _dark: "none" }} />
           <SunIcon display={{ base: "none", _dark: "inline-block" }} />
         </Button>

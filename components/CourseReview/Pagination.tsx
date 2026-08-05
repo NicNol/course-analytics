@@ -10,7 +10,6 @@ interface PaginationProps {
 }
 
 const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPage, changePage }) => {
-  const buttonHoverColor = { base: "orange.400", _dark: "blue.200" };
   const pageCount = Math.ceil(totalTipCount / tipsPerPage);
 
   return (
@@ -18,8 +17,8 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
       <Button
         disabled={pageNumber === 1}
         onClick={() => changePage(-1)}
-        variant={"link"}
-        _hover={{ color: pageNumber === 1 ? "inherit" : buttonHoverColor }}
+        variant={"plain"}
+        _hover={{ color: pageNumber === 1 ? "inherit" : "colorPalette.fg" }}
       >
         <ArrowBackIcon />
         <Text pb={1}>Previous</Text>
@@ -28,9 +27,9 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
       <Button
         disabled={pageNumber === pageCount}
         onClick={() => changePage(1)}
-        variant={"link"}
+        variant={"plain"}
         _hover={{
-          color: pageNumber === pageCount ? "inherit" : buttonHoverColor,
+          color: pageNumber === pageCount ? "inherit" : "colorPalette.fg",
         }}
       >
         <Text pb={1}>Next</Text>

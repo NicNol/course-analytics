@@ -2,7 +2,7 @@ import { Box, Link, Heading, Stack, Text } from "@chakra-ui/react";
 
 export default function Footer() {
   return (
-    <Box bg={{ base: "black", _dark: "gray.900" }} p={8} mt={12} color={"white"} flexGrow={0}>
+    <Box bg={"chrome.bg"} p={8} mt={12} color={"chrome.fg"} flexGrow={0}>
       <Stack alignItems={"center"} justifyContent={"space-evenly"} direction={"row"}>
         <Stack maxW={"1200px"}>
           <Heading size={"lg"}>About: </Heading>
@@ -12,14 +12,14 @@ export default function Footer() {
             students using{" "}
             <Link
               href="https://docs.google.com/forms/d/e/1FAIpQLSeAWZa_OWYqwOte5yw4loGgE6hEUqOJOeSpmzStZF_HcufufQ/viewform"
-              color={{ base: "orange.400", _dark: "blue.200" }}
+              color={"colorPalette.300"}
             >
               this survey
             </Link>
             . Feel free to add your own reviews if you are a current student! The data is scraped from{" "}
             <Link
               href="https://docs.google.com/spreadsheets/d/1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU/edit"
-              color={{ base: "orange.400", _dark: "blue.200" }}
+              color={"colorPalette.300"}
             >
               this spreadsheet
             </Link>
@@ -27,12 +27,12 @@ export default function Footer() {
           </Text>
           <Text>
             Course Analytics is an open source project by{" "}
-            <Link href="https://github.com/NicNol" color={{ base: "orange.400", _dark: "blue.200" }}>
+            <Link href="https://github.com/NicNol" color={"colorPalette.300"}>
               Nic Nolan
             </Link>
             .
             <br />
-            <Link href="https://github.com/NicNol/course-analytics" color={{ base: "orange.400", _dark: "blue.200" }}>
+            <Link href="https://github.com/NicNol/course-analytics" color={"colorPalette.300"}>
               View the repository on GitHub
             </Link>
           </Text>
