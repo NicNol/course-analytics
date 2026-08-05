@@ -217,7 +217,7 @@ const config = defineConfig({
               color: { base: "colorPalette.600", _dark: "inherit" },
               _hover: { bg: { base: "colorPalette.50", _dark: "rgba(0, 0, 0, 0.12)" } },
               _active: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.24)" } },
-              _expanded: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.24)" } },
+              _expanded: { bg: { base: "colorPalette.100", _dark: "rgba(0, 0, 0, 0.06)" } },
             },
             link: {
               padding: 0,
