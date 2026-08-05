@@ -103,6 +103,13 @@ const config = defineConfig({
       },
     },
 
+    // v3's Button size md pulls in textStyle "sm" (20px line-height). Inside a
+    // recipe that textStyle beats a sibling lineHeight, so swap the whole
+    // textStyle out for v2's metrics rather than trying to override it.
+    textStyles: {
+      buttonV2Md: { value: { fontSize: "md", lineHeight: "1.2" } },
+    },
+
     semanticTokens: {
       colors: {
         // v2 chakra-body-bg / chakra-body-text. v3 defaults to pure black in dark mode.
@@ -193,11 +200,8 @@ const config = defineConfig({
             md: {
               h: "10",
               minW: "10",
-              fontSize: "md",
+              textStyle: "buttonV2Md",
               px: "4",
-              // v3's size md carries textStyle "sm" (20px line-height), which
-              // outranks anything set on the recipe base.
-              lineHeight: "1.2",
               _icon: { width: "1em", height: "1em" },
             },
           },
