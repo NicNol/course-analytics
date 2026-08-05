@@ -14,15 +14,15 @@ URIs are relative to the hosting domain, currently: `https://www.osu-cs-ca.com`
 
 Get all course summaries using:
 
-`/api/summaries/`
+`/api/summary/`
 
 Get a specific course summary using:
 
-`/api/summaries/CS-<number>`
+`/api/summary/CS-<number>`
 
 Where `<number>` is the course number. For example, to get the course summary for CS 271, use:
 
-`/api/summaries/CS-271`
+`/api/summary/CS-271`
 
 ## Get Course Review Data
 
