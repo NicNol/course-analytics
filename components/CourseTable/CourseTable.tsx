@@ -77,7 +77,7 @@ const CourseTable: FC<CourseTableProps> = ({ filter, jsonData }) => {
 
   return (
     <Center>
-      <Box rounded={"l3"} borderWidth={"1px"} borderColor={"border"} overflowX={"auto"} mx={4}>
+      <Box rounded={"l3"} borderWidth={"1px"} borderColor={"border"} overflowX={"auto"} mx={4} mt={2}>
         <Table.Root maxW={"7xl"}>
           <CourseTableHeader columns={columnState} setColumnState={setColumnState} />
           <CourseTableBody jsonData={sortedData} />
