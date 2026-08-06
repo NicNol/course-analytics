@@ -14,24 +14,12 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"}>
-      <Button
-        disabled={pageNumber === 1}
-        onClick={() => changePage(-1)}
-        variant={"ghost"}
-        _hover={{ color: pageNumber === 1 ? "inherit" : "colorPalette.solid" }}
-      >
+      <Button disabled={pageNumber === 1} onClick={() => changePage(-1)} variant={"outline"}>
         <ArrowBackIcon />
         <Text pb={1}>Previous</Text>
       </Button>
       <Text textAlign={"center"}>{`Page ${pageNumber} of ${pageCount}`}</Text>
-      <Button
-        disabled={pageNumber === pageCount}
-        onClick={() => changePage(1)}
-        variant={"ghost"}
-        _hover={{
-          color: pageNumber === pageCount ? "inherit" : "colorPalette.solid",
-        }}
-      >
+      <Button disabled={pageNumber === pageCount} onClick={() => changePage(1)} variant={"outline"}>
         <Text pb={1}>Next</Text>
         <ArrowForwardIcon />
       </Button>

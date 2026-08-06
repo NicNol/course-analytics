@@ -106,7 +106,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               <Stack>{coursePairs.slice(3)}</Stack>
             </Collapsible.Content>
           </Collapsible.Root>
-          <Button onClick={onToggle} variant={"ghost"} _hover={{ color: "colorPalette.solid" }}>
+          <Button onClick={onToggle} variant={"outline"}>
             {open ? "Show Less" : "Show More"}
           </Button>
         </>

@@ -16,7 +16,7 @@ const AllFilters: FC<FilterProps> = ({ classFilter, setLayoutView, dateFilter })
     <Flex justifyContent={"center"}>
       <Flex gap={1} flexWrap={"wrap"} w={"100%"} maxW={"7xl"} alignItems={"center"} p={2}>
         <Text fontWeight={"semibold"}>Filter Data:</Text>
-        <Flex>
+        <Flex gap={2}>
           <ClassMenu handleFilter={classFilter} />
           <ViewLayoutMenu setLayoutView={setLayoutView} />
           <DateMenu handleFilter={dateFilter} />
