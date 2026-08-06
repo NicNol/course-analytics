@@ -10,30 +10,17 @@ interface PaginationProps {
 }
 
 const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPage, changePage }) => {
-  const buttonHoverColor = { base: "orange.400", _dark: "blue.200" };
   const pageCount = Math.ceil(totalTipCount / tipsPerPage);
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"}>
-      <Button
-        disabled={pageNumber === 1}
-        onClick={() => changePage(-1)}
-        variant={"link"}
-        _hover={{ color: pageNumber === 1 ? "inherit" : buttonHoverColor }}
-      >
+      <Button disabled={pageNumber === 1} onClick={() => changePage(-1)} variant={"solid"} colorPalette={"gray"}>
         <ArrowBackIcon />
-        <Text pb={1}>Previous</Text>
+        <Text>Previous</Text>
       </Button>
       <Text textAlign={"center"}>{`Page ${pageNumber} of ${pageCount}`}</Text>
-      <Button
-        disabled={pageNumber === pageCount}
-        onClick={() => changePage(1)}
-        variant={"link"}
-        _hover={{
-          color: pageNumber === pageCount ? "inherit" : buttonHoverColor,
-        }}
-      >
-        <Text pb={1}>Next</Text>
+      <Button disabled={pageNumber === pageCount} onClick={() => changePage(1)} variant={"solid"} colorPalette={"gray"}>
+        <Text>Next</Text>
         <ArrowForwardIcon />
       </Button>
     </Flex>

@@ -23,28 +23,37 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
   const [isNarrowerThan400px] = useMediaQuery(["(max-width: 400px)"]);
 
   return (
-    <Box bg={{ base: "orange.50", _dark: "gray.600" }} p={2} px={3} rounded={"md"} maxW={"100%"}>
+    <Box
+      bg={"bg.subtle"}
+      colorPalette={"gray"}
+      borderWidth={"1px"}
+      borderColor={"border"}
+      p={2}
+      px={3}
+      rounded={"l3"}
+      maxW={"100%"}
+    >
       <Flex gap={4} maxW={"100%"}>
         {!isNarrowerThan400px && (
-          <Avatar.Root mt={1}>
+          <Avatar.Root size={"xl"} mt={1}>
             <Avatar.Fallback />
           </Avatar.Root>
         )}
         <Box maxW={"100%"} w={"100%"}>
           <Flex gap={2} pb={2} flexWrap={"wrap"} maxW={"100%"}>
-            <Tag.Root>
+            <Tag.Root bg={"gray.muted"}>
               <Tag.StartElement asChild>
                 <MdCalendarToday />
               </Tag.StartElement>
               <Tag.Label>{quarter}</Tag.Label>
             </Tag.Root>
-            <Tag.Root>
+            <Tag.Root bg={"gray.muted"}>
               <Tag.StartElement asChild>
                 <MdAccessTime />
               </Tag.StartElement>
               <Tag.Label>{timeCommitment}/week</Tag.Label>
             </Tag.Root>
-            <Tag.Root>
+            <Tag.Root bg={"gray.muted"}>
               <Tag.StartElement asChild>
                 <MdExtension />
               </Tag.StartElement>
@@ -53,7 +62,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
             {otherCourses.map((course) => {
               const courseName = course.split(" ");
               return (
-                <Tag.Root key={reviewDate + course}>
+                <Tag.Root key={reviewDate + course} bg={"gray.muted"}>
                   <Tag.StartElement asChild>
                     <MdMode />
                   </Tag.StartElement>
@@ -73,7 +82,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
           >
             {review}
           </Text>
-          <Text fontSize={"sm"} textAlign={"right"} fontStyle={"italic"} opacity={"60%"}>
+          <Text fontSize={"sm"} textAlign={"right"} fontStyle={"italic"} color={"fg.muted"}>
             Submitted {formattedReviewDate.toDateString()}
           </Text>
         </Box>

@@ -8,16 +8,10 @@ interface BackBreadcrumbProps {}
 const BackBreadcrumb: FC<BackBreadcrumbProps> = () => {
   return (
     <Flex justifyContent={"center"}>
-      <Flex maxW={"1054px"} w={["100%", null, null, "1054px"]} p={2}>
+      <Flex maxW={"content"} w={["100%", null, null, "content"]} px={2} pt={4} pb={2}>
         <Link asChild _hover={{ textDecoration: "none" }}>
           <NextLink data-href={"/"} href={"/"}>
-            <Button
-              mt={4}
-              variant={"ghost"}
-              rounded={"xl"}
-              colorPalette={"orange"}
-              w={48}
-            >
+            <Button w={48} variant={"solid"} colorPalette={"gray"}>
               <ArrowLeftIcon />
               Return to Courses
             </Button>

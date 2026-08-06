@@ -13,16 +13,15 @@ export interface IMenuOption {
 }
 
 const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) => {
-  const bgColor = { base: "orange.100", _dark: "gray.600" };
   return (
     <Menu.Item
       value={title}
       onClick={() => clickHandler(title)}
-      _hover={{ backgroundColor: bgColor }}
-      _highlighted={{ backgroundColor: bgColor }}
+      _hover={{ bg: "colorPalette.subtle" }}
+      _highlighted={{ bg: "colorPalette.subtle" }}
       data-cy={"MenuOption"}
     >
-      <Span display={"inline-flex"} alignItems={"center"} justifyContent={"center"} flexShrink={0} fontSize={"0.8em"} me={"0.75rem"}>
+      <Span display={"inline-flex"} alignItems={"center"} justifyContent={"center"} flexShrink={0} fontSize={"sm"} me={3}>
         {icon}
       </Span>
       {title}

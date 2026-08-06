@@ -41,8 +41,8 @@ const CourseTableHeader: FC<CourseTableHeaderProps> = ({
     }
 
     return (
-        <Table.Header bg={{ base: "orange.100", _dark: "gray.700" }}>
-            <Table.Row>
+        <Table.Header>
+            <Table.Row bg={"colorPalette.muted"}>
                 {columns.map((column) => (
                     <CourseTableHeaderCell
                         key={column.accessor}

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useState } from "react";
-import { MdAccessTime, MdExtension, MdFeedback, MdInfo, MdMode } from "react-icons/md";
+import { MdAccessTime, MdExtension, MdFeedback, MdInfo } from "react-icons/md";
 import {
   Button,
   Collapsible,
@@ -96,7 +96,6 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
           );
         });
 
-  const buttonHoverColor = { base: "orange.400", _dark: "blue.200" };
   const coursePairsCollapse = (
     <>
       {coursePairs.slice(0, 3)}
@@ -107,7 +106,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               <Stack>{coursePairs.slice(3)}</Stack>
             </Collapsible.Content>
           </Collapsible.Root>
-          <Button onClick={onToggle} variant={"link"} _focus={{ outline: "none" }} _hover={{ color: buttonHoverColor }}>
+          <Button onClick={onToggle} variant={"solid"} colorPalette={"gray"}>
             {open ? "Show Less" : "Show More"}
           </Button>
         </>
@@ -123,15 +122,20 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   }
 
   return (
-    <Stack color={{ base: "#333", _dark: "#ccc" }} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
-      <Heading size={"md"} pb={2}>
+    <Stack color={"fg"} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
+      <Heading size={"md"} color={"fg"}>
         Data Summary
       </Heading>
       <Flex justifyContent={"space-between"} alignItems={"center"} gap={4}>
         <Text>Filter:</Text>
         <Flex flexGrow={"1"}>
-          <NativeSelect.Root w={"100%"}>
-            <NativeSelect.Field onChange={handleChangeDateFilter}>
+          <NativeSelect.Root w={"100%"} colorPalette={"gray"}>
+            <NativeSelect.Field
+              onChange={handleChangeDateFilter}
+              bg={"bg.panel"}
+              color={"fg"}
+              borderColor={"border.emphasized"}
+            >
               <option value="99999">All Time</option>
               <option value="730">Past 2 Years</option>
               <option value="183">Past 6 Months</option>
@@ -141,37 +145,33 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
         </Flex>
       </Flex>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
-        <Icon as={MdFeedback} w={8} h={8} pos={"relative"} top={"8px"} />
-        <Text fontSize={"3xl"} fontWeight={"100"}>
+        <Icon as={MdFeedback} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {totalReviews}
         </Text>
-        <Text fontWeight={"700"}>Reviews</Text>
+        <Text fontWeight={"bold"}>Reviews</Text>
       </Stack>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
-        <Icon as={MdAccessTime} w={8} h={8} pos={"relative"} top={"5px"} />
-        <Text fontSize={"3xl"} fontWeight={"100"}>
+        <Icon as={MdAccessTime} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {timeCommitment}
         </Text>
-        <Text fontWeight={"700"}> Hours per Week</Text>
+        <Text fontWeight={"bold"}> Hours per Week</Text>
       </Stack>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
-        <Icon as={MdExtension} w={8} h={8} pos={"relative"} top={"3px"} />
-        <Text fontSize={"3xl"} fontWeight={"100"}>
+        <Icon as={MdExtension} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {difficulty}
         </Text>
 
-        <Text fontWeight={"700"}>/ 5.0 Difficulty</Text>
+        <Text fontWeight={"bold"}>/ 5.0 Difficulty</Text>
       </Stack>
-      <Separator w={["auto", null, null, 48]} />
+      <Separator w={"full"} />
       <Stack>
-        <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
-          <Icon as={MdMode} w={8} h={8} pos={"relative"} top={"3px"} />
-          <Heading size={"md"} textAlign={"left"}>
-            Common Pairings
-          </Heading>
-        </Stack>
-        <Stack alignItems={"center"}>{coursePairsCollapse}</Stack>
-        <Separator w={["auto", null, null, 48]} />
+        <Heading size={"md"} color={"fg"} textAlign={["center", null, null, "left"]}>
+          Common Pairings
+        </Heading>
+        <Stack>{coursePairsCollapse}</Stack>
       </Stack>
     </Stack>
   );

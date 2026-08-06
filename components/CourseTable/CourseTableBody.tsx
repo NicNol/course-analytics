@@ -10,7 +10,7 @@ interface CourseTableBodyProps {
 
 const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
   return (
-    <Table.Body bg={{ base: "#fcfcfc", _dark: "gray.900" }} color={{ base: "#333", _dark: "#ccc" }}>
+    <Table.Body color={"fg"}>
       {jsonData.map((row, r_index) => {
         const {
           code,
@@ -21,13 +21,13 @@ const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
         } = row;
 
         return (
-          <Table.Row key={r_index} data-cy={"CourseTableRow"}>
+          <Table.Row key={r_index} bg={"bg.subtle"} data-cy={"CourseTableRow"}>
             <Table.Cell key={`${r_index}-0`} textAlign={"left"}>
-              <Link asChild fontWeight={"600"}>
+              <Link asChild variant={"underline"} fontWeight={"semibold"} color={"colorPalette.fg"}>
                 <NextLink href={`/courses/${code.replace(" ", "-")}`}>{`${code} - ${title}`}</NextLink>
               </Link>
             </Table.Cell>
-            <Table.Cell key={`${r_index}-1`} textAlign={"center"} position={"relative"} right={"15px"}>
+            <Table.Cell key={`${r_index}-1`} textAlign={"center"}>
               <Flex gap={2} justifyContent={"center"}>
                 <Box w={6}>
                   <Icon as={MdExtension} w={6} h={6} />
@@ -35,7 +35,7 @@ const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
                 <Box w={16}>{parseFloat(averageDifficulty).toFixed(1)} / 5.0</Box>
               </Flex>
             </Table.Cell>
-            <Table.Cell key={`${r_index}-2`} textAlign={"center"} position={"relative"} right={"15px"}>
+            <Table.Cell key={`${r_index}-2`} textAlign={"center"}>
               <Flex gap={2} justifyContent={"center"}>
                 <Box w={6}>
                   <Icon as={MdAccessTime} w={6} h={6} />
@@ -43,7 +43,7 @@ const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
                 <Box w={16}>{timeCommitment} Hours</Box>
               </Flex>
             </Table.Cell>
-            <Table.Cell key={`${r_index}-$3`} textAlign={"center"} position={"relative"} right={"15px"}>
+            <Table.Cell key={`${r_index}-$3`} textAlign={"center"}>
               <Flex gap={2} justifyContent={"center"}>
                 <Box w={6}>
                   <Icon as={MdFeedback} w={6} h={6} />

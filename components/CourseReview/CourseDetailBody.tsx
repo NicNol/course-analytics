@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC, useState } from "react";
-import { Center, Flex, Heading, NativeSelect, Text } from "@chakra-ui/react";
+import React, { FC, useState } from "react";
+import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import type { ICourse } from "../../scraper/src/models/course";
 import { classList } from "../../scraper/src/classList";
 import CourseTag from "../CourseCard/CourseTag";
@@ -15,7 +15,7 @@ interface CourseDetailBodyProps {
 const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
   const { courseData, courseid } = props;
   const CourseListing = classList.filter((course) => course.code === courseid);
-  const [tipsPerPage, setTipsPerPage] = useState(10);
+  const tipsPerPage = 10;
   const [pageNumber, setPageNumber] = useState(1);
 
   const { tags, title } = CourseListing[0];
@@ -36,11 +36,6 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           .map((review, index) => <CourseReview key={`${index}-${review["review date"]}`} courseData={review} />)
           .reverse();
 
-  function handleChangeTipsPerPage(e: ChangeEvent<HTMLSelectElement>) {
-    setTipsPerPage(parseInt(e.target.value));
-    setPageNumber(1);
-  }
-
   function changePage(delta: number) {
     setPageNumber(pageNumber + delta);
   }
@@ -49,69 +44,43 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
     <Center p={2}>
       <Flex
         direction={"column"}
-        maxW={"1054px"}
-        w={["auto", null, null, "1054px"]}
-        bg={{ base: "orange.100", _dark: "gray.700" }}
+        maxW={"content"}
+        w={["auto", null, null, "content"]}
+        bg={"bg.panel"}
+        borderWidth={"1px"}
+        borderColor={"border"}
         boxShadow={"lg"}
-        rounded={"md"}
+        rounded={"l3"}
         overflow={"hidden"}
       >
-        <Flex justify={"center"} pt={6} color={{ base: "gray.800", _dark: "white" }} align={"center"} gap={2}>
-          {tagElements}
-        </Flex>
-        <Text
-          textAlign={"center"}
-          fontSize={"5xl"}
-          fontWeight={800}
-          textShadow={{ base: "2px 2px #eee", _dark: "2px 2px #333" }}
-          data-cy={"CourseNumber"}
-        >
-          {courseid}
-        </Text>
-        <Flex
-          direction={"column"}
-          align={"center"}
-          justify={"center"}
-          bg={{ base: "rgb(68,68,68) linear-gradient(0deg, rgba(68,68,68,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(68,68,68,1) 100%)", _dark: "rgb(160,174,192) linear-gradient(0deg, rgba(160,174,192,1) 0%, rgba(203,213,224,1) 10%, rgba(203,213,224,1) 90%, rgba(160,174,192,1) 100%)" }}
-          h="64px"
-          px={8}
-        >
+        <Box bg={"colorPalette.muted"} pb={3}>
+          <Flex justify={"center"} pt={6} align={"center"} gap={2}>
+            {tagElements}
+          </Flex>
+          <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"} mt={3} data-cy={"CourseNumber"}>
+            {courseid}
+          </Text>
+        </Box>
+        <Flex direction={"column"} align={"center"} justify={"center"} bg={"chrome.bg"} h={16} px={8}>
           <Text
             textAlign={"center"}
-            color={{ base: "white", _dark: "black" }}
+            color={"chrome.fg"}
             fontSize={"2xl"}
-            fontWeight={"600"}
-            lineHeight={".75"}
+            fontWeight={"semibold"}
             data-cy={"CourseTitle"}
           >
             {title}
           </Text>
         </Flex>
-        <Flex direction={"column"} bg={{ base: "#f5f5f5", _dark: "gray.900" }} px={2} py={4}>
+        <Flex direction={"column"} bg={"bg.muted"} px={6} py={4}>
           <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
-            <Flex direction={"column"} mt={[0, null, null, 2]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
+            <Flex direction={"column"} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
               <CourseStats courseData={courseData} />
             </Flex>
             <Flex direction={"column"} flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"} gap={2}>
-              <Flex justifyContent={"space-between"} alignItems={"center"} flexWrap={"wrap"} gap={1}>
-                <Heading size={"md"} mt={[2, null, null, 0]} id={"TipsHeader"}>
-                  Tips from Students
-                </Heading>
-                <NativeSelect.Root w={48}>
-                  <NativeSelect.Field onChange={handleChangeTipsPerPage}>
-                    <option value="10">10 Tips per Page</option>
-                    <option value="25">25 Tips per Page</option>
-                    <option value="100">100 Tips per Page</option>
-                  </NativeSelect.Field>
-                  <NativeSelect.Indicator />
-                </NativeSelect.Root>
-              </Flex>
-              <Pagination
-                pageNumber={pageNumber}
-                totalTipCount={reviews.length}
-                tipsPerPage={tipsPerPage}
-                changePage={changePage}
-              />
+              <Heading size={"md"} id={"TipsHeader"}>
+                Tips from Students
+              </Heading>
               {reviews.slice(tipsPerPage * (pageNumber - 1), tipsPerPage * pageNumber)}
               <Pagination
                 pageNumber={pageNumber}

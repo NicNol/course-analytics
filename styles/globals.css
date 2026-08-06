@@ -7,9 +7,3 @@ body {
 * {
     box-sizing: border-box;
 }
-
-nav {
-    background-color: black;
-    color: white;
-    padding: 0.25em 2em;
-}
