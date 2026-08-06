@@ -2,15 +2,7 @@ import { Box, Link, Heading, Stack, Text } from "@chakra-ui/react";
 
 export default function Footer() {
   return (
-    <Box
-      bg={"chrome.bg"}
-      p={8}
-      mt={12}
-      color={"chrome.fg"}
-      borderTopWidth={"1px"}
-      borderColor={"border"}
-      flexGrow={0}
-    >
+    <Box bg={"chrome.bg"} p={8} mt={12} color={"chrome.fg"} borderTopWidth={"1px"} borderColor={"border"} flexGrow={0}>
       <Stack alignItems={"center"} justifyContent={"space-evenly"} direction={"row"}>
         <Stack maxW={"1200px"}>
           <Heading size={"lg"}>About: </Heading>

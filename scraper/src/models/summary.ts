@@ -58,7 +58,7 @@ const summaryByDateSchema = new Schema<ISummaryByDate>(
       required: true,
     },
   },
-  { collection: "summary-data-by-date", versionKey: false }
+  { collection: "summary-data-by-date", versionKey: false },
 );
 
 const Summary: typeof mongoose.Model<ISummaryByDate> =

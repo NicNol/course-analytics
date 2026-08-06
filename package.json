@@ -43,7 +43,7 @@
     "cypress": "^15.17.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.9.6",
     "typescript": "^5.9.0"
   },
   "cacheDirectories": [

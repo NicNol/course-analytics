@@ -37,9 +37,7 @@ export default function Nav() {
                   </Heading>
                 </NextLink>
               </Link>
-              <Text color={"gray.400"}>
-                for Oregon State University&apos;s Computer Science Post-Bacc Program
-              </Text>
+              <Text color={"gray.400"}>for Oregon State University&apos;s Computer Science Post-Bacc Program</Text>
             </Box>
           </Stack>
         </Box>

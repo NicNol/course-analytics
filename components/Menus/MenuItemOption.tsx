@@ -21,7 +21,14 @@ const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) 
       _highlighted={{ bg: "colorPalette.subtle" }}
       data-cy={"MenuOption"}
     >
-      <Span display={"inline-flex"} alignItems={"center"} justifyContent={"center"} flexShrink={0} fontSize={"sm"} me={3}>
+      <Span
+        display={"inline-flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        flexShrink={0}
+        fontSize={"sm"}
+        me={3}
+      >
         {icon}
       </Span>
       {title}

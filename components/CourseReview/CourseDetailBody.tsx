@@ -57,7 +57,14 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           <Flex justify={"center"} pt={6} align={"center"} gap={2}>
             {tagElements}
           </Flex>
-          <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"} mt={3} data-cy={"CourseNumber"}>
+          <Text
+            textAlign={"center"}
+            fontSize={"5xl"}
+            fontWeight={"extrabold"}
+            color={"fg"}
+            mt={3}
+            data-cy={"CourseNumber"}
+          >
             {courseid}
           </Text>
         </Box>

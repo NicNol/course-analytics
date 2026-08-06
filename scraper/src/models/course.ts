@@ -50,7 +50,7 @@ const schema = new Schema<ICourse>(
       required: true,
     },
   },
-  { collection: "course-data-v2", versionKey: false, _id: false }
+  { collection: "course-data-v2", versionKey: false, _id: false },
 );
 
 const Course: typeof mongoose.Model<ICourse> = models?.Course || model<ICourse>("Course", schema);

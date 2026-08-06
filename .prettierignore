@@ -3,3 +3,10 @@ node_modules
 # Ignore artifacts:
 build
 coverage
+.next
+dist
+
+# Generated / lockfiles:
+next-env.d.ts
+package-lock.json
+scraper/package-lock.json
