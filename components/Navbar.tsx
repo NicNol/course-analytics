@@ -17,18 +17,19 @@ export default function Nav() {
               <Link asChild _hover={{ textDecoration: "none" }}>
                 <NextLink data-href={"/"} href={"/"}>
                   <Heading
+                    size={{ base: "3xl", md: "4xl" }}
                     _hover={{
                       cursor: "pointer",
                       color: "colorPalette.400",
                     }}
                     transition={"color 0.2s ease-out"}
-                    color={"colorPalette.300"}
+                    color={"colorPalette.500"}
                   >
                     Course Analytics
                   </Heading>
                 </NextLink>
               </Link>
-              <Text color={"chrome.muted"}>
+              <Text color={"white"}>
                 for Oregon State University&apos;s Computer Science Post-Bacc Program
               </Text>
             </Box>

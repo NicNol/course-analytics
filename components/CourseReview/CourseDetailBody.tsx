@@ -87,8 +87,13 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
                 <Heading size={"md"} mt={[2, null, null, 0]} id={"TipsHeader"}>
                   Tips from Students
                 </Heading>
-                <NativeSelect.Root w={48}>
-                  <NativeSelect.Field onChange={handleChangeTipsPerPage}>
+                <NativeSelect.Root w={48} colorPalette={"gray"}>
+                  <NativeSelect.Field
+                    onChange={handleChangeTipsPerPage}
+                    bg={"bg.panel"}
+                    color={"fg"}
+                    borderColor={"border.emphasized"}
+                  >
                     <option value="10">10 Tips per Page</option>
                     <option value="25">25 Tips per Page</option>
                     <option value="100">100 Tips per Page</option>

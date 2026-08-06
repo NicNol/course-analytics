@@ -10,7 +10,7 @@ interface CourseTableBodyProps {
 
 const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
   return (
-    <Table.Body bg={"bg.panel"} color={"fg.muted"}>
+    <Table.Body color={"fg.muted"}>
       {jsonData.map((row, r_index) => {
         const {
           code,
@@ -21,7 +21,7 @@ const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
         } = row;
 
         return (
-          <Table.Row key={r_index} data-cy={"CourseTableRow"}>
+          <Table.Row key={r_index} bg={"bg.subtle"} data-cy={"CourseTableRow"}>
             <Table.Cell key={`${r_index}-0`} textAlign={"left"}>
               <Link asChild variant={"underline"} fontWeight={"semibold"} color={"colorPalette.fg"}>
                 <NextLink href={`/courses/${code.replace(" ", "-")}`}>{`${code} - ${title}`}</NextLink>

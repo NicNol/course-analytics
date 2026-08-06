@@ -31,7 +31,6 @@ const config = defineConfig({
         chrome: {
           bg: { value: { _light: "{colors.gray.900}", _dark: "{colors.gray.950}" } },
           fg: { value: { _light: "{colors.gray.50}", _dark: "{colors.gray.100}" } },
-          muted: { value: { _light: "{colors.gray.400}", _dark: "{colors.gray.400}" } },
         },
       },
 

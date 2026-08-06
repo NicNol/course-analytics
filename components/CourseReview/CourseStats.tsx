@@ -106,7 +106,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               <Stack>{coursePairs.slice(3)}</Stack>
             </Collapsible.Content>
           </Collapsible.Root>
-          <Button onClick={onToggle} variant={"outline"}>
+          <Button onClick={onToggle} variant={"outline"} colorPalette={"gray"}>
             {open ? "Show Less" : "Show More"}
           </Button>
         </>
@@ -129,8 +129,13 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
       <Flex justifyContent={"space-between"} alignItems={"center"} gap={4}>
         <Text>Filter:</Text>
         <Flex flexGrow={"1"}>
-          <NativeSelect.Root w={"100%"}>
-            <NativeSelect.Field onChange={handleChangeDateFilter}>
+          <NativeSelect.Root w={"100%"} colorPalette={"gray"}>
+            <NativeSelect.Field
+              onChange={handleChangeDateFilter}
+              bg={"bg.panel"}
+              color={"fg"}
+              borderColor={"border.emphasized"}
+            >
               <option value="99999">All Time</option>
               <option value="730">Past 2 Years</option>
               <option value="183">Past 6 Months</option>
@@ -141,21 +146,21 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
       </Flex>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdFeedback} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
-        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg.muted"}>
           {totalReviews}
         </Text>
         <Text fontWeight={"bold"}>Reviews</Text>
       </Stack>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdAccessTime} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
-        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg.muted"}>
           {timeCommitment}
         </Text>
         <Text fontWeight={"bold"}> Hours per Week</Text>
       </Stack>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdExtension} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
-        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg.muted"}>
           {difficulty}
         </Text>
 
