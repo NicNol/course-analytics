@@ -53,11 +53,11 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         rounded={"l3"}
         overflow={"hidden"}
       >
-        <Box bg={"colorPalette.muted"} pb={6}>
+        <Box bg={"colorPalette.muted"} pb={3}>
           <Flex justify={"center"} pt={6} align={"center"} gap={2}>
             {tagElements}
           </Flex>
-          <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"} data-cy={"CourseNumber"}>
+          <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"} mt={3} data-cy={"CourseNumber"}>
             {courseid}
           </Text>
         </Box>

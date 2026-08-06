@@ -33,11 +33,11 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         overflow={"hidden"}
         _hover={{ textDecoration: "none" }}
       >
-        <Box bg={"colorPalette.muted"} pb={6}>
+        <Box bg={"colorPalette.muted"} pb={3}>
           <Flex justify={"center"} pt={6} gap={2}>
             {tagComponents}
           </Flex>
-          <Link asChild display={"block"} w={"full"} _hover={{ textDecoration: "none" }}>
+          <Link asChild display={"block"} w={"full"} mt={3} _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
               data-href={`/courses/${code.replace(" ", "-")}`}
@@ -68,7 +68,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             </NextLink>
           </Link>
         </Flex>
-        <Flex bg={"bg.muted"} px={6} py={4} flexDirection={"column"} alignItems={"center"}>
+        <Flex bg={"bg.muted"} px={6} pt={4} pb={6} flexDirection={"column"} alignItems={"center"}>
           <Flex color={"fg"} alignItems={"center"}>
             <Flex direction={"column"}>
               <Stat icon={MdFeedback} stat={reviews} label={"Reviews"} />
@@ -84,7 +84,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             >
               <Button
                 data-href={`/courses/${code.replace(" ", "-")}`}
-                mt={3}
+                mt={4}
                 w={"full"}
                 variant={"solid"}
                 colorPalette={"gray"}
