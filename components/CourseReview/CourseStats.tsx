@@ -106,7 +106,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               <Stack>{coursePairs.slice(3)}</Stack>
             </Collapsible.Content>
           </Collapsible.Root>
-          <Button onClick={onToggle} variant={"outline"} colorPalette={"gray"}>
+          <Button onClick={onToggle} variant={"solid"} colorPalette={"gray"}>
             {open ? "Show Less" : "Show More"}
           </Button>
         </>

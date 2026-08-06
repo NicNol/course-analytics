@@ -24,7 +24,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
 
   return (
     <Box
-      bg={"orange.subtle"}
+      bg={"bg.subtle"}
       colorPalette={"gray"}
       borderWidth={"1px"}
       borderColor={"border"}
