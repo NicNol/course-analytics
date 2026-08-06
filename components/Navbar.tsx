@@ -20,10 +20,10 @@ export default function Nav() {
                     size={{ base: "3xl", md: "4xl" }}
                     _hover={{
                       cursor: "pointer",
-                      color: "colorPalette.400",
+                      color: "colorPalette.100",
                     }}
                     transition={"color 0.2s ease-out"}
-                    color={"colorPalette.500"}
+                    color={"colorPalette.200"}
                   >
                     Course Analytics
                   </Heading>
