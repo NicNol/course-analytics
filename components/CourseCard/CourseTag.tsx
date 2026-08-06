@@ -11,7 +11,7 @@ const CourseTag: FC<CourseTagProps> = ({ children }) => {
             fontSize={"sm"}
             fontWeight={"medium"}
             bg={"colorPalette.subtle"}
-            color={"colorPalette.fg"}
+            color={"fg.muted"}
             p={2}
             px={3}
             rounded={"full"}

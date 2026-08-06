@@ -33,22 +33,11 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         overflow={"hidden"}
         _hover={{ textDecoration: "none" }}
       >
-        <Flex justify={"center"} pt={6} gap={2}>
-          {tagComponents}
-        </Flex>
-        <Link asChild _hover={{ textDecoration: "none" }}>
-          <NextLink
-            onClick={() => setLoadingStatus(true)}
-            data-href={`/courses/${code.replace(" ", "-")}`}
-            href={`/courses/${code.replace(" ", "-")}`}
-          >
-            <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} data-cy={"CourseNumber"}>
-              {code}
-            </Text>
-          </NextLink>
-        </Link>
-        <Flex align={"center"} justify={"center"} bg={"colorPalette.solid"} h={16} px={8}>
-          <Link asChild _hover={{ textDecoration: "none" }}>
+        <Box bg={"colorPalette.muted"} pb={2}>
+          <Flex justify={"center"} pt={6} gap={2}>
+            {tagComponents}
+          </Flex>
+          <Link asChild display={"block"} w={"full"} _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
               data-href={`/courses/${code.replace(" ", "-")}`}
@@ -56,10 +45,24 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             >
               <Text
                 textAlign={"center"}
-                color={"colorPalette.contrast"}
-                fontWeight={"semibold"}
-                data-cy={"CourseTitle"}
+                fontSize={"5xl"}
+                fontWeight={"extrabold"}
+                color={"fg"}
+                data-cy={"CourseNumber"}
               >
+                {code}
+              </Text>
+            </NextLink>
+          </Link>
+        </Box>
+        <Flex align={"center"} justify={"center"} bg={"chrome.bg"} h={16} px={8}>
+          <Link asChild display={"block"} w={"full"} _hover={{ textDecoration: "none" }}>
+            <NextLink
+              onClick={() => setLoadingStatus(true)}
+              data-href={`/courses/${code.replace(" ", "-")}`}
+              href={`/courses/${code.replace(" ", "-")}`}
+            >
+              <Text textAlign={"center"} color={"chrome.fg"} fontWeight={"semibold"} data-cy={"CourseTitle"}>
                 {title}
               </Text>
             </NextLink>
@@ -81,12 +84,9 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
             >
               <Button
                 data-href={`/courses/${code.replace(" ", "-")}`}
-                mt={2}
-                variant={"plain"}
-                color={"colorPalette.fg"}
+                mt={3}
+                w={"full"}
                 rounded={"l2"}
-                p={2}
-                _hover={{ bg: "colorPalette.muted" }}
                 loading={loadingStatus}
                 loadingText="Loading"
               >

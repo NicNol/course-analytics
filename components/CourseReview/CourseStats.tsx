@@ -106,7 +106,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               <Stack>{coursePairs.slice(3)}</Stack>
             </Collapsible.Content>
           </Collapsible.Root>
-          <Button onClick={onToggle} variant={"plain"} _hover={{ color: "colorPalette.fg" }}>
+          <Button onClick={onToggle} variant={"ghost"} _hover={{ color: "colorPalette.solid" }}>
             {open ? "Show Less" : "Show More"}
           </Button>
         </>
@@ -139,22 +139,22 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
           </NativeSelect.Root>
         </Flex>
       </Flex>
-      <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"center"}>
-        <Icon as={MdFeedback} w={8} h={8} />
+      <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
+        <Icon as={MdFeedback} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
         <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {totalReviews}
         </Text>
         <Text fontWeight={"bold"}>Reviews</Text>
       </Stack>
-      <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"center"}>
-        <Icon as={MdAccessTime} w={8} h={8} />
+      <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
+        <Icon as={MdAccessTime} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
         <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {timeCommitment}
         </Text>
         <Text fontWeight={"bold"}> Hours per Week</Text>
       </Stack>
-      <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"center"}>
-        <Icon as={MdExtension} w={8} h={8} />
+      <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
+        <Icon as={MdExtension} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
         <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {difficulty}
         </Text>

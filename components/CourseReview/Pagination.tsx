@@ -17,8 +17,8 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
       <Button
         disabled={pageNumber === 1}
         onClick={() => changePage(-1)}
-        variant={"plain"}
-        _hover={{ color: pageNumber === 1 ? "inherit" : "colorPalette.fg" }}
+        variant={"ghost"}
+        _hover={{ color: pageNumber === 1 ? "inherit" : "colorPalette.solid" }}
       >
         <ArrowBackIcon />
         <Text pb={1}>Previous</Text>
@@ -27,9 +27,9 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
       <Button
         disabled={pageNumber === pageCount}
         onClick={() => changePage(1)}
-        variant={"plain"}
+        variant={"ghost"}
         _hover={{
-          color: pageNumber === pageCount ? "inherit" : "colorPalette.fg",
+          color: pageNumber === pageCount ? "inherit" : "colorPalette.solid",
         }}
       >
         <Text pb={1}>Next</Text>

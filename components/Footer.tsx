@@ -11,6 +11,7 @@ export default function Footer() {
             program. The data on difficulty, time commitments, course pairings, and tips have been submitted by real
             students using{" "}
             <Link
+              variant={"underline"}
               href="https://docs.google.com/forms/d/e/1FAIpQLSeAWZa_OWYqwOte5yw4loGgE6hEUqOJOeSpmzStZF_HcufufQ/viewform"
               color={"colorPalette.300"}
             >
@@ -18,6 +19,7 @@ export default function Footer() {
             </Link>
             . Feel free to add your own reviews if you are a current student! The data is scraped from{" "}
             <Link
+              variant={"underline"}
               href="https://docs.google.com/spreadsheets/d/1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU/edit"
               color={"colorPalette.300"}
             >
@@ -27,12 +29,12 @@ export default function Footer() {
           </Text>
           <Text>
             Course Analytics is an open source project by{" "}
-            <Link href="https://github.com/NicNol" color={"colorPalette.300"}>
+            <Link variant={"underline"} href="https://github.com/NicNol" color={"colorPalette.300"}>
               Nic Nolan
             </Link>
             .
             <br />
-            <Link href="https://github.com/NicNol/course-analytics" color={"colorPalette.300"}>
+            <Link variant={"underline"} href="https://github.com/NicNol/course-analytics" color={"colorPalette.300"}>
               View the repository on GitHub
             </Link>
           </Text>

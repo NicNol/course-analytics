@@ -29,6 +29,7 @@ const ViewLayoutMenu: FC<ViewLayoutMenuProps> = ({ setLayoutView }) => {
           data-cy={"MenuButton"}
           size={"md"}
           variant={"ghost"}
+          color={"colorPalette.solid"}
           px={2}
         >
           {currentMenuItem}

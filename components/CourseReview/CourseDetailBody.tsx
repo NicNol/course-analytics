@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useState } from "react";
-import { Center, Flex, Heading, NativeSelect, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, NativeSelect, Text } from "@chakra-ui/react";
 import type { ICourse } from "../../scraper/src/models/course";
 import { classList } from "../../scraper/src/classList";
 import CourseTag from "../CourseCard/CourseTag";
@@ -58,16 +58,18 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         rounded={"l3"}
         overflow={"hidden"}
       >
-        <Flex justify={"center"} pt={6} align={"center"} gap={2}>
-          {tagElements}
-        </Flex>
-        <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} data-cy={"CourseNumber"}>
-          {courseid}
-        </Text>
-        <Flex direction={"column"} align={"center"} justify={"center"} bg={"colorPalette.solid"} h={16} px={8}>
+        <Box bg={"colorPalette.muted"} pb={2}>
+          <Flex justify={"center"} pt={6} align={"center"} gap={2}>
+            {tagElements}
+          </Flex>
+          <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"} data-cy={"CourseNumber"}>
+            {courseid}
+          </Text>
+        </Box>
+        <Flex direction={"column"} align={"center"} justify={"center"} bg={"chrome.bg"} h={16} px={8}>
           <Text
             textAlign={"center"}
-            color={"colorPalette.contrast"}
+            color={"chrome.fg"}
             fontSize={"2xl"}
             fontWeight={"semibold"}
             data-cy={"CourseTitle"}

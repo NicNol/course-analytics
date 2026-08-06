@@ -30,6 +30,7 @@ const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
           data-cy={"MenuButton"}
           size={"md"}
           variant={"ghost"}
+          color={"colorPalette.solid"}
           px={2}
         >
           {currentMenuItem}
