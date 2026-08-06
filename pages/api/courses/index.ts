@@ -19,7 +19,7 @@ async function getCourseData(courseCode = "") {
   await connectToDatabase();
   const courseData = await Course.find(
     { code: { $regex: courseCode, $options: "i" } },
-    { _id: false, versionKey: false }
+    { _id: false, versionKey: false },
   );
   return courseData;
 }
