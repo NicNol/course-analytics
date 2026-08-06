@@ -23,7 +23,16 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
   const [isNarrowerThan400px] = useMediaQuery(["(max-width: 400px)"]);
 
   return (
-    <Box bg={"bg.panel"} borderWidth={"1px"} borderColor={"border"} p={2} px={3} rounded={"l3"} maxW={"100%"}>
+    <Box
+      bg={"bg.panel"}
+      colorPalette={"gray"}
+      borderWidth={"1px"}
+      borderColor={"border"}
+      p={2}
+      px={3}
+      rounded={"l3"}
+      maxW={"100%"}
+    >
       <Flex gap={4} maxW={"100%"}>
         {!isNarrowerThan400px && (
           <Avatar.Root mt={1}>
