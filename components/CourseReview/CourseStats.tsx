@@ -122,7 +122,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   }
 
   return (
-    <Stack color={"fg.muted"} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
+    <Stack color={"fg"} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
       <Heading size={"md"} color={"fg"}>
         Data Summary
       </Heading>
@@ -146,21 +146,21 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
       </Flex>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdFeedback} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
-        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg.muted"}>
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {totalReviews}
         </Text>
         <Text fontWeight={"bold"}>Reviews</Text>
       </Stack>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdAccessTime} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
-        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg.muted"}>
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {timeCommitment}
         </Text>
         <Text fontWeight={"bold"}> Hours per Week</Text>
       </Stack>
       <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"baseline"}>
         <Icon as={MdExtension} w={8} h={8} alignSelf={"flex-end"} mb={1.5} />
-        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg.muted"}>
+        <Text fontSize={"3xl"} fontWeight={"light"} color={"fg"}>
           {difficulty}
         </Text>
 

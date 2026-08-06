@@ -10,7 +10,7 @@ interface CourseTableBodyProps {
 
 const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
   return (
-    <Table.Body color={"fg.muted"}>
+    <Table.Body color={"fg"}>
       {jsonData.map((row, r_index) => {
         const {
           code,

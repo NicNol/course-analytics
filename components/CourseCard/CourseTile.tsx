@@ -69,7 +69,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           </Link>
         </Flex>
         <Flex bg={"bg.muted"} px={6} py={4} flexDirection={"column"} alignItems={"center"}>
-          <Flex color={"fg.muted"} alignItems={"center"}>
+          <Flex color={"fg"} alignItems={"center"}>
             <Flex direction={"column"}>
               <Stat icon={MdFeedback} stat={reviews} label={"Reviews"} />
               <Stat icon={MdAccessTime} stat={time} label={"Hours per Week"} />

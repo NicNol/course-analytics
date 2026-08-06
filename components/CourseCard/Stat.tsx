@@ -15,7 +15,7 @@ const Stat: FC<StatProps> = ({ stat: reviews, icon, label }) => {
       <Text
         fontSize={"3xl"}
         fontWeight={"light"}
-        color={"fg.muted"}
+        color={"fg"}
         data-cy={`Course-${label.replaceAll(" ", "-")}-Count`}
       >
         {reviews}
