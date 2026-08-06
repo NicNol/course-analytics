@@ -86,6 +86,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
                 data-href={`/courses/${code.replace(" ", "-")}`}
                 mt={3}
                 w={"full"}
+                variant={"subtle"}
                 rounded={"l2"}
                 loading={loadingStatus}
                 loadingText="Loading"

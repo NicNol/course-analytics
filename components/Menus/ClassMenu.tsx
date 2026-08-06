@@ -26,7 +26,7 @@ const ClassMenu: FC<ClassMenuProps> = ({ handleFilter }) => {
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
-        <Button data-cy={"MenuButton"} size={"md"} variant={"outline"} px={3}>
+        <Button data-cy={"MenuButton"} size={"md"} variant={"subtle"} colorPalette={"gray"} px={3}>
           {currentMenuItem}
           <ChevronDownIcon />
         </Button>

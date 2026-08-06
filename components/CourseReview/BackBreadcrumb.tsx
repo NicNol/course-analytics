@@ -11,7 +11,7 @@ const BackBreadcrumb: FC<BackBreadcrumbProps> = () => {
       <Flex maxW={"content"} w={["100%", null, null, "content"]} p={2}>
         <Link asChild _hover={{ textDecoration: "none" }}>
           <NextLink data-href={"/"} href={"/"}>
-            <Button mt={4} w={48} variant={"outline"}>
+            <Button mt={4} w={48} variant={"subtle"}>
               <ArrowLeftIcon />
               Return to Courses
             </Button>

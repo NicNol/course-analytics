@@ -23,6 +23,11 @@ const config = defineConfig({
           muted: { value: { _light: "{colors.gray.100}", _dark: "{colors.gray.700}" } },
           panel: { value: { _light: "{colors.white}", _dark: "{colors.gray.800}" } },
         },
+        gray: {
+          subtle: { value: { _light: "{colors.gray.100}", _dark: "{colors.gray.800}" } },
+          muted: { value: { _light: "{colors.gray.200}", _dark: "{colors.gray.700}" } },
+          emphasized: { value: { _light: "{colors.gray.300}", _dark: "{colors.gray.600}" } },
+        },
         chrome: {
           bg: { value: { _light: "{colors.gray.900}", _dark: "{colors.gray.950}" } },
           fg: { value: { _light: "{colors.gray.50}", _dark: "{colors.gray.100}" } },
