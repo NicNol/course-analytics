@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC, useState } from "react";
-import { Box, Center, Flex, Heading, NativeSelect, Text } from "@chakra-ui/react";
+import React, { FC, useState } from "react";
+import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import type { ICourse } from "../../scraper/src/models/course";
 import { classList } from "../../scraper/src/classList";
 import CourseTag from "../CourseCard/CourseTag";
@@ -15,7 +15,7 @@ interface CourseDetailBodyProps {
 const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
   const { courseData, courseid } = props;
   const CourseListing = classList.filter((course) => course.code === courseid);
-  const [tipsPerPage, setTipsPerPage] = useState(10);
+  const tipsPerPage = 10;
   const [pageNumber, setPageNumber] = useState(1);
 
   const { tags, title } = CourseListing[0];
@@ -36,11 +36,6 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           .map((review, index) => <CourseReview key={`${index}-${review["review date"]}`} courseData={review} />)
           .reverse();
 
-  function handleChangeTipsPerPage(e: ChangeEvent<HTMLSelectElement>) {
-    setTipsPerPage(parseInt(e.target.value));
-    setPageNumber(1);
-  }
-
   function changePage(delta: number) {
     setPageNumber(pageNumber + delta);
   }
@@ -58,7 +53,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
         rounded={"l3"}
         overflow={"hidden"}
       >
-        <Box bg={"colorPalette.muted"} pb={2}>
+        <Box bg={"colorPalette.muted"} pb={6}>
           <Flex justify={"center"} pt={6} align={"center"} gap={2}>
             {tagElements}
           </Flex>
@@ -77,36 +72,15 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
             {title}
           </Text>
         </Flex>
-        <Flex direction={"column"} bg={"bg.muted"} px={2} py={4}>
+        <Flex direction={"column"} bg={"bg.muted"} px={6} py={4}>
           <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
-            <Flex direction={"column"} mt={[0, null, null, 2]} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
+            <Flex direction={"column"} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
               <CourseStats courseData={courseData} />
             </Flex>
             <Flex direction={"column"} flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"} gap={2}>
-              <Flex justifyContent={"space-between"} alignItems={"center"} flexWrap={"wrap"} gap={1}>
-                <Heading size={"md"} mt={[2, null, null, 0]} id={"TipsHeader"}>
-                  Tips from Students
-                </Heading>
-                <NativeSelect.Root w={48} colorPalette={"gray"}>
-                  <NativeSelect.Field
-                    onChange={handleChangeTipsPerPage}
-                    bg={"bg.panel"}
-                    color={"fg"}
-                    borderColor={"border.emphasized"}
-                  >
-                    <option value="10">10 Tips per Page</option>
-                    <option value="25">25 Tips per Page</option>
-                    <option value="100">100 Tips per Page</option>
-                  </NativeSelect.Field>
-                  <NativeSelect.Indicator />
-                </NativeSelect.Root>
-              </Flex>
-              <Pagination
-                pageNumber={pageNumber}
-                totalTipCount={reviews.length}
-                tipsPerPage={tipsPerPage}
-                changePage={changePage}
-              />
+              <Heading size={"md"} id={"TipsHeader"}>
+                Tips from Students
+              </Heading>
               {reviews.slice(tipsPerPage * (pageNumber - 1), tipsPerPage * pageNumber)}
               <Pagination
                 pageNumber={pageNumber}

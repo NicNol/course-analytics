@@ -16,11 +16,11 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
     <Flex justifyContent={"space-between"} alignItems={"center"}>
       <Button disabled={pageNumber === 1} onClick={() => changePage(-1)} variant={"solid"} colorPalette={"gray"}>
         <ArrowBackIcon />
-        <Text pb={1}>Previous</Text>
+        <Text>Previous</Text>
       </Button>
       <Text textAlign={"center"}>{`Page ${pageNumber} of ${pageCount}`}</Text>
       <Button disabled={pageNumber === pageCount} onClick={() => changePage(1)} variant={"solid"} colorPalette={"gray"}>
-        <Text pb={1}>Next</Text>
+        <Text>Next</Text>
         <ArrowForwardIcon />
       </Button>
     </Flex>

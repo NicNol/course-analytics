@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useState } from "react";
-import { MdAccessTime, MdExtension, MdFeedback, MdInfo, MdMode } from "react-icons/md";
+import { MdAccessTime, MdExtension, MdFeedback, MdInfo } from "react-icons/md";
 import {
   Button,
   Collapsible,
@@ -123,7 +123,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
 
   return (
     <Stack color={"fg.muted"} w={["100%", null, null, "208px"]} ml={[0, null, null, 4]}>
-      <Heading size={"md"} pb={2}>
+      <Heading size={"md"} color={"fg"}>
         Data Summary
       </Heading>
       <Flex justifyContent={"space-between"} alignItems={"center"} gap={4}>
@@ -166,16 +166,12 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
 
         <Text fontWeight={"bold"}>/ 5.0 Difficulty</Text>
       </Stack>
-      <Separator w={["auto", null, null, 48]} />
+      <Separator w={"full"} />
       <Stack>
-        <Stack direction={"row"} justifyContent={["center", null, null, "flex-start"]} align={"center"}>
-          <Icon as={MdMode} w={8} h={8} />
-          <Heading size={"md"} textAlign={"left"}>
-            Common Pairings
-          </Heading>
-        </Stack>
-        <Stack alignItems={"center"}>{coursePairsCollapse}</Stack>
-        <Separator w={["auto", null, null, 48]} />
+        <Heading size={"md"} color={"fg"} textAlign={["center", null, null, "left"]}>
+          Common Pairings
+        </Heading>
+        <Stack>{coursePairsCollapse}</Stack>
       </Stack>
     </Stack>
   );

@@ -33,7 +33,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
         overflow={"hidden"}
         _hover={{ textDecoration: "none" }}
       >
-        <Box bg={"colorPalette.muted"} pb={2}>
+        <Box bg={"colorPalette.muted"} pb={6}>
           <Flex justify={"center"} pt={6} gap={2}>
             {tagComponents}
           </Flex>

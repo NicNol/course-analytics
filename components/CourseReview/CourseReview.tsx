@@ -35,7 +35,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
     >
       <Flex gap={4} maxW={"100%"}>
         {!isNarrowerThan400px && (
-          <Avatar.Root mt={1}>
+          <Avatar.Root size={"xl"} mt={1}>
             <Avatar.Fallback />
           </Avatar.Root>
         )}
