@@ -3,13 +3,13 @@ import { Menu, Span } from "@chakra-ui/react";
 
 interface MenuItemOptionProps {
   title: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   clickHandler: (argument: string) => void;
 }
 
 export interface IMenuOption {
   title: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
 }
 
 const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) => {

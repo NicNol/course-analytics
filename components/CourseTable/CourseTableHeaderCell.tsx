@@ -12,7 +12,7 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({
     column,
     handleHeaderClick,
 }) => {
-    function handleArrowRender(columnFilter: string | null): JSX.Element {
+    function handleArrowRender(columnFilter: string | null): React.JSX.Element {
         const asc = <TriangleUpIcon w={4} h={4} />;
         const desc = <TriangleDownIcon w={4} h={4} />;
         const inv = <TriangleUpIcon w={4} h={4} visibility={"hidden"} />;
