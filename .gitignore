@@ -12,9 +12,6 @@
 /.next/
 /out/
 
-# prettier
-.prettierignore
-
 # production
 /build
 
