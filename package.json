@@ -2,6 +2,9 @@
   "name": "course-analytics",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -38,7 +41,7 @@
   "devDependencies": {
     "@chakra-ui/cli": "^3.36.1",
     "@types/express": "^5.0.6",
-    "@types/node": "^22.20.1",
+    "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "cypress": "^15.17.0",
     "eslint": "^9.39.5",
