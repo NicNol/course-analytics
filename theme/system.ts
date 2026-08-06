@@ -29,8 +29,8 @@ const config = defineConfig({
           emphasized: { value: { _light: "{colors.gray.300}", _dark: "{colors.gray.600}" } },
         },
         chrome: {
-          bg: { value: { _light: "{colors.gray.900}", _dark: "{colors.gray.950}" } },
-          fg: { value: { _light: "{colors.gray.50}", _dark: "{colors.gray.100}" } },
+          bg: { value: "{colors.gray.900}" },
+          fg: { value: "{colors.gray.50}" },
         },
       },
 

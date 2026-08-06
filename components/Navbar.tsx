@@ -6,7 +6,15 @@ import NextLink from "next/link";
 export default function Nav() {
   const { toggleColorMode } = useColorMode();
   return (
-    <Box bg={"chrome.bg"} color={"chrome.fg"} px={4} flexGrow={0} pb={1}>
+    <Box
+      bg={"chrome.bg"}
+      color={"chrome.fg"}
+      borderBottomWidth={"1px"}
+      borderColor={"border"}
+      px={4}
+      flexGrow={0}
+      pb={1}
+    >
       <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <Stack direction={"row"}>
@@ -20,16 +28,16 @@ export default function Nav() {
                     size={{ base: "3xl", md: "4xl" }}
                     _hover={{
                       cursor: "pointer",
-                      color: "colorPalette.emphasized",
+                      color: "colorPalette.200",
                     }}
                     transition={"color 0.2s ease-out"}
-                    color={"colorPalette.muted"}
+                    color={"white"}
                   >
                     Course Analytics
                   </Heading>
                 </NextLink>
               </Link>
-              <Text color={"white"}>
+              <Text color={"gray.400"}>
                 for Oregon State University&apos;s Computer Science Post-Bacc Program
               </Text>
             </Box>
