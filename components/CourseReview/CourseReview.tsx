@@ -41,19 +41,19 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
         )}
         <Box maxW={"100%"} w={"100%"}>
           <Flex gap={2} pb={2} flexWrap={"wrap"} maxW={"100%"}>
-            <Tag.Root>
+            <Tag.Root bg={"gray.muted"}>
               <Tag.StartElement asChild>
                 <MdCalendarToday />
               </Tag.StartElement>
               <Tag.Label>{quarter}</Tag.Label>
             </Tag.Root>
-            <Tag.Root>
+            <Tag.Root bg={"gray.muted"}>
               <Tag.StartElement asChild>
                 <MdAccessTime />
               </Tag.StartElement>
               <Tag.Label>{timeCommitment}/week</Tag.Label>
             </Tag.Root>
-            <Tag.Root>
+            <Tag.Root bg={"gray.muted"}>
               <Tag.StartElement asChild>
                 <MdExtension />
               </Tag.StartElement>
@@ -62,7 +62,7 @@ const CourseReview: FC<CourseReviewProps> = ({ courseData }) => {
             {otherCourses.map((course) => {
               const courseName = course.split(" ");
               return (
-                <Tag.Root key={reviewDate + course}>
+                <Tag.Root key={reviewDate + course} bg={"gray.muted"}>
                   <Tag.StartElement asChild>
                     <MdMode />
                   </Tag.StartElement>
