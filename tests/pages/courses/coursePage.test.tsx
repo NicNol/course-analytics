@@ -14,11 +14,14 @@ function buildMonthlyReviews(count: number) {
   return [...Array(count).keys()].map((index) =>
     buildReview({
       code: courseCode,
-      title: courseTitle,
       review: `Review number ${index + 1}`,
       "review date": `${index + 1}/15/2025 10:00:00`,
     }),
   );
+}
+
+function newestReviewTexts(totalCount: number, pageSize: number) {
+  return [...Array(pageSize).keys()].map((index) => `Review number ${totalCount - index}`);
 }
 
 function readReviewTexts() {
@@ -57,6 +60,15 @@ describe("Course page", () => {
     expect(reviewText).not.toBeInTheDocument();
   });
 
+  it("renders reviews with text only when the course has blank reviews", () => {
+    const reviews = [...buildMonthlyReviews(2), buildReview({ review: "", "review date": "3/15/2025 10:00:00" })];
+
+    renderWithProvider(<Course data={reviews} courseid={courseCode} />);
+
+    const reviewTexts = readReviewTexts();
+    expect(reviewTexts).toStrictEqual(["Review number 2", "Review number 1"]);
+  });
+
   it("renders the ten newest reviews first and the remaining reviews when Next is pressed", async () => {
     const user = userEvent.setup();
     renderWithProvider(<Course data={buildMonthlyReviews(12)} courseid={courseCode} />);
@@ -64,8 +76,7 @@ describe("Course page", () => {
     const firstPageLabel = screen.getByText("Page 1 of 2");
     const firstPageReviews = readReviewTexts();
     expect(firstPageLabel).toBeInTheDocument();
-    expect(firstPageReviews).toHaveLength(10);
-    expect(firstPageReviews).not.toContain("Review number 2");
+    expect(firstPageReviews).toStrictEqual(newestReviewTexts(12, 10));
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
@@ -73,5 +84,35 @@ describe("Course page", () => {
     const secondPageReviews = readReviewTexts();
     expect(secondPageLabel).toBeInTheDocument();
     expect(secondPageReviews).toStrictEqual(["Review number 2", "Review number 1"]);
+  });
+
+  it("renders the first page of reviews when Previous is pressed on the second page", async () => {
+    const user = userEvent.setup();
+    renderWithProvider(<Course data={buildMonthlyReviews(12)} courseid={courseCode} />);
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    await user.click(screen.getByRole("button", { name: "Previous" }));
+
+    const pageLabel = screen.getByText("Page 1 of 2");
+    const reviewTexts = readReviewTexts();
+    expect(pageLabel).toBeInTheDocument();
+    expect(reviewTexts).toStrictEqual(newestReviewTexts(12, 10));
+  });
+
+  it("disables Previous on the first page and Next on the last page", async () => {
+    const user = userEvent.setup();
+    renderWithProvider(<Course data={buildMonthlyReviews(12)} courseid={courseCode} />);
+
+    const previousOnFirstPage = screen.getByRole("button", { name: "Previous" });
+    const nextOnFirstPage = screen.getByRole("button", { name: "Next" });
+    expect(previousOnFirstPage).toBeDisabled();
+    expect(nextOnFirstPage).toBeEnabled();
+
+    await user.click(nextOnFirstPage);
+
+    const previousOnLastPage = screen.getByRole("button", { name: "Previous" });
+    const nextOnLastPage = screen.getByRole("button", { name: "Next" });
+    expect(previousOnLastPage).toBeEnabled();
+    expect(nextOnLastPage).toBeDisabled();
   });
 });

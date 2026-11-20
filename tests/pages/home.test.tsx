@@ -5,24 +5,27 @@ import Home from "../../pages/index";
 import { buildSummaryRow } from "../support/fixtures";
 import { renderWithProvider } from "../support/renderWithProvider";
 
-vi.mock("../../pages/api/summary/index", () => ({ getSummary: vi.fn() }));
+vi.mock("../../scraper/src/mongodb", () => ({ connectToDatabase: vi.fn() }));
+vi.mock("../../scraper/src/models/summary", () => ({ Summary: { find: vi.fn() } }));
+
+const lowerDivisionCourse = buildSummaryRow({
+  code: "CS 161",
+  title: "Introduction to Computer Science I",
+  tags: ["Lower Division", "Core Class"],
+});
+const upperDivisionCourse = buildSummaryRow({
+  code: "CS 361",
+  title: "Software Engineering I",
+  tags: ["Upper Division", "Core Class"],
+});
+const recentElectiveCourse = buildSummaryRow({
+  code: "CS 493",
+  title: "Cloud Application Development",
+  tags: ["Upper Division", "Elective"],
+});
+const allCourses = [lowerDivisionCourse, upperDivisionCourse, recentElectiveCourse];
 
 function buildSummaryByDate() {
-  const lowerDivisionCourse = buildSummaryRow({
-    code: "CS 161",
-    title: "Introduction to Computer Science I",
-    tags: ["Lower Division", "Core Class"],
-  });
-  const upperDivisionCourse = buildSummaryRow({
-    code: "CS 361",
-    title: "Software Engineering I",
-    tags: ["Upper Division", "Core Class"],
-  });
-  const recentElectiveCourse = buildSummaryRow({
-    code: "CS 493",
-    title: "Cloud Application Development",
-    tags: ["Upper Division", "Elective"],
-  });
   return [
     {
       "All Time": [lowerDivisionCourse, upperDivisionCourse, recentElectiveCourse],
@@ -32,52 +35,34 @@ function buildSummaryByDate() {
   ];
 }
 
-const lowerDivisionTitle = "Introduction to Computer Science I";
-const upperDivisionTitle = "Software Engineering I";
-const recentElectiveTitle = "Cloud Application Development";
+function readShownTitles() {
+  return allCourses.map(({ title }) => title).filter((title) => screen.queryByText(title) !== null);
+}
 
 describe("Home", () => {
-  it("renders a card for every course when the page loads", () => {
+  it("renders a card for every course and no table when the page loads", () => {
     renderWithProvider(<Home data={buildSummaryByDate()} />);
 
-    const lowerDivisionCard = screen.getByText(lowerDivisionTitle);
-    const upperDivisionCard = screen.getByText(upperDivisionTitle);
-    const recentElectiveCard = screen.getByText(recentElectiveTitle);
+    const shownTitles = readShownTitles();
     const table = screen.queryByRole("table");
-    expect(lowerDivisionCard).toBeInTheDocument();
-    expect(upperDivisionCard).toBeInTheDocument();
-    expect(recentElectiveCard).toBeInTheDocument();
+    expect(shownTitles).toStrictEqual(allCourses.map(({ title }) => title));
     expect(table).not.toBeInTheDocument();
   });
 
-  it("renders only upper division courses when Upper Division is chosen", async () => {
+  it.each([
+    { option: "Lower Division", expectedCourses: [lowerDivisionCourse] },
+    { option: "Upper Division", expectedCourses: [upperDivisionCourse, recentElectiveCourse] },
+    { option: "Core Classes", expectedCourses: [lowerDivisionCourse, upperDivisionCourse] },
+    { option: "Electives", expectedCourses: [recentElectiveCourse] },
+  ])("renders only the matching cards when $option is chosen", async ({ option, expectedCourses }) => {
     const user = userEvent.setup();
     renderWithProvider(<Home data={buildSummaryByDate()} />);
 
     await user.click(screen.getByRole("button", { name: "All Classes" }));
-    await user.click(await screen.findByRole("menuitem", { name: "Upper Division" }));
+    await user.click(await screen.findByRole("menuitem", { name: option }));
 
-    const lowerDivisionCard = screen.queryByText(lowerDivisionTitle);
-    const upperDivisionCard = screen.getByText(upperDivisionTitle);
-    const recentElectiveCard = screen.getByText(recentElectiveTitle);
-    expect(lowerDivisionCard).not.toBeInTheDocument();
-    expect(upperDivisionCard).toBeInTheDocument();
-    expect(recentElectiveCard).toBeInTheDocument();
-  });
-
-  it("renders only elective courses when Electives is chosen", async () => {
-    const user = userEvent.setup();
-    renderWithProvider(<Home data={buildSummaryByDate()} />);
-
-    await user.click(screen.getByRole("button", { name: "All Classes" }));
-    await user.click(await screen.findByRole("menuitem", { name: "Electives" }));
-
-    const lowerDivisionCard = screen.queryByText(lowerDivisionTitle);
-    const upperDivisionCard = screen.queryByText(upperDivisionTitle);
-    const recentElectiveCard = screen.getByText(recentElectiveTitle);
-    expect(lowerDivisionCard).not.toBeInTheDocument();
-    expect(upperDivisionCard).not.toBeInTheDocument();
-    expect(recentElectiveCard).toBeInTheDocument();
+    const shownTitles = readShownTitles();
+    expect(shownTitles).toStrictEqual(expectedCourses.map(({ title }) => title));
   });
 
   it("renders a table with a linked row for every course when Table View is chosen", async () => {
@@ -88,10 +73,13 @@ describe("Home", () => {
     await user.click(await screen.findByRole("menuitem", { name: "Table View" }));
 
     const table = screen.getByRole("table");
-    const upperDivisionLink = within(table).getByRole("link", { name: `CS 361 - ${upperDivisionTitle}` });
-    const rows = within(table).getAllByRole("row");
-    expect(upperDivisionLink).toHaveAttribute("href", "/courses/CS-361");
-    expect(rows).toHaveLength(4);
+    const links = within(table).getAllByRole("link");
+    const linkTargets = links.map((link) => [link.textContent, link.getAttribute("href")]);
+    expect(linkTargets).toStrictEqual([
+      [`${lowerDivisionCourse.code} - ${lowerDivisionCourse.title}`, "/courses/CS-161"],
+      [`${upperDivisionCourse.code} - ${upperDivisionCourse.title}`, "/courses/CS-361"],
+      [`${recentElectiveCourse.code} - ${recentElectiveCourse.title}`, "/courses/CS-493"],
+    ]);
   });
 
   it("renders only courses in the chosen date range when Past 6 Months is chosen", async () => {
@@ -101,11 +89,7 @@ describe("Home", () => {
     await user.click(screen.getByRole("button", { name: "All Time" }));
     await user.click(await screen.findByRole("menuitem", { name: "Past 6 Months" }));
 
-    const lowerDivisionCard = screen.queryByText(lowerDivisionTitle);
-    const upperDivisionCard = screen.queryByText(upperDivisionTitle);
-    const recentElectiveCard = screen.getByText(recentElectiveTitle);
-    expect(lowerDivisionCard).not.toBeInTheDocument();
-    expect(upperDivisionCard).not.toBeInTheDocument();
-    expect(recentElectiveCard).toBeInTheDocument();
+    const shownTitles = readShownTitles();
+    expect(shownTitles).toStrictEqual([recentElectiveCourse.title]);
   });
 });
