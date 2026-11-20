@@ -20,7 +20,8 @@
     "pretranspile": "npm install -g typescript",
     "transpile": "npx tsc ./scraper/src/scheduler/updateDB/run.ts --target es2020 --module commonjs --moduleResolution node",
     "cypress-dev": "cypress open",
-    "cypress": "cypress run"
+    "cypress": "cypress run",
+    "test": "vitest run"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.36.1",
@@ -47,7 +48,8 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.0",
     "prettier": "^3.9.6",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "vitest": "^5.1.1"
   },
   "cacheDirectories": [
     ".next/cache"
