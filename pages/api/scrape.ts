@@ -6,7 +6,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(405).end("HTTP METHOD NOT ACCEPTED");
     return;
   }
-  if (req.headers.authorization !== process.env.CRON_KEY) {
+  const cronKey = process.env.CRON_KEY;
+  if (!cronKey || req.headers.authorization !== cronKey) {
     res.status(401).end("UNAUTHORIZED");
     return;
   }
