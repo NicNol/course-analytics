@@ -1,3 +1,4 @@
+import { classList } from "../../scraper/src/classList";
 import updateDB from "../../scraper/src/scheduler/updateDB";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -14,6 +15,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     await updateDB();
+    const coursePaths = classList.map((course) => `/courses/${course.code.replace(" ", "-")}`);
+    await Promise.all(["/", ...coursePaths].map((path) => res.revalidate(path)));
     res.status(200).json({ message: "Success!" });
   } catch (err) {
     res.status(500).send(err);

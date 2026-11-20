@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import handler from "../../../pages/api/scrape";
+import { classList } from "../../../scraper/src/classList";
 import updateDB from "../../../scraper/src/scheduler/updateDB";
 import { createRequest, createResponse } from "../../support/apiMocks";
 
@@ -58,6 +59,41 @@ describe("scrape handler", () => {
     expect(response.json).toHaveBeenCalledWith({ message: "Success!" });
   });
 
+  it("revalidates the home page and every current course page when the scrape succeeds", async () => {
+    const request = createRequest({ headers: { authorization: CRON_KEY } });
+    const response = createResponse();
+
+    await handler(request, response);
+
+    const revalidatedPaths = vi.mocked(response.revalidate).mock.calls.map(([path]) => path);
+    expect(revalidatedPaths).toHaveLength(classList.length + 1);
+    expect(revalidatedPaths).toEqual(expect.arrayContaining(["/", "/courses/CS-161", "/courses/CS-374"]));
+    expect(revalidatedPaths).not.toContain("/courses/CS-344");
+  });
+
+  it("revalidates the pages only after the database update finishes", async () => {
+    const request = createRequest({ headers: { authorization: CRON_KEY } });
+    const response = createResponse();
+
+    await handler(request, response);
+
+    const scrapeOrder = vi.mocked(updateDB).mock.invocationCallOrder[0];
+    const firstRevalidateOrder = response.revalidate.mock.invocationCallOrder[0];
+    expect(scrapeOrder).toBeLessThan(firstRevalidateOrder);
+  });
+
+  it("returns 500 with the error when revalidation fails", async () => {
+    const request = createRequest({ headers: { authorization: CRON_KEY } });
+    const response = createResponse();
+    const failure = new Error("revalidation failed");
+    response.revalidate.mockRejectedValue(failure);
+
+    await handler(request, response);
+
+    expect(response.status).toHaveBeenCalledWith(500);
+    expect(response.send).toHaveBeenCalledWith(failure);
+  });
+
   it("returns 500 with the error when scraping fails", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
     const response = createResponse();
@@ -68,5 +104,6 @@ describe("scrape handler", () => {
 
     expect(response.status).toHaveBeenCalledWith(500);
     expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.revalidate).not.toHaveBeenCalled();
   });
 });
