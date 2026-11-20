@@ -59,15 +59,27 @@ describe("scrape handler", () => {
     expect(response.json).toHaveBeenCalledWith({ message: "Success!" });
   });
 
-  it("revalidates the home page and every course page after scraping", async () => {
+  it("revalidates the home page and every current course page when the scrape succeeds", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
     const response = createResponse();
-    const coursePaths = classList.map((course) => `/courses/${course.code.replace(" ", "-")}`);
 
     await handler(request, response);
 
     const revalidatedPaths = vi.mocked(response.revalidate).mock.calls.map(([path]) => path);
-    expect(revalidatedPaths).toEqual(["/", ...coursePaths]);
+    expect(revalidatedPaths).toHaveLength(classList.length + 1);
+    expect(revalidatedPaths).toEqual(expect.arrayContaining(["/", "/courses/CS-161", "/courses/CS-374"]));
+    expect(revalidatedPaths).not.toContain("/courses/CS-344");
+  });
+
+  it("revalidates the pages only after the database update finishes", async () => {
+    const request = createRequest({ headers: { authorization: CRON_KEY } });
+    const response = createResponse();
+
+    await handler(request, response);
+
+    const scrapeOrder = vi.mocked(updateDB).mock.invocationCallOrder[0];
+    const firstRevalidateOrder = response.revalidate.mock.invocationCallOrder[0];
+    expect(scrapeOrder).toBeLessThan(firstRevalidateOrder);
   });
 
   it("returns 500 with the error when revalidation fails", async () => {
