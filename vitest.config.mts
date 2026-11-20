@@ -10,5 +10,20 @@ export default defineConfig({
       include: ["pages/**", "components/**", "scraper/src/**"],
       reporter: ["text-summary", "text"],
     },
+    projects: [
+      {
+        extends: true,
+        test: { name: "node", environment: "node", include: ["tests/**/*.test.ts"] },
+      },
+      {
+        extends: true,
+        test: {
+          name: "dom",
+          environment: "jsdom",
+          include: ["tests/**/*.test.tsx"],
+          setupFiles: ["tests/support/domSetup.ts"],
+        },
+      },
+    ],
   },
 });
