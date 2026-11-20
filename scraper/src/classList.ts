@@ -36,6 +36,11 @@ export const classList: Course[] = [
     tags: ["Lower Division", "Core Class"],
   },
   {
+    code: "CS 274",
+    title: "Introduction to Systems Programming",
+    tags: ["Lower Division", "Elective"],
+  },
+  {
     code: "CS 290",
     title: "Web Development",
     tags: ["Lower Division", "Core Class"],
@@ -51,13 +56,13 @@ export const classList: Course[] = [
     tags: ["Upper Division", "Core Class"],
   },
   {
-    code: "CS 340",
-    title: "Introduction to Databases",
-    tags: ["Upper Division", "Core Class"],
+    code: "CS 332",
+    title: "Introduction to Applied Data Science With Programming",
+    tags: ["Upper Division", "Elective"],
   },
   {
-    code: "CS 344",
-    title: "Operating Systems I",
+    code: "CS 340",
+    title: "Introduction to Databases",
     tags: ["Upper Division", "Core Class"],
   },
   {

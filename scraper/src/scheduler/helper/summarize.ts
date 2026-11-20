@@ -102,12 +102,14 @@ async function saveSummaryData(summaryJSON: ISummaryByDate) {
   await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
 }
 
-export function formatCourseName(courseName: string) {
+export function formatCourseName(rawName: string) {
+  const courseName = rawName.replace(/^([A-Z]+ \d+)\s*-\s*/, "$1 - ");
+
   /* Course name(s) found in spreadsheet */
   const CS161 = ["CS 161 - Intro to Computer Science I"];
   const CS162 = ["CS 162 - Intro to Computer Science II"];
-  const CS344 = ["CS 344 - Operating Systems"];
   const CS372 = ["CS 372 - Intro to Computer Networks"];
+  const CS374 = ["CS 344 - Operating Systems"];
   const CS391 = ["CS 391 - Social and Ethical Issues in CS"];
   const CS450 = ["CS 450 - Intro to Computer Graphics"];
   const CS467 = ["CS 419 - Software Projects", "CS 419 (Legacy)/467 - Capstone", "CS 419/467 - Software Projects"];
@@ -121,8 +123,8 @@ export function formatCourseName(courseName: string) {
   if (CS162.includes(courseName)) {
     return "CS 162 - Introduction to Computer Science II";
   }
-  if (CS344.includes(courseName)) {
-    return "CS 344 - Operating Systems I";
+  if (CS374.includes(courseName)) {
+    return "CS 374 - Operating Systems I";
   }
   if (CS372.includes(courseName)) {
     return "CS 372 - Introduction to Computer Networks";
