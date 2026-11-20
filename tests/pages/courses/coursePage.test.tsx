@@ -60,12 +60,15 @@ describe("Course page", () => {
     expect(reviewText).not.toBeInTheDocument();
   });
 
-  it("renders reviews with text only when the course has blank reviews", () => {
-    const reviews = [...buildMonthlyReviews(2), buildReview({ review: "", "review date": "3/15/2025 10:00:00" })];
+  it("renders only reviews with text when the course has blank reviews", () => {
+    const blankReview = buildReview({ review: "", "review date": "3/15/2025 10:00:00" });
+    const reviews = [...buildMonthlyReviews(2), blankReview];
 
     renderWithProvider(<Course data={reviews} courseid={courseCode} />);
 
+    const submissionDates = screen.getAllByText(/^Submitted/);
     const reviewTexts = readReviewTexts();
+    expect(submissionDates).toHaveLength(2);
     expect(reviewTexts).toStrictEqual(["Review number 2", "Review number 1"]);
   });
 
