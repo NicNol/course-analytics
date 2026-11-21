@@ -1,3 +1,6 @@
 import updateDB from "./index.js";
 
-updateDB();
+updateDB().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});

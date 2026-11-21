@@ -70,8 +70,6 @@ Finally, open a browser window and navigate to `localhost:3000`. This is the Nex
 
 ## Testing
 
-Course Analytics uses [Cypress.io](https://www.cypress.io/) to perform end-to-end testing. Cypress is installed as part of the `npm install` command.
+Course Analytics uses [Vitest](https://vitest.dev/) and [Testing Library](https://testing-library.com/). Tests live in `tests/`. Files ending in `.test.ts` run in Node, and files ending in `.test.tsx` run in jsdom.
 
-To run existing tests, use the `npm run cypress` command.
-
-To modify existing tests or create new tests, use the `npm run cypress-dev` command to run Cypress in its [interactive mode](https://docs.cypress.io/guides/core-concepts/cypress-app). This allows for easier development and debugging of test cases.
+Run the suite with `npm test`. CI also runs `npm run format:check` and `npm run typecheck` on every pull request, and Vercel builds a preview of each one.

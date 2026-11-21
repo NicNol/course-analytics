@@ -8,8 +8,6 @@ export default async function updateDB() {
     await prepareSheet();
     const json = await getJSON();
     await saveCourses(json);
-  } catch (err) {
-    console.error(err);
   } finally {
     await disconnectFromDatabase();
   }
