@@ -2,14 +2,13 @@ import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getJSON } from "../../../scraper/src/scheduler/helper/sheets";
+import { completeEnv } from "../../support/env";
 
 vi.mock("google-auth-library", () => ({ JWT: vi.fn() }));
 vi.mock("google-spreadsheet", () => ({ GoogleSpreadsheet: vi.fn() }));
 
 type SheetRow = { get: (column: string) => string | undefined };
 
-const GOOGLE_CLIENT_EMAIL = "scraper@course-analytics.iam.gserviceaccount.com";
-const GOOGLE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\\nabc123\\n-----END PRIVATE KEY-----\\n";
 const SURVEY_TIMESTAMP = "6/1/2026 10:00:00";
 const SURVEY_QUARTER = "SP 2026";
 const SLEEP_BEFORE_READING_MS = 2000;
@@ -78,8 +77,8 @@ async function readReviews() {
 describe("getJSON", () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    vi.stubEnv("GOOGLE_CLIENT_EMAIL", GOOGLE_CLIENT_EMAIL);
-    vi.stubEnv("GOOGLE_PRIVATE_KEY", GOOGLE_PRIVATE_KEY);
+    vi.stubEnv("GOOGLE_CLIENT_EMAIL", completeEnv.GOOGLE_CLIENT_EMAIL);
+    vi.stubEnv("GOOGLE_PRIVATE_KEY", completeEnv.GOOGLE_PRIVATE_KEY);
   });
 
   afterEach(() => {
@@ -92,7 +91,7 @@ describe("getJSON", () => {
     await readReviews();
 
     expect(JWT).toHaveBeenCalledWith({
-      email: GOOGLE_CLIENT_EMAIL,
+      email: completeEnv.GOOGLE_CLIENT_EMAIL,
       key: "-----BEGIN PRIVATE KEY-----\nabc123\n-----END PRIVATE KEY-----\n",
       scopes: ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file"],
     });

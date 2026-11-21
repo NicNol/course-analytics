@@ -1,13 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 import { readEnv, requireEnv } from "../../lib/env";
+import { completeEnv } from "../support/env";
 
 describe("readEnv", () => {
   it("returns the value when the variable is set", () => {
-    vi.stubEnv("MONGODB_URI", "mongodb://localhost:27017/course-analytics");
+    vi.stubEnv("MONGODB_URI", completeEnv.MONGODB_URI);
 
     const value = readEnv("MONGODB_URI");
 
-    expect(value).toBe("mongodb://localhost:27017/course-analytics");
+    expect(value).toBe(completeEnv.MONGODB_URI);
   });
 
   it.each([
@@ -24,11 +25,11 @@ describe("readEnv", () => {
 
 describe("requireEnv", () => {
   it("returns the value when the variable is set", () => {
-    vi.stubEnv("GOOGLE_CLIENT_EMAIL", "scraper@course-analytics.iam.gserviceaccount.com");
+    vi.stubEnv("GOOGLE_CLIENT_EMAIL", completeEnv.GOOGLE_CLIENT_EMAIL);
 
     const value = requireEnv("GOOGLE_CLIENT_EMAIL");
 
-    expect(value).toBe("scraper@course-analytics.iam.gserviceaccount.com");
+    expect(value).toBe(completeEnv.GOOGLE_CLIENT_EMAIL);
   });
 
   it.each([
