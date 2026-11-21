@@ -1,7 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import getSummaryHandler from "../../../../pages/api/summary";
 import { createRequest, createResponse } from "../../../support/apiMocks";
 import { buildReview, buildSummaryRow } from "../../../support/fixtures";
+import { useFixedClock } from "../../../support/fixedClock";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
@@ -18,14 +19,7 @@ const summaryRow = buildSummaryRow({
 const summaries = [{ "All Time": [summaryRow], "Past 2 Years": [summaryRow], "Past 6 Months": [summaryRow] }];
 
 describe("summary handler", () => {
-  beforeEach(() => {
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-06-15T12:00:00Z"));
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
+  useFixedClock("2026-06-15T12:00:00Z");
 
   it("returns 405 without querying when the method is not GET", async () => {
     const request = createRequest({ method: "POST" });

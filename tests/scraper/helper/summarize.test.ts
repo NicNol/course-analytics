@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi, type MockInstance } from "vitest";
 import type { ICourse } from "../../../lib/models/course";
 import { formatCourseName, saveCourses } from "../../../scraper/helper/summarize";
 import { buildSheetReview } from "../../support/fixtures";
@@ -66,12 +66,21 @@ describe("formatCourseName", () => {
 });
 
 describe("saveCourses", () => {
+  let consoleWarn: MockInstance;
+
+  beforeEach(() => {
+    consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  });
+
   function readInsertedReviews() {
     return firstCallArguments(insertMany)[0];
   }
 
+  function readInsertedCodesAndTitles() {
+    return readInsertedReviews().map(({ code, title }: ICourse) => ({ code, title }));
+  }
+
   it("logs one warning listing each distinct unrecognized time commitment when reviews have unrecognized time commitments", async () => {
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const reviews = [
       buildSheetReview({ "time commitment": "a few hours" }),
       buildSheetReview({ "time commitment": "a few hours" }),
@@ -86,7 +95,6 @@ describe("saveCourses", () => {
   });
 
   it("logs a warning when the time commitment is named like an object property", async () => {
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const reviews = [buildSheetReview({ "time commitment": "constructor" })];
 
     await saveCourses(reviews);
@@ -95,8 +103,6 @@ describe("saveCourses", () => {
   });
 
   it("logs no warning when every time commitment is recognized", async () => {
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
-
     await saveCourses([buildSheetReview({ "time commitment": "0-5 hours" })]);
 
     expect(consoleWarn).not.toHaveBeenCalled();
@@ -110,7 +116,7 @@ describe("saveCourses", () => {
 
     await saveCourses(reviews);
 
-    const insertedCourses = readInsertedReviews().map(({ code, title }: ICourse) => ({ code, title }));
+    const insertedCourses = readInsertedCodesAndTitles();
     expect(insertedCourses).toStrictEqual([
       { code: "CS 381", title: "Programming Language Fundamentals" },
       { code: "CS 381", title: "Programming Language Fundamentals" },
@@ -125,7 +131,7 @@ describe("saveCourses", () => {
 
     await saveCourses(reviews);
 
-    const insertedCourses = readInsertedReviews().map(({ code, title }: ICourse) => ({ code, title }));
+    const insertedCourses = readInsertedCodesAndTitles();
     expect(insertedCourses).toStrictEqual([
       { code: "CS 374", title: "Operating Systems I" },
       { code: "CS 374", title: "Operating Systems I" },

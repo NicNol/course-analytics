@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { classList } from "../../lib/classList";
 import { summarizeByDate } from "../../lib/summarize";
 import { buildReview } from "../support/fixtures";
 
@@ -8,9 +7,7 @@ const REVIEW_DATE_WITHIN_SIX_MONTHS = "6/1/2026 10:00:00";
 const REVIEW_DATE_WITHIN_TWO_YEARS = "6/1/2025 10:00:00";
 const REVIEW_DATE_OLDER_THAN_TWO_YEARS = "6/1/2023 10:00:00";
 
-function findTags(code: string) {
-  return classList.find((course) => course.code === code)?.tags;
-}
+const LOWER_DIVISION_CORE_TAGS = ["Lower Division", "Core Class"];
 
 describe("summarizeByDate", () => {
   it("returns averages for each date range when a course has reviews of different ages", () => {
@@ -31,7 +28,11 @@ describe("summarizeByDate", () => {
         "review date": REVIEW_DATE_WITHIN_SIX_MONTHS,
       }),
     ];
-    const cs161Summary = { code: "CS 161", title: "Introduction to Computer Science I", tags: findTags("CS 161") };
+    const cs161Summary = {
+      code: "CS 161",
+      title: "Introduction to Computer Science I",
+      tags: LOWER_DIVISION_CORE_TAGS,
+    };
 
     const summary = summarizeByDate(reviews, NOW);
 
@@ -83,7 +84,11 @@ describe("summarizeByDate", () => {
         "review date": REVIEW_DATE_OLDER_THAN_TWO_YEARS,
       }),
     ];
-    const cs162Summary = { code: "CS 162", title: "Introduction to Computer Science II", tags: findTags("CS 162") };
+    const cs162Summary = {
+      code: "CS 162",
+      title: "Introduction to Computer Science II",
+      tags: LOWER_DIVISION_CORE_TAGS,
+    };
 
     const summary = summarizeByDate(reviews, NOW);
 
@@ -125,7 +130,7 @@ describe("summarizeByDate", () => {
         "average difficulty": "3",
         "time commitment": "9",
         "review count": "2",
-        tags: findTags("CS 161"),
+        tags: LOWER_DIVISION_CORE_TAGS,
       },
     ]);
   });

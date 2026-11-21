@@ -1,7 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import getSummary from "../../../../pages/api/summary/[courseID]";
 import { createRequest, createResponse } from "../../../support/apiMocks";
 import { buildReview, buildSummaryRow } from "../../../support/fixtures";
+import { useFixedClock } from "../../../support/fixedClock";
 
 const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 
@@ -39,14 +40,7 @@ const cs162Row = buildSummaryRow({
 });
 
 describe("getSummary by course ID", () => {
-  beforeEach(() => {
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-06-15T12:00:00Z"));
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
+  useFixedClock("2026-06-15T12:00:00Z");
 
   it("returns 405 without querying when the method is not GET", async () => {
     const request = createRequest({ method: "POST", query: { courseID: "CS-161" } });
