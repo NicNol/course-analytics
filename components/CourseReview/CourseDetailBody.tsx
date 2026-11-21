@@ -58,34 +58,21 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
           <Flex justify={"center"} pt={6} align={"center"} gap={2}>
             {tagElements}
           </Flex>
-          <Text
-            textAlign={"center"}
-            fontSize={"5xl"}
-            fontWeight={"extrabold"}
-            color={"fg"}
-            mt={3}
-            data-cy={"CourseNumber"}
-          >
+          <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"} mt={3}>
             {courseid}
           </Text>
         </Box>
         <Flex direction={"column"} align={"center"} justify={"center"} bg={"chrome.bg"} h={16} px={8}>
-          <Text
-            textAlign={"center"}
-            color={"chrome.fg"}
-            fontSize={"2xl"}
-            fontWeight={"semibold"}
-            data-cy={"CourseTitle"}
-          >
+          <Text textAlign={"center"} color={"chrome.fg"} fontSize={"2xl"} fontWeight={"semibold"}>
             {title}
           </Text>
         </Flex>
         <Flex direction={"column"} bg={"bg.muted"} px={6} py={4}>
           <Flex flexWrap={["wrap", null, null, "nowrap"]} alignItems={"stretch"} justifyContent={"flex-start"} gap={6}>
-            <Flex direction={"column"} flexGrow={[1, 1, 1, 0]} data-cy={"CourseStats"}>
+            <Flex direction={"column"} flexGrow={[1, 1, 1, 0]}>
               <CourseStats courseData={courseData} />
             </Flex>
-            <Flex direction={"column"} flexGrow={1} data-cy={"CourseReviews"} maxW={"100%"} w={"100%"} gap={2}>
+            <Flex direction={"column"} flexGrow={1} maxW={"100%"} w={"100%"} gap={2}>
               <Heading size={"md"} id={"TipsHeader"}>
                 Tips from Students
               </Heading>
