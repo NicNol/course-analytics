@@ -138,7 +138,8 @@ describe("saveCourses", () => {
     ]);
   });
 
-  it("saves a zero time commitment but keeps the other averages when a review has an unrecognized time commitment", async () => {
+  it("averages the time commitment over the recognized reviews when a review has an unrecognized time commitment", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const reviews = [
       buildSheetReview({
         difficulty: "2",
@@ -158,8 +159,41 @@ describe("saveCourses", () => {
 
     const summary = readSavedSummary();
     expect(summary["All Time"]).toStrictEqual([
-      { ...cs161Summary, "average difficulty": "3", "time commitment": "0", "review count": "2" },
+      { ...cs161Summary, "average difficulty": "3", "time commitment": "9", "review count": "2" },
     ]);
+  });
+
+  it("saves a zero time commitment when no review of the course has a recognized time commitment", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const reviews = [buildSheetReview({ difficulty: "4", "time commitment": "a few hours" })];
+
+    await saveCourses(reviews);
+
+    const [courseSummary] = readSavedSummary()["All Time"];
+    expect(courseSummary).toMatchObject({ "average difficulty": "4", "time commitment": "0", "review count": "1" });
+  });
+
+  it("logs one warning listing each distinct unrecognized time commitment when reviews have unrecognized time commitments", async () => {
+    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const reviews = [
+      buildSheetReview({ "time commitment": "a few hours" }),
+      buildSheetReview({ "time commitment": "a few hours" }),
+      buildSheetReview({ "time commitment": "" }),
+      buildSheetReview({ "time commitment": "6-12 hours" }),
+    ];
+
+    await saveCourses(reviews);
+
+    expect(consoleWarn).toHaveBeenCalledTimes(1);
+    expect(consoleWarn).toHaveBeenCalledWith('Ignoring unrecognized time commitments: "a few hours", ""');
+  });
+
+  it("logs no warning when every time commitment is recognized", async () => {
+    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    await saveCourses([buildSheetReview({ "time commitment": "0-5 hours" })]);
+
+    expect(consoleWarn).not.toHaveBeenCalled();
   });
 
   it("saves no tags when the course is not in the class list", async () => {

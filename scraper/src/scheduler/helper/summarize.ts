@@ -2,22 +2,19 @@ import { Course, ICourse } from "../../models/course";
 import { ISummary, ISummaryByDate, Summary } from "../../models/summary";
 import { classList } from "../../classList";
 
-interface TimeAvg {
-  [key: string]: number;
-}
-
-const timeAvg: TimeAvg = {
-  "0-5 hours": 3,
-  "6-12 hours": 9,
-  "13-18 hours": 15,
-  "18+ hours": 21,
-};
+const timeAvg = new Map([
+  ["0-5 hours", 3],
+  ["6-12 hours", 9],
+  ["13-18 hours", 15],
+  ["18+ hours", 21],
+]);
 
 class SummaryObject {
   code: string;
   title: string;
   difficulty = 0;
   time = 0;
+  timeReviews = 0;
   reviews = 0;
   tags: [] | string[] = [];
 
@@ -30,6 +27,7 @@ class SummaryObject {
 
 export async function saveCourses(json: ICourse[]) {
   const formattedJson = formatCourseData(json);
+  warnAboutUnrecognizedTimeCommitments(formattedJson);
   await Course.deleteMany({});
   await Course.insertMany(formattedJson);
   const summaryData = {
@@ -38,6 +36,15 @@ export async function saveCourses(json: ICourse[]) {
     "Past 6 Months": filterAndSummarizeDataByDate(formattedJson, 183),
   };
   await saveSummaryData(summaryData);
+}
+
+function warnAboutUnrecognizedTimeCommitments(json: ICourse[]) {
+  const unrecognized = new Set(json.map((course) => course["time commitment"]).filter((time) => !timeAvg.has(time)));
+  if (unrecognized.size > 0) {
+    console.warn(
+      `Ignoring unrecognized time commitments: ${[...unrecognized].map((time) => JSON.stringify(time)).join(", ")}`,
+    );
+  }
 }
 
 function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
@@ -64,16 +71,20 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
     /* Add review details to course totals */
     summary.reviews += 1;
     summary.difficulty += parseInt(difficulty);
-    summary.time += timeAvg[time] ?? NaN;
+    const hours = timeAvg.get(time);
+    if (hours !== undefined) {
+      summary.time += hours;
+      summary.timeReviews += 1;
+    }
   }
 
   /* Average difficulty and time commitment data */
-  for (const { difficulty, code, title, reviews, tags, time } of courseSummaries.values()) {
+  for (const { difficulty, code, title, reviews, tags, time, timeReviews } of courseSummaries.values()) {
     /* Round difficulty to one decimal */
     const avgDifficulty = Math.round((difficulty / reviews) * 10) / 10 || 0;
 
     /* Round the time commitment to an integer */
-    const timeCommitment = Math.round(time / reviews) || 0;
+    const timeCommitment = Math.round(time / timeReviews) || 0;
 
     /* Create a new summary document */
     const courseSummary: ISummary = {
