@@ -6,7 +6,7 @@ import { buildSummaryRow } from "../support/fixtures";
 import { renderWithProvider } from "../support/renderWithProvider";
 
 vi.mock("../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../lib/models/summary", () => ({ Summary: { find: vi.fn() } }));
+vi.mock("../../lib/models/course", () => ({ Course: { find: vi.fn() } }));
 
 const lowerDivisionCourse = buildSummaryRow({
   code: "CS 161",

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Box, Flex, Icon, Link, Table } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { ISummary } from "../../lib/models/summary";
+import { ISummary } from "../../lib/summarize";
 import { MdAccessTime, MdExtension, MdFeedback } from "react-icons/md";
 
 interface CourseTableBodyProps {

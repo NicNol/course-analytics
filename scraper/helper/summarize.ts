@@ -1,44 +1,13 @@
-import type { ClientSession } from "mongoose";
 import { Course, ICourse } from "../../lib/models/course";
-import { ISummary, ISummaryByDate, Summary } from "../../lib/models/summary";
-import { classList } from "../../lib/classList";
+import { timeAvg } from "../../lib/summarize";
 import { runInTransaction } from "../../lib/mongodb";
-
-const timeAvg = new Map([
-  ["0-5 hours", 3],
-  ["6-12 hours", 9],
-  ["13-18 hours", 15],
-  ["18+ hours", 21],
-]);
-
-class SummaryObject {
-  code: string;
-  title: string;
-  difficulty = 0;
-  time = 0;
-  timeReviews = 0;
-  reviews = 0;
-  tags: [] | string[] = [];
-
-  constructor(code: string, title: string) {
-    this.code = code;
-    this.title = title;
-    this.tags = classList.find((classObj) => classObj.code === code)?.tags || [];
-  }
-}
 
 export async function saveCourses(json: ICourse[]) {
   const formattedJson = formatCourseData(json);
   warnAboutUnrecognizedTimeCommitments(formattedJson);
-  const summaryData = {
-    "All Time": filterAndSummarizeDataByDate(formattedJson, 99999),
-    "Past 2 Years": filterAndSummarizeDataByDate(formattedJson, 730),
-    "Past 6 Months": filterAndSummarizeDataByDate(formattedJson, 183),
-  };
   await runInTransaction(async (session) => {
     await Course.deleteMany({}, { session });
     await Course.insertMany(formattedJson, { session });
-    await saveSummaryData(summaryData, session);
   });
 }
 
@@ -49,67 +18,6 @@ function warnAboutUnrecognizedTimeCommitments(json: ICourse[]) {
       `Ignoring unrecognized time commitments: ${[...unrecognized].map((time) => JSON.stringify(time)).join(", ")}`,
     );
   }
-}
-
-function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
-  /* Declare and initialize variables */
-  const courseSummaries = new Map<string, SummaryObject>();
-  const summaryJSON: ISummary[] = [];
-
-  /* Create course summary objects and sum the data from each review */
-  for (const course of json) {
-    /* Destructure course data */
-    const { difficulty, code, title, "time commitment": time, "review date": reviewDate } = course;
-    if (!code || !title) continue;
-
-    /* Add course name to list of possible course names if it doesn't exist yet */
-    let summary = courseSummaries.get(code);
-    if (!summary) {
-      summary = new SummaryObject(code, title);
-      courseSummaries.set(code, summary);
-    }
-
-    /* Ignore reviews that are older than daysInPast */
-    if (Date.parse(reviewDate) <= new Date().getTime() - daysInPast * 1000 * 60 * 60 * 24) continue;
-
-    /* Add review details to course totals */
-    summary.reviews += 1;
-    summary.difficulty += parseInt(difficulty);
-    const hours = timeAvg.get(time);
-    if (hours !== undefined) {
-      summary.time += hours;
-      summary.timeReviews += 1;
-    }
-  }
-
-  /* Average difficulty and time commitment data */
-  for (const { difficulty, code, title, reviews, tags, time, timeReviews } of courseSummaries.values()) {
-    /* Round difficulty to one decimal */
-    const avgDifficulty = Math.round((difficulty / reviews) * 10) / 10 || 0;
-
-    /* Round the time commitment to an integer */
-    const timeCommitment = Math.round(time / timeReviews) || 0;
-
-    /* Create a new summary document */
-    const courseSummary: ISummary = {
-      code: code,
-      title: title,
-      "average difficulty": avgDifficulty.toString(),
-      "time commitment": timeCommitment.toString(),
-      "review count": reviews.toString(),
-      tags: tags,
-    };
-
-    /* Push the final summary to the summaryJSON array */
-    summaryJSON.push(courseSummary);
-  }
-
-  return summaryJSON;
-}
-
-async function saveSummaryData(summaryJSON: ISummaryByDate, session: ClientSession) {
-  /* Update the summary document -or- Insert if not found */
-  await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true, session });
 }
 
 export function formatCourseName(rawName: string) {

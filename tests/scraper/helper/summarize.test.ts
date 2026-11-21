@@ -1,16 +1,14 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { classList } from "../../../lib/classList";
-import type { ISummaryByDate } from "../../../lib/models/summary";
+import { beforeEach, describe, expect, it, vi, type MockInstance } from "vitest";
+import type { ICourse } from "../../../lib/models/course";
 import { formatCourseName, saveCourses } from "../../../scraper/helper/summarize";
 import { buildSheetReview } from "../../support/fixtures";
 import { firstCallArguments, firstInvocationOrder } from "../../support/mockCalls";
 
-const { deleteMany, insertMany, findOneAndUpdate, runInTransaction, transactionSession } = vi.hoisted(() => {
+const { deleteMany, insertMany, runInTransaction, transactionSession } = vi.hoisted(() => {
   const transactionSession = { id: "transaction-session" };
   return {
     deleteMany: vi.fn(),
     insertMany: vi.fn(),
-    findOneAndUpdate: vi.fn(),
     runInTransaction: vi.fn((work: (session: unknown) => Promise<unknown>) => work(transactionSession)),
     transactionSession,
   };
@@ -18,7 +16,6 @@ const { deleteMany, insertMany, findOneAndUpdate, runInTransaction, transactionS
 
 vi.mock("../../../lib/mongodb", () => ({ runInTransaction }));
 vi.mock("../../../lib/models/course", () => ({ Course: { deleteMany, insertMany } }));
-vi.mock("../../../lib/models/summary", () => ({ Summary: { findOneAndUpdate } }));
 
 describe("formatCourseName", () => {
   it("returns the name with a spaced dash when the dash has no space before it", () => {
@@ -69,122 +66,21 @@ describe("formatCourseName", () => {
 });
 
 describe("saveCourses", () => {
-  const REVIEW_DATE_WITHIN_SIX_MONTHS = "6/1/2026 10:00:00";
-  const REVIEW_DATE_WITHIN_TWO_YEARS = "6/1/2025 10:00:00";
-  const REVIEW_DATE_OLDER_THAN_TWO_YEARS = "6/1/2023 10:00:00";
-
-  function readSavedSummary(): ISummaryByDate {
-    return firstCallArguments(findOneAndUpdate)[1];
-  }
+  let consoleWarn: MockInstance;
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-15T12:00:00Z"));
+    consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
+  function readInsertedReviews() {
+    return firstCallArguments(insertMany)[0];
+  }
 
-  it("saves averages for each date range when a course has reviews of different ages", async () => {
-    const reviews = [
-      buildSheetReview({
-        difficulty: "5",
-        "time commitment": "18+ hours",
-        "review date": REVIEW_DATE_OLDER_THAN_TWO_YEARS,
-      }),
-      buildSheetReview({
-        difficulty: "3",
-        "time commitment": "6-12 hours",
-        "review date": REVIEW_DATE_WITHIN_TWO_YEARS,
-      }),
-      buildSheetReview({
-        difficulty: "1",
-        "time commitment": "0-5 hours",
-        "review date": REVIEW_DATE_WITHIN_SIX_MONTHS,
-      }),
-    ];
-    const cs161Tags = classList.find(({ code }) => code === "CS 161")?.tags;
-    const cs161Summary = { code: "CS 161", title: "Introduction to Computer Science I", tags: cs161Tags };
-
-    await saveCourses(reviews);
-
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      { ...cs161Summary, "average difficulty": "3", "time commitment": "11", "review count": "3" },
-    ]);
-    expect(summary["Past 2 Years"]).toStrictEqual([
-      { ...cs161Summary, "average difficulty": "2", "time commitment": "6", "review count": "2" },
-    ]);
-    expect(summary["Past 6 Months"]).toStrictEqual([
-      { ...cs161Summary, "average difficulty": "1", "time commitment": "3", "review count": "1" },
-    ]);
-  });
-
-  it("saves a zeroed row when the course has no reviews in the date range", async () => {
-    const reviews = [
-      buildSheetReview({
-        name: "CS 162 - Intro to Computer Science II",
-        difficulty: "4",
-        "time commitment": "13-18 hours",
-        "review date": REVIEW_DATE_OLDER_THAN_TWO_YEARS,
-      }),
-    ];
-    const cs162Tags = classList.find(({ code }) => code === "CS 162")?.tags;
-    const cs162Summary = { code: "CS 162", title: "Introduction to Computer Science II", tags: cs162Tags };
-
-    await saveCourses(reviews);
-
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      { ...cs162Summary, "average difficulty": "4", "time commitment": "15", "review count": "1" },
-    ]);
-    expect(summary["Past 6 Months"]).toStrictEqual([
-      { ...cs162Summary, "average difficulty": "0", "time commitment": "0", "review count": "0" },
-    ]);
-  });
-
-  it("averages the time commitment over the recognized reviews when a review has an unrecognized time commitment", async () => {
-    vi.spyOn(console, "warn").mockImplementation(() => undefined);
-    const reviews = [
-      buildSheetReview({
-        difficulty: "2",
-        "time commitment": "6-12 hours",
-        "review date": REVIEW_DATE_WITHIN_SIX_MONTHS,
-      }),
-      buildSheetReview({
-        difficulty: "4",
-        "time commitment": "a few hours",
-        "review date": REVIEW_DATE_WITHIN_SIX_MONTHS,
-      }),
-    ];
-    const cs161Tags = classList.find(({ code }) => code === "CS 161")?.tags;
-    const cs161Summary = { code: "CS 161", title: "Introduction to Computer Science I", tags: cs161Tags };
-
-    await saveCourses(reviews);
-
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      { ...cs161Summary, "average difficulty": "3", "time commitment": "9", "review count": "2" },
-    ]);
-  });
-
-  it("saves a zero time commitment when no review of the course has a recognized time commitment", async () => {
-    vi.spyOn(console, "warn").mockImplementation(() => undefined);
-    const reviews = [buildSheetReview({ difficulty: "4", "time commitment": "a few hours" })];
-    const cs161Tags = classList.find(({ code }) => code === "CS 161")?.tags;
-    const cs161Summary = { code: "CS 161", title: "Introduction to Computer Science I", tags: cs161Tags };
-
-    await saveCourses(reviews);
-
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      { ...cs161Summary, "average difficulty": "4", "time commitment": "0", "review count": "1" },
-    ]);
-  });
+  function readInsertedCodesAndTitles() {
+    return readInsertedReviews().map(({ code, title }: ICourse) => ({ code, title }));
+  }
 
   it("logs one warning listing each distinct unrecognized time commitment when reviews have unrecognized time commitments", async () => {
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const reviews = [
       buildSheetReview({ "time commitment": "a few hours" }),
       buildSheetReview({ "time commitment": "a few hours" }),
@@ -198,84 +94,47 @@ describe("saveCourses", () => {
     expect(consoleWarn).toHaveBeenCalledWith(expect.stringContaining('"a few hours", ""'));
   });
 
-  it("logs a warning and saves a zero time commitment when the time commitment is named like an object property", async () => {
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  it("logs a warning when the time commitment is named like an object property", async () => {
     const reviews = [buildSheetReview({ "time commitment": "constructor" })];
 
     await saveCourses(reviews);
 
-    const [courseSummary] = readSavedSummary()["All Time"];
     expect(consoleWarn).toHaveBeenCalledWith(expect.stringContaining('"constructor"'));
-    expect(courseSummary?.["time commitment"]).toBe("0");
   });
 
   it("logs no warning when every time commitment is recognized", async () => {
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
-
     await saveCourses([buildSheetReview({ "time commitment": "0-5 hours" })]);
 
     expect(consoleWarn).not.toHaveBeenCalled();
   });
 
-  it("saves no tags when the course is not in the class list", async () => {
-    const reviews = [buildSheetReview({ name: "CS 496 - Mobile and Cloud Software Development" })];
-
-    await saveCourses(reviews);
-
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      {
-        code: "CS 496",
-        title: "Mobile and Cloud Software Development",
-        "average difficulty": "2",
-        "time commitment": "9",
-        "review count": "1",
-        tags: [],
-      },
-    ]);
-  });
-
-  it("saves one course when reviews spell the CS 381 dash differently", async () => {
+  it("saves the same code and title when reviews spell the CS 381 dash differently", async () => {
     const reviews = [
       buildSheetReview({ name: "CS 381 - Programming Language Fundamentals" }),
       buildSheetReview({ name: "CS 381- Programming Language Fundamentals" }),
     ];
-    const cs381Tags = classList.find(({ code }) => code === "CS 381")?.tags;
 
     await saveCourses(reviews);
 
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      {
-        code: "CS 381",
-        title: "Programming Language Fundamentals",
-        "average difficulty": "2",
-        "time commitment": "9",
-        "review count": "2",
-        tags: cs381Tags,
-      },
+    const insertedCourses = readInsertedCodesAndTitles();
+    expect(insertedCourses).toStrictEqual([
+      { code: "CS 381", title: "Programming Language Fundamentals" },
+      { code: "CS 381", title: "Programming Language Fundamentals" },
     ]);
   });
 
-  it("saves one CS 374 course when reviews use the retired CS 344 name", async () => {
+  it("saves the CS 374 code and title when reviews use the retired CS 344 name", async () => {
     const reviews = [
       buildSheetReview({ name: "CS 344 - Operating Systems" }),
       buildSheetReview({ name: "CS 374 - Operating Systems I" }),
     ];
-    const cs374Tags = classList.find(({ code }) => code === "CS 374")?.tags;
 
     await saveCourses(reviews);
 
-    const summary = readSavedSummary();
-    expect(summary["All Time"]).toStrictEqual([
-      {
-        code: "CS 374",
-        title: "Operating Systems I",
-        "average difficulty": "2",
-        "time commitment": "9",
-        "review count": "2",
-        tags: cs374Tags,
-      },
+    const insertedCourses = readInsertedCodesAndTitles();
+    expect(insertedCourses).toStrictEqual([
+      { code: "CS 374", title: "Operating Systems I" },
+      { code: "CS 374", title: "Operating Systems I" },
     ]);
   });
 
@@ -300,39 +159,27 @@ describe("saveCourses", () => {
     const deleteOrder = firstInvocationOrder(deleteMany);
     const insertOrder = firstInvocationOrder(insertMany);
     const [deleteFilter] = firstCallArguments(deleteMany);
-    const [insertedReviews] = firstCallArguments(insertMany);
     expect(deleteFilter).toStrictEqual({});
-    expect(insertedReviews).toStrictEqual([storedReview]);
+    expect(readInsertedReviews()).toStrictEqual([storedReview]);
     expect(deleteOrder).toBeLessThan(insertOrder);
   });
 
-  it("saves the summary with upsert when saving courses", async () => {
-    await saveCourses([buildSheetReview()]);
-
-    const [filter, , options] = firstCallArguments(findOneAndUpdate);
-    expect(filter).toStrictEqual({});
-    expect(options.upsert).toBe(true);
-  });
-
-  it("writes the reviews and the summary with the same transaction session when saving courses", async () => {
+  it("writes the delete and the insert with the same transaction session", async () => {
     await saveCourses([buildSheetReview()]);
 
     const deleteOptions = firstCallArguments(deleteMany)[1];
     const insertOptions = firstCallArguments(insertMany)[1];
-    const summaryOptions = firstCallArguments(findOneAndUpdate)[2];
     expect(runInTransaction).toHaveBeenCalledTimes(1);
     expect(deleteOptions).toStrictEqual({ session: transactionSession });
     expect(insertOptions).toStrictEqual({ session: transactionSession });
-    expect(summaryOptions.session).toBe(transactionSession);
   });
 
-  it("rejects with the error and does not save the summary when inserting the reviews fails", async () => {
+  it("rejects with the error when inserting the reviews fails", async () => {
     const failure = new Error("insert failed");
     insertMany.mockRejectedValue(failure);
 
     const saving = saveCourses([buildSheetReview()]);
 
     await expect(saving).rejects.toBe(failure);
-    expect(findOneAndUpdate).not.toHaveBeenCalled();
   });
 });

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { sendServerError } from "../../../lib/sendServerError";
 import { getSummary } from "../../../lib/summaries";
-import type { ISummary } from "../../../lib/models/summary";
+import type { ISummary } from "../../../lib/summarize";
 
 const DATE_RANGES = ["All Time", "Past 2 Years", "Past 6 Months"] as const;
 
