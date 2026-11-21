@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import type { ICourse } from "../../../lib/models/course";
 import Course from "../../../pages/courses/[courseid]";
-import { buildReview } from "../../support/fixtures";
+import { buildMonthlyReviews, buildReview } from "../../support/fixtures";
 import { renderWithProvider } from "../../support/renderWithProvider";
 
 vi.mock("../../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
@@ -13,16 +13,6 @@ const courseCode = "CS 374";
 const courseTitle = "Operating Systems I";
 const reviewsEndpoint = "/api/courses/CS-374";
 const loadFailureMessage = "Could not load more reviews. Try again.";
-
-function buildMonthlyReviews(count: number) {
-  return [...Array(count).keys()].map((index) =>
-    buildReview({
-      code: courseCode,
-      review: `Review number ${index + 1}`,
-      "review date": `${index + 1}/15/2025 10:00:00`,
-    }),
-  );
-}
 
 function newestReviewTexts(totalCount: number, pageSize: number) {
   return [...Array(pageSize).keys()].map((index) => `Review number ${totalCount - index}`);
@@ -152,7 +142,7 @@ describe("Course page", () => {
     expect(secondPageReviews).toStrictEqual(["Review number 2", "Review number 1"]);
   });
 
-  it("counts only reviews with text in the page count when the fetched reviews include blank ones", async () => {
+  it("renders a page count without blank reviews when the fetched reviews include blank ones", async () => {
     const user = userEvent.setup();
     const blankReviews = [...Array(9).keys()].map((index) =>
       buildReview({ review: "", "review date": `${index + 1}/20/2025 10:00:00` }),

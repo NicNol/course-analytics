@@ -41,3 +41,13 @@ export function buildSheetReview(overrides: Partial<ICourse> = {}): ICourse {
 }
 
 export const HIDDEN_FIELDS = { _id: false, versionKey: false };
+
+export function buildMonthlyReviews(count: number) {
+  return [...Array(count).keys()].map((index) =>
+    buildReview({
+      code: "CS 374",
+      review: `Review number ${index + 1}`,
+      "review date": `${index + 1}/15/2025 10:00:00`,
+    }),
+  );
+}

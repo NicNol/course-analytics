@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { getStaticPaths, getStaticProps } from "../../../pages/courses/[courseid]";
-import { buildReview } from "../../support/fixtures";
+import { buildMonthlyReviews, buildReview } from "../../support/fixtures";
 
 const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 
@@ -17,16 +17,6 @@ describe("getStaticPaths", () => {
     expect(fallback).toBe(false);
   });
 });
-
-function buildMonthlyReviews(count: number) {
-  return [...Array(count).keys()].map((index) =>
-    buildReview({
-      code: "CS 374",
-      review: `Review number ${index + 1}`,
-      "review date": `${index + 1}/15/2025 10:00:00`,
-    }),
-  );
-}
 
 describe("getStaticProps", () => {
   it("queries the reviews matching the spaced course code when given a dashed slug", async () => {

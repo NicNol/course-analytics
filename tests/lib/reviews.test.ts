@@ -40,7 +40,7 @@ describe("newestWrittenReviewsFirst", () => {
 });
 
 describe("toReviewStats", () => {
-  it("returns only the fields the data summary needs when the review has text", () => {
+  it("returns only the fields the data summary needs", () => {
     const review = buildReview({
       difficulty: "4",
       "time commitment": "13-18 hours",
