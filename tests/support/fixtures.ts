@@ -1,5 +1,5 @@
 import type { ICourse } from "../../lib/models/course";
-import type { ISummary } from "../../lib/models/summary";
+import type { ISummary } from "../../lib/summarize";
 
 export function buildReview(overrides: Partial<ICourse> = {}): ICourse {
   return {

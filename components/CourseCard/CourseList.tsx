@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Container, Wrap, WrapItem } from "@chakra-ui/react";
 import CourseTile from "./CourseTile";
-import { ISummary } from "../../lib/models/summary";
+import { ISummary } from "../../lib/summarize";
 
 interface CourseListProps {
   filter: string[];

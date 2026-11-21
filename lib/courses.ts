@@ -1,10 +1,10 @@
 import { connectToDatabase } from "./mongodb";
-import { Course } from "./models/course";
+import { Course, type ICourse } from "./models/course";
 import { escapeRegExp } from "./escapeRegExp";
 
 async function findCourses(codeSearchText: string) {
   await connectToDatabase();
-  const courseData = await Course.find(
+  const courseData = await Course.find<ICourse>(
     { code: { $regex: escapeRegExp(codeSearchText), $options: "i" } },
     { _id: false, versionKey: false },
   );

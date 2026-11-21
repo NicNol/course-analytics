@@ -1,8 +1,7 @@
-import { connectToDatabase } from "./mongodb";
-import { Summary } from "./models/summary";
+import { getAllCourseData } from "./courses";
+import { summarizeByDate, type ISummaryByDate } from "./summarize";
 
-export async function getSummary() {
-  await connectToDatabase();
-  const summary = await Summary.find({}, { _id: false, versionKey: false });
-  return summary;
+export async function getSummary(): Promise<ISummaryByDate[]> {
+  const reviews = await getAllCourseData();
+  return [summarizeByDate(reviews, new Date())];
 }
