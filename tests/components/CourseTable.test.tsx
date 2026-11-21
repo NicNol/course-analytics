@@ -50,6 +50,8 @@ function readRowLabels() {
     .map((link) => link.textContent);
 }
 
+const noColumnSorted = { "Course Name": "none", Difficulty: "none", "Time Commitment": "none", "Review Count": "none" };
+
 function readSortStates() {
   const headers = screen.getAllByRole("columnheader");
   return Object.fromEntries(headers.map((header) => [header.textContent, header.getAttribute("aria-sort")]));
@@ -157,12 +159,7 @@ describe("CourseTable", () => {
     renderTable();
 
     const sortStates = readSortStates();
-    expect(sortStates).toStrictEqual({
-      "Course Name": "ascending",
-      Difficulty: "none",
-      "Time Commitment": "none",
-      "Review Count": "none",
-    });
+    expect(sortStates).toStrictEqual({ ...noColumnSorted, "Course Name": "ascending" });
   });
 
   it("renders only Difficulty as sorted ascending when Difficulty is clicked once", async () => {
@@ -172,12 +169,7 @@ describe("CourseTable", () => {
     await user.click(screen.getByText("Difficulty"));
 
     const sortStates = readSortStates();
-    expect(sortStates).toStrictEqual({
-      "Course Name": "none",
-      Difficulty: "ascending",
-      "Time Commitment": "none",
-      "Review Count": "none",
-    });
+    expect(sortStates).toStrictEqual({ ...noColumnSorted, Difficulty: "ascending" });
   });
 
   it("renders Difficulty as sorted descending when Difficulty is clicked twice", async () => {
@@ -188,11 +180,6 @@ describe("CourseTable", () => {
     await user.click(screen.getByText("Difficulty"));
 
     const sortStates = readSortStates();
-    expect(sortStates).toStrictEqual({
-      "Course Name": "none",
-      Difficulty: "descending",
-      "Time Commitment": "none",
-      "Review Count": "none",
-    });
+    expect(sortStates).toStrictEqual({ ...noColumnSorted, Difficulty: "descending" });
   });
 });
