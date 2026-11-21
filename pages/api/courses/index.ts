@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { escapeRegExp } from "../../../lib/escapeRegExp";
+import { getCourseData } from "../../../lib/courses";
 import { sendServerError } from "../../../lib/sendServerError";
-import { connectToDatabase } from "../../../scraper/src/mongodb";
-import { Course } from "../../../scraper/src/models/course";
 
 async function getCourses(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
@@ -17,14 +15,4 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function getCourseData(courseCode = "") {
-  await connectToDatabase();
-  const courseData = await Course.find(
-    { code: { $regex: escapeRegExp(courseCode), $options: "i" } },
-    { _id: false, versionKey: false },
-  );
-  return courseData;
-}
-
 export default getCourses;
-export { getCourseData };

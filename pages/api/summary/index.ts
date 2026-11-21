@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { sendServerError } from "../../../lib/sendServerError";
-import { connectToDatabase } from "../../../scraper/src/mongodb";
-import { Summary } from "../../../scraper/src/models/summary";
+import { getSummary } from "../../../lib/summaries";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
@@ -16,11 +15,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function getSummary() {
-  await connectToDatabase();
-  const summary = await Summary.find({}, { _id: false, versionKey: false });
-  return summary;
-}
-
 export default handler;
-export { getSummary };

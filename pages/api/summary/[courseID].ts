@@ -1,19 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { sendServerError } from "../../../lib/sendServerError";
-import { connectToDatabase } from "../../../scraper/src/mongodb";
-import { Summary } from "../../../scraper/src/models/summary";
+import { getSummary } from "../../../lib/summaries";
 import type { ISummary } from "../../../scraper/src/models/summary";
 
 const DATE_RANGES = ["All Time", "Past 2 Years", "Past 6 Months"] as const;
 
-async function getSummary(req: NextApiRequest, res: NextApiResponse) {
+async function getCourseSummary(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     res.status(405).end("HTTP method not accepted");
     return;
   }
   try {
-    await connectToDatabase();
-
     const { courseID } = req.query;
     const idString = Array.isArray(courseID) ? courseID[0] : courseID;
     if (!idString) {
@@ -22,7 +19,7 @@ async function getSummary(req: NextApiRequest, res: NextApiResponse) {
     }
     const code = idString.replace("-", " ").toLowerCase();
 
-    const summaries = await Summary.find({}, { _id: false, versionKey: false });
+    const summaries = await getSummary();
 
     const filtered = summaries.map((summary) => {
       const result: Record<string, ISummary[]> = {};
@@ -39,4 +36,4 @@ async function getSummary(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default getSummary;
+export default getCourseSummary;
