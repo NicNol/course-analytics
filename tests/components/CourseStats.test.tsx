@@ -40,7 +40,7 @@ describe("CourseStats", () => {
     expect(pairingCodes).toStrictEqual([]);
   });
 
-  it("labels the date filter select with the visible Filter text", () => {
+  it("renders the date filter select named by the visible Filter label", () => {
     renderWithProvider(<CourseStats courseData={[buildReview()]} />);
 
     const dateFilter = screen.getByRole("combobox", { name: "Filter:" });
