@@ -5,12 +5,18 @@ import { formatCourseName, saveCourses } from "../../../scraper/helper/summarize
 import { buildSheetReview } from "../../support/fixtures";
 import { firstCallArguments, firstInvocationOrder } from "../../support/mockCalls";
 
-const { deleteMany, insertMany, findOneAndUpdate } = vi.hoisted(() => ({
-  deleteMany: vi.fn(),
-  insertMany: vi.fn(),
-  findOneAndUpdate: vi.fn(),
-}));
+const { deleteMany, insertMany, findOneAndUpdate, runInTransaction, transactionSession } = vi.hoisted(() => {
+  const transactionSession = { id: "transaction-session" };
+  return {
+    deleteMany: vi.fn(),
+    insertMany: vi.fn(),
+    findOneAndUpdate: vi.fn(),
+    runInTransaction: vi.fn((work: (session: unknown) => Promise<unknown>) => work(transactionSession)),
+    transactionSession,
+  };
+});
 
+vi.mock("../../../lib/mongodb", () => ({ runInTransaction }));
 vi.mock("../../../lib/models/course", () => ({ Course: { deleteMany, insertMany } }));
 vi.mock("../../../lib/models/summary", () => ({ Summary: { findOneAndUpdate } }));
 
@@ -293,8 +299,8 @@ describe("saveCourses", () => {
 
     const deleteOrder = firstInvocationOrder(deleteMany);
     const insertOrder = firstInvocationOrder(insertMany);
-    expect(deleteMany).toHaveBeenCalledWith({});
-    expect(insertMany).toHaveBeenCalledWith([storedReview]);
+    expect(deleteMany).toHaveBeenCalledWith({}, { session: transactionSession });
+    expect(insertMany).toHaveBeenCalledWith([storedReview], { session: transactionSession });
     expect(deleteOrder).toBeLessThan(insertOrder);
   });
 
@@ -303,6 +309,28 @@ describe("saveCourses", () => {
 
     const [filter, , options] = firstCallArguments(findOneAndUpdate);
     expect(filter).toStrictEqual({});
-    expect(options).toStrictEqual({ upsert: true });
+    expect(options).toStrictEqual({ upsert: true, session: transactionSession });
+  });
+
+  it("writes the reviews and the summary with the same transaction session when saving courses", async () => {
+    await saveCourses([buildSheetReview()]);
+
+    const deleteOptions = firstCallArguments(deleteMany)[1];
+    const insertOptions = firstCallArguments(insertMany)[1];
+    const summaryOptions = firstCallArguments(findOneAndUpdate)[2];
+    expect(runInTransaction).toHaveBeenCalledTimes(1);
+    expect(deleteOptions).toStrictEqual({ session: transactionSession });
+    expect(insertOptions).toStrictEqual({ session: transactionSession });
+    expect(summaryOptions.session).toBe(transactionSession);
+  });
+
+  it("rejects with the error and does not save the summary when inserting the reviews fails", async () => {
+    const failure = new Error("insert failed");
+    insertMany.mockRejectedValue(failure);
+
+    const saving = saveCourses([buildSheetReview()]);
+
+    await expect(saving).rejects.toBe(failure);
+    expect(findOneAndUpdate).not.toHaveBeenCalled();
   });
 });
