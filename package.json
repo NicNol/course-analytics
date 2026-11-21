@@ -22,7 +22,6 @@
     "cypress-dev": "cypress open",
     "cypress": "cypress run",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit"
   },
@@ -49,7 +48,6 @@
     "@testing-library/user-event": "^14.6.13",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
-    "@vitest/coverage-v8": "^5.1.1",
     "cypress": "^15.17.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.0",

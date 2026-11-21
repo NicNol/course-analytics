@@ -5,11 +5,6 @@ export default defineConfig({
     mockReset: true,
     restoreMocks: true,
     unstubEnvs: true,
-    coverage: {
-      provider: "v8",
-      include: ["pages/**", "components/**", "scraper/src/**"],
-      reporter: ["text-summary", "text"],
-    },
     projects: [
       {
         extends: true,
