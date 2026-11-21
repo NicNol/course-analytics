@@ -1,3 +1,4 @@
+import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getJSON } from "../../../scraper/src/scheduler/helper/sheets";
@@ -7,6 +8,8 @@ vi.mock("google-spreadsheet", () => ({ GoogleSpreadsheet: vi.fn() }));
 
 type SheetRow = { get: (column: string) => string | undefined };
 
+const GOOGLE_CLIENT_EMAIL = "scraper@course-analytics.iam.gserviceaccount.com";
+const GOOGLE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\\nabc123\\n-----END PRIVATE KEY-----\\n";
 const SURVEY_TIMESTAMP = "6/1/2026 10:00:00";
 const SURVEY_QUARTER = "SP 2026";
 const SLEEP_BEFORE_READING_MS = 2000;
@@ -75,11 +78,40 @@ async function readReviews() {
 describe("getJSON", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    vi.stubEnv("GOOGLE_CLIENT_EMAIL", GOOGLE_CLIENT_EMAIL);
+    vi.stubEnv("GOOGLE_PRIVATE_KEY", GOOGLE_PRIVATE_KEY);
   });
 
   afterEach(() => {
     vi.useRealTimers();
   });
+
+  it("authenticates with the service account email and a private key with real line breaks", async () => {
+    stubSurveyRows([]);
+
+    await readReviews();
+
+    expect(JWT).toHaveBeenCalledWith({
+      email: GOOGLE_CLIENT_EMAIL,
+      key: "-----BEGIN PRIVATE KEY-----\nabc123\n-----END PRIVATE KEY-----\n",
+      scopes: ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file"],
+    });
+  });
+
+  it.each(["GOOGLE_CLIENT_EMAIL", "GOOGLE_PRIVATE_KEY"])(
+    "rejects naming %s without opening a spreadsheet when the variable is not set",
+    async (variableName) => {
+      vi.stubEnv(variableName, "");
+      stubSurveyRows([]);
+
+      const reviews = getJSON();
+      const rejection = expect(reviews).rejects.toThrow(variableName);
+      await vi.advanceTimersByTimeAsync(SLEEP_BEFORE_READING_MS);
+
+      await rejection;
+      expect(GoogleSpreadsheet).not.toHaveBeenCalled();
+    },
+  );
 
   it("returns one review with the form answers when the row has one course", async () => {
     stubSurveyRows([buildRow(oneCourseRow)]);

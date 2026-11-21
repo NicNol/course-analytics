@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const { connect } = vi.hoisted(() => ({ connect: vi.fn() }));
 
 vi.mock("mongoose", () => ({ default: { connect } }));
-vi.mock("dotenv", () => ({ config: vi.fn() }));
 
 const MONGODB_URI = "mongodb://localhost:27017/course-analytics";
 

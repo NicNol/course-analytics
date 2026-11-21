@@ -52,25 +52,7 @@ Download the current codebase or create a fork. Navigate to the root of the proj
 
 ## Configure
 
-To scrape data from the original Google Sheet, you will need to save a `.env.local` file in the root of the project directory. The `.env.local` file should have the following key/value pairs:
-
-```
-MONGODB_URI=<MongoDB URI>
-
-GOOGLE_CLIENT_EMAIL=<Service Account Email from Google APIs>
-
-GOOGLE_PROJECT_ID=<Project ID from Google APIs>
-
-GOOGLE_PRIVATE_KEY=<Private Key from Google APIs>
-
-GOOGLE_PRIVATE_KEY_ID=<Private Key ID from Google APIs>
-
-GOOGLE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
-
-GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token
-
-GOOGLE_CLIENT_X509_CERT_URL=<URL from Google APIs>
-```
+Copy `.env.example` to `.env.local` in the root of the project directory and fill in the values. `MONGODB_URI` is required to run the site. To scrape data from the original Google Sheet you also need `GOOGLE_CLIENT_EMAIL` and `GOOGLE_PRIVATE_KEY` from a Google service account, and `CRON_KEY` to call `/api/scrape`.
 
 The MongoDB URI may be a local instance of MongoDB or the URI for a cloud instance of MongoDB.
 
