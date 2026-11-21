@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { ISummary } from "../../scraper/src/models/summary";
+import { ISummary } from "../../lib/models/summary";
 import { Box, Center, Table } from "@chakra-ui/react";
 import CourseTableHeader from "./CourseTableHeader";
 import CourseTableBody from "./CourseTableBody";

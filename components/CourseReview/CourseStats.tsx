@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Tooltip } from "../ui/tooltip";
-import type { ICourse } from "../../scraper/src/models/course";
+import type { ICourse } from "../../lib/models/course";
 
 interface CourseDetailBodyProps {
   courseData: ICourse[];

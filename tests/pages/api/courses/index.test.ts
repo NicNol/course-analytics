@@ -5,8 +5,8 @@ import { buildReview, HIDDEN_FIELDS } from "../../../support/fixtures";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
-vi.mock("../../../../scraper/src/mongodb", () => ({ connectToDatabase }));
-vi.mock("../../../../scraper/src/models/course", () => ({ Course: { find } }));
+vi.mock("../../../../lib/mongodb", () => ({ connectToDatabase }));
+vi.mock("../../../../lib/models/course", () => ({ Course: { find } }));
 
 describe("getCourses", () => {
   it("returns 405 without querying when the method is not GET", async () => {

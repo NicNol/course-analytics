@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../scraper/src/mongodb";
-import { Summary } from "../scraper/src/models/summary";
+import { connectToDatabase } from "./mongodb";
+import { Summary } from "./models/summary";
 
 export async function getSummary() {
   await connectToDatabase();

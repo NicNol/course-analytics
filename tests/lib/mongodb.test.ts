@@ -12,7 +12,7 @@ function buildClient() {
 
 async function loadMongodbModule() {
   vi.resetModules();
-  return import("../../scraper/src/mongodb");
+  return import("../../lib/mongodb");
 }
 
 describe("mongodb", () => {

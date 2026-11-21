@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import updateDB from "../../scraper/src/scheduler/updateDB";
+import updateDB from "../../scraper/updateDB";
 import { buildSheetReview } from "../support/fixtures";
 import { firstInvocationOrder } from "../support/mockCalls";
 
@@ -11,9 +11,9 @@ const { prepareSheet, getJSON, saveCourses, connectToDatabase, disconnectFromDat
   disconnectFromDatabase: vi.fn(),
 }));
 
-vi.mock("../../scraper/src/scheduler/helper/sheets", () => ({ prepareSheet, getJSON }));
-vi.mock("../../scraper/src/scheduler/helper/summarize", () => ({ saveCourses }));
-vi.mock("../../scraper/src/mongodb", () => ({ connectToDatabase, disconnectFromDatabase }));
+vi.mock("../../scraper/helper/sheets", () => ({ prepareSheet, getJSON }));
+vi.mock("../../scraper/helper/summarize", () => ({ saveCourses }));
+vi.mock("../../lib/mongodb", () => ({ connectToDatabase, disconnectFromDatabase }));
 
 describe("updateDB", () => {
   it("saves the scraped reviews and disconnects when the scrape succeeds", async () => {

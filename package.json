@@ -12,8 +12,8 @@
     "lint": "eslint .",
     "typegen": "chakra typegen ./theme/system.ts",
     "postinstall": "npm run typegen",
-    "scrape": "tsx scraper/src/scheduler/updateDB/run.ts",
-    "scrape-dev": "tsx --env-file=.env.local scraper/src/scheduler/updateDB/run.ts",
+    "scrape": "tsx scraper/updateDB/run.ts",
+    "scrape-dev": "tsx --env-file=.env.local scraper/updateDB/run.ts",
     "test": "vitest run",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit"

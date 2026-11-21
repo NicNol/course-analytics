@@ -1,6 +1,6 @@
 // See https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/lib/dbConnect.ts
 import mongoose from "mongoose";
-import { requireEnv } from "../../lib/env";
+import { requireEnv } from "./env";
 
 type MongooseCache = {
   conn: mongoose.Mongoose | null;

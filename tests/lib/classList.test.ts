@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classList } from "../../scraper/src/classList";
+import { classList } from "../../lib/classList";
 
 const DIVISION_TAGS = ["Lower Division", "Upper Division"];
 const REQUIREMENT_TAGS = ["Core Class", "Elective"];

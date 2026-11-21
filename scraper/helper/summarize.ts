@@ -1,6 +1,6 @@
-import { Course, ICourse } from "../../models/course";
-import { ISummary, ISummaryByDate, Summary } from "../../models/summary";
-import { classList } from "../../classList";
+import { Course, ICourse } from "../../lib/models/course";
+import { ISummary, ISummaryByDate, Summary } from "../../lib/models/summary";
+import { classList } from "../../lib/classList";
 
 const timeAvg = new Map([
   ["0-5 hours", 3],
