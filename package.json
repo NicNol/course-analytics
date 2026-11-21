@@ -14,8 +14,6 @@
     "postinstall": "npm run typegen",
     "scrape": "tsx scraper/src/scheduler/updateDB/run.ts",
     "scrape-dev": "tsx --env-file=.env.local scraper/src/scheduler/updateDB/run.ts",
-    "cypress-dev": "cypress open",
-    "cypress": "cypress run",
     "test": "vitest run",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit"
@@ -43,7 +41,6 @@
     "@testing-library/user-event": "^14.6.13",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
-    "cypress": "^15.21.2",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.6",
     "jsdom": "^31.0.1",

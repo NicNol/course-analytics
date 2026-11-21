@@ -21,7 +21,7 @@ const CourseTableBody: FC<CourseTableBodyProps> = ({ jsonData }) => {
         } = row;
 
         return (
-          <Table.Row key={code} bg={"bg.subtle"} data-cy={"CourseTableRow"}>
+          <Table.Row key={code} bg={"bg.subtle"}>
             <Table.Cell textAlign={"left"}>
               <Link asChild variant={"underline"} fontWeight={"semibold"} color={"colorPalette.fg"}>
                 <NextLink href={`/courses/${code.replace(" ", "-")}`}>{`${code} - ${title}`}</NextLink>

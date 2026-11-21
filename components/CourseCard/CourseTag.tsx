@@ -15,7 +15,6 @@ const CourseTag: FC<CourseTagProps> = ({ children }) => {
       p={2}
       px={3}
       rounded={"full"}
-      data-cy={"CourseTag"}
     >
       {children}
     </Text>

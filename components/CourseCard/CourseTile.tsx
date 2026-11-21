@@ -21,7 +21,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
   const [loadingStatus, setLoadingStatus] = useState(false);
 
   return (
-    <Center p={2} data-cy={"CourseTile"}>
+    <Center p={2}>
       <Box
         maxW={"330px"}
         w={"330px"}
@@ -43,13 +43,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               data-href={`/courses/${code.replace(" ", "-")}`}
               href={`/courses/${code.replace(" ", "-")}`}
             >
-              <Text
-                textAlign={"center"}
-                fontSize={"5xl"}
-                fontWeight={"extrabold"}
-                color={"fg"}
-                data-cy={"CourseNumber"}
-              >
+              <Text textAlign={"center"} fontSize={"5xl"} fontWeight={"extrabold"} color={"fg"}>
                 {code}
               </Text>
             </NextLink>
@@ -62,7 +56,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
               data-href={`/courses/${code.replace(" ", "-")}`}
               href={`/courses/${code.replace(" ", "-")}`}
             >
-              <Text textAlign={"center"} color={"chrome.fg"} fontWeight={"semibold"} data-cy={"CourseTitle"}>
+              <Text textAlign={"center"} color={"chrome.fg"} fontWeight={"semibold"}>
                 {title}
               </Text>
             </NextLink>

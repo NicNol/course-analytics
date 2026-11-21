@@ -25,7 +25,7 @@ const ViewLayoutMenu: FC<ViewLayoutMenuProps> = ({ setLayoutView }) => {
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
-        <Button data-cy={"MenuButton"} size={"md"} variant={"subtle"} colorPalette={"gray"} px={3}>
+        <Button size={"md"} variant={"subtle"} colorPalette={"gray"} px={3}>
           {currentMenuItem}
           <ChevronDownIcon />
         </Button>

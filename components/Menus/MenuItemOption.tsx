@@ -19,7 +19,6 @@ const MenuItemOption: FC<MenuItemOptionProps> = ({ title, icon, clickHandler }) 
       onClick={() => clickHandler(title)}
       _hover={{ bg: "colorPalette.subtle" }}
       _highlighted={{ bg: "colorPalette.subtle" }}
-      data-cy={"MenuOption"}
     >
       <Span
         display={"inline-flex"}
