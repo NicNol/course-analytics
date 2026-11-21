@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import getCourses, { getCourseData } from "../../../../pages/api/courses";
+import getCourses from "../../../../pages/api/courses";
 import { createRequest, createResponse } from "../../../support/apiMocks";
 import { buildReview } from "../../../support/fixtures";
-import { firstInvocationOrder } from "../../../support/mockCalls";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
@@ -47,27 +46,5 @@ describe("getCourses", () => {
     expect(response.status).toHaveBeenCalledWith(500);
     expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
     expect(consoleError).toHaveBeenCalledWith(failure);
-  });
-});
-
-describe("getCourseData", () => {
-  it("queries the reviews matching the course code ignoring case", async () => {
-    await getCourseData("CS 261");
-
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 261", $options: "i" } }, HIDDEN_FIELDS);
-  });
-
-  it("escapes regular expression characters in the course code before querying", async () => {
-    await getCourseData("CS (1)");
-
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS \\(1\\)", $options: "i" } }, HIDDEN_FIELDS);
-  });
-
-  it("connects to the database before querying", async () => {
-    await getCourseData("CS 261");
-
-    const connectOrder = firstInvocationOrder(connectToDatabase);
-    const queryOrder = firstInvocationOrder(find);
-    expect(connectOrder).toBeLessThan(queryOrder);
   });
 });

@@ -5,7 +5,8 @@ import Course from "../../../pages/courses/[courseid]";
 import { buildReview } from "../../support/fixtures";
 import { renderWithProvider } from "../../support/renderWithProvider";
 
-vi.mock("../../../pages/api/courses", () => ({ getCourseData: vi.fn() }));
+vi.mock("../../../scraper/src/mongodb", () => ({ connectToDatabase: vi.fn() }));
+vi.mock("../../../scraper/src/models/course", () => ({ Course: { find: vi.fn() } }));
 
 const courseCode = "CS 374";
 const courseTitle = "Operating Systems I";

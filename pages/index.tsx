@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { getSummary } from "../pages/api/summary/index";
+import { getSummary } from "../lib/summaries";
 import AllFilters from "../components/Menus/AllFilters";
 import CourseTable from "../components/CourseTable/CourseTable";
 import CourseList from "../components/CourseCard/CourseList";
