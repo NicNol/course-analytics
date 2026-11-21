@@ -78,9 +78,9 @@ For more information on the key/value pairs from Google, additional information 
 
 ## Run
 
-After setting up the `.env.local` file, call `node run scrape-dev` to scrape data from the Google Sheets spreadsheet and populate the MongoDB database.
+After setting up the `.env.local` file, call `npm run scrape-dev` to scrape data from the Google Sheets spreadsheet and populate the MongoDB database.
 
-Next, call `node run dev`. This will start the Next.js server in development mode.
+Next, call `npm run dev`. This will start the Next.js server in development mode.
 
 Finally, open a browser window and navigate to `localhost:3000`. This is the Next.JS project running in your browser.
 
