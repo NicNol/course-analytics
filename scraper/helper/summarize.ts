@@ -1,6 +1,8 @@
+import type { ClientSession } from "mongoose";
 import { Course, ICourse } from "../../lib/models/course";
 import { ISummary, ISummaryByDate, Summary } from "../../lib/models/summary";
 import { classList } from "../../lib/classList";
+import { runInTransaction } from "../../lib/mongodb";
 
 const timeAvg = new Map([
   ["0-5 hours", 3],
@@ -28,14 +30,16 @@ class SummaryObject {
 export async function saveCourses(json: ICourse[]) {
   const formattedJson = formatCourseData(json);
   warnAboutUnrecognizedTimeCommitments(formattedJson);
-  await Course.deleteMany({});
-  await Course.insertMany(formattedJson);
   const summaryData = {
     "All Time": filterAndSummarizeDataByDate(formattedJson, 99999),
     "Past 2 Years": filterAndSummarizeDataByDate(formattedJson, 730),
     "Past 6 Months": filterAndSummarizeDataByDate(formattedJson, 183),
   };
-  await saveSummaryData(summaryData);
+  await runInTransaction(async (session) => {
+    await Course.deleteMany({}, { session });
+    await Course.insertMany(formattedJson, { session });
+    await saveSummaryData(summaryData, session);
+  });
 }
 
 function warnAboutUnrecognizedTimeCommitments(json: ICourse[]) {
@@ -103,9 +107,9 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
   return summaryJSON;
 }
 
-async function saveSummaryData(summaryJSON: ISummaryByDate) {
+async function saveSummaryData(summaryJSON: ISummaryByDate, session: ClientSession) {
   /* Update the summary document -or- Insert if not found */
-  await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true });
+  await Summary.findOneAndUpdate({}, summaryJSON, { upsert: true, session });
 }
 
 export function formatCourseName(rawName: string) {

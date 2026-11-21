@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { connect } = vi.hoisted(() => ({ connect: vi.fn() }));
+const { connect, transaction } = vi.hoisted(() => ({ connect: vi.fn(), transaction: vi.fn() }));
 
-vi.mock("mongoose", () => ({ default: { connect } }));
+vi.mock("mongoose", () => ({ default: { connect, connection: { transaction } } }));
 
 const MONGODB_URI = "mongodb://localhost:27017/course-analytics";
 
@@ -88,6 +88,50 @@ describe("mongodb", () => {
 
       await expect(disconnect).resolves.toBeUndefined();
       expect(connect).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("runInTransaction", () => {
+    it("runs the work through the Mongoose connection transaction", async () => {
+      const work = vi.fn();
+      const { runInTransaction } = await loadMongodbModule();
+
+      await runInTransaction(work);
+
+      expect(transaction).toHaveBeenCalledWith(work);
+    });
+
+    it.each([
+      "This MongoDB deployment does not support retryable writes. Please add retryWrites=false to your connection string.",
+      "Transaction numbers are only allowed on a replica set member or mongos",
+    ])(
+      "rejects naming the replica set requirement and keeping the cause when the server says %j",
+      async (serverMessage) => {
+        const serverError = new Error(serverMessage);
+        transaction.mockRejectedValue(serverError);
+        const { runInTransaction } = await loadMongodbModule();
+
+        const running = runInTransaction(vi.fn());
+
+        const error = await running.then(
+          () => {
+            throw new Error("Expected the transaction to reject");
+          },
+          (caught: Error) => caught,
+        );
+        expect(error.message).toMatch(/replica set/);
+        expect(error.cause).toBe(serverError);
+      },
+    );
+
+    it("rejects with the same error when the transaction fails for another reason", async () => {
+      const failure = new Error("transaction aborted");
+      transaction.mockRejectedValue(failure);
+      const { runInTransaction } = await loadMongodbModule();
+
+      const running = runInTransaction(vi.fn());
+
+      await expect(running).rejects.toBe(failure);
     });
   });
 });

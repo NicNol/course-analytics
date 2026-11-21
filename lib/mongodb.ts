@@ -1,5 +1,5 @@
 // See https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/lib/dbConnect.ts
-import mongoose from "mongoose";
+import mongoose, { type ClientSession } from "mongoose";
 import { requireEnv } from "./env";
 
 type MongooseCache = {
@@ -40,3 +40,18 @@ export const disconnectFromDatabase = async () => {
 
   await cached.conn?.connection.close();
 };
+
+const STANDALONE_SERVER_ERROR = /does not support retryable writes|only allowed on a replica set member/;
+
+export async function runInTransaction<Result>(work: (session: ClientSession) => Promise<Result>) {
+  try {
+    return await mongoose.connection.transaction(work);
+  } catch (err) {
+    if (err instanceof Error && STANDALONE_SERVER_ERROR.test(err.message)) {
+      throw new Error("Transactions need a MongoDB replica set. See the Configure section of the README.", {
+        cause: err,
+      });
+    }
+    throw err;
+  }
+}
