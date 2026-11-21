@@ -1,4 +1,4 @@
-import type { ICourse } from "../../lib/models/course";
+import type { ICourse } from "../../lib/reviews";
 import type { ISummary } from "../../lib/summarize";
 
 export function buildReview(overrides: Partial<ICourse> = {}): ICourse {
@@ -23,19 +23,6 @@ export function buildSummaryRow(overrides: Partial<ISummary> = {}): ISummary {
     "time commitment": "9",
     "review count": "120",
     tags: ["Lower Division", "Core Class"],
-    ...overrides,
-  };
-}
-
-export function buildSheetReview(overrides: Partial<ICourse> = {}): ICourse {
-  return {
-    name: "CS 161 - Intro to Computer Science I",
-    difficulty: "2",
-    "time commitment": "6-12 hours",
-    review: "Start the assignments early.",
-    "review date": "6/1/2026 10:00:00",
-    quarter: "SP 2026",
-    "other courses": [],
     ...overrides,
   };
 }

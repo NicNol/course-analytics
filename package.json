@@ -12,8 +12,6 @@
     "lint": "eslint .",
     "typegen": "chakra typegen ./theme/system.ts",
     "postinstall": "npm run typegen",
-    "scrape": "tsx scraper/updateDB/run.ts",
-    "scrape-dev": "tsx --env-file=.env.local scraper/updateDB/run.ts",
     "test": "vitest run",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit"
@@ -24,15 +22,11 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.1.0",
     "csv-parse": "^7.0.3",
-    "google-auth-library": "^11.3.4",
-    "google-spreadsheet": "^5.3.0",
-    "mongoose": "^9.12.3",
     "next": "^16.4.6",
     "next-themes": "^0.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-icons": "^5.7.0",
-    "zod": "^4.6.7"
+    "react-icons": "^5.7.0"
   },
   "devDependencies": {
     "@chakra-ui/cli": "^3.38.0",
@@ -46,7 +40,6 @@
     "eslint-config-next": "^16.4.6",
     "jsdom": "^31.0.1",
     "prettier": "^3.10.1",
-    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^5.1.1"
   },

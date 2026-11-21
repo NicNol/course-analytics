@@ -1,7 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import type { ICourse } from "../../../lib/models/course";
+import type { ICourse } from "../../../lib/reviews";
 import Course from "../../../pages/courses/[courseid]";
 import { buildMonthlyReviews, buildReview } from "../../support/fixtures";
 import { renderWithProvider } from "../../support/renderWithProvider";

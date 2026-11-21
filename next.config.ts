@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { validateEnv } from "./lib/envSchema";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -11,7 +10,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default function config() {
-  validateEnv(process.env);
-  return nextConfig;
-}
+export default nextConfig;

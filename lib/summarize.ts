@@ -1,5 +1,5 @@
 import { classList } from "./classList";
-import type { ICourse } from "./models/course";
+import type { ICourse } from "./reviews";
 
 interface ISummary {
   code: string;
@@ -57,7 +57,6 @@ function summarizeSince(reviews: ICourse[], now: Date, daysInPast: number): ISum
 
   for (const course of reviews) {
     const { difficulty, code, title, "time commitment": time, "review date": reviewDate } = course;
-    if (!code || !title) continue;
 
     let summary = courseSummaries.get(code);
     if (!summary) {

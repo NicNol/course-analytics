@@ -1,6 +1,6 @@
 import { parse } from "csv-parse/sync";
 import { findListedCourse } from "./classList";
-import type { ICourse } from "./models/course";
+import type { ICourse } from "./reviews";
 
 export const SURVEY_CSV_URL =
   "https://docs.google.com/spreadsheets/d/1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU/export?format=csv";

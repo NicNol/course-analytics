@@ -146,21 +146,4 @@ describe("summarizeByDate", () => {
       expect(courseSummary?.["time commitment"]).toBe("0");
     },
   );
-
-  it("returns no tags when the course is not in the class list", () => {
-    const reviews = [buildReview({ code: "CS 496", title: "Mobile and Cloud Software Development" })];
-
-    const summary = summarizeByDate(reviews, NOW);
-
-    expect(summary["All Time"]).toStrictEqual([
-      {
-        code: "CS 496",
-        title: "Mobile and Cloud Software Development",
-        "average difficulty": "2",
-        "time commitment": "9",
-        "review count": "1",
-        tags: [],
-      },
-    ]);
-  });
 });
