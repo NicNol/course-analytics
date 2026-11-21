@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import getCourses from "../../../../pages/api/courses/[courseID]";
 import { createRequest, createResponse } from "../../../support/apiMocks";
-import { buildReview } from "../../../support/fixtures";
+import { buildReview, HIDDEN_FIELDS } from "../../../support/fixtures";
 
 const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 
@@ -27,7 +27,7 @@ describe("getCourses by course ID", () => {
 
     await getCourses(request, response);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 161", $options: "i" } });
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 161", $options: "i" } }, HIDDEN_FIELDS);
     expect(response.status).toHaveBeenCalledWith(200);
     expect(response.json).toHaveBeenCalledWith(reviews);
   });
@@ -39,7 +39,7 @@ describe("getCourses by course ID", () => {
 
     await getCourses(request, response);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 162", $options: "i" } });
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 162", $options: "i" } }, HIDDEN_FIELDS);
   });
 
   it("escapes regular expression characters in the course ID before querying", async () => {
@@ -49,11 +49,11 @@ describe("getCourses by course ID", () => {
 
     await getCourses(request, response);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "\\.\\*", $options: "i" } });
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "\\.\\*", $options: "i" } }, HIDDEN_FIELDS);
   });
 
-  it("returns 400 without querying when the course ID is missing", async () => {
-    const request = createRequest();
+  it.each([undefined, "", "   "])("returns 400 without querying when the course ID is %j", async (courseID) => {
+    const request = createRequest({ query: { courseID } });
     const response = createResponse();
 
     await getCourses(request, response);
