@@ -186,7 +186,9 @@ describe("CourseTable", () => {
   it("renders each column header as a button when the table loads", () => {
     renderTable();
 
-    const headerButtonNames = screen.getAllByRole("button").map((button) => button.textContent);
+    const headerButtonNames = screen
+      .getAllByRole("columnheader")
+      .map((header) => within(header).getByRole("button").textContent);
     expect(headerButtonNames).toStrictEqual(["Course Name", "Difficulty", "Time Commitment", "Review Count"]);
   });
 
@@ -194,13 +196,18 @@ describe("CourseTable", () => {
     const user = userEvent.setup();
     renderTable();
 
-    const focusedNames: (string | null)[] = [];
+    const focusedElements: string[] = [];
     for (let tabCount = 0; tabCount < 4; tabCount++) {
       await user.tab();
-      focusedNames.push(document.activeElement?.textContent ?? null);
+      focusedElements.push(`${document.activeElement?.tagName} ${document.activeElement?.textContent}`);
     }
 
-    expect(focusedNames).toStrictEqual(["Course Name", "Difficulty", "Time Commitment", "Review Count"]);
+    expect(focusedElements).toStrictEqual([
+      "BUTTON Course Name",
+      "BUTTON Difficulty",
+      "BUTTON Time Commitment",
+      "BUTTON Review Count",
+    ]);
   });
 
   it.each([
