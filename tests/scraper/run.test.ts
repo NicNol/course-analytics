@@ -30,11 +30,12 @@ describe("scrape script", () => {
     expect(consoleError).toHaveBeenCalledWith(failure);
   });
 
-  it("leaves the exit code unset and logs nothing when the scrape succeeds", async () => {
+  it("runs the scrape and leaves the exit code unset and nothing logged when the scrape succeeds", async () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
 
     await runScrapeScript(Promise.resolve());
 
+    expect(updateDB).toHaveBeenCalledTimes(1);
     expect(process.exitCode).toBeUndefined();
     expect(consoleError).not.toHaveBeenCalled();
   });
