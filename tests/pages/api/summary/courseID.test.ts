@@ -5,8 +5,8 @@ import { buildSummaryRow } from "../../../support/fixtures";
 
 const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 
-vi.mock("../../../../scraper/src/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../../../scraper/src/models/summary", () => ({ Summary: { find } }));
+vi.mock("../../../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
+vi.mock("../../../../lib/models/summary", () => ({ Summary: { find } }));
 
 const cs161Row = buildSummaryRow({ code: "CS 161" });
 const cs162Row = buildSummaryRow({ code: "CS 162", title: "Introduction to Computer Science II" });

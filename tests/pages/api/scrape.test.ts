@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import handler from "../../../pages/api/scrape";
-import { classList } from "../../../scraper/src/classList";
-import updateDB from "../../../scraper/src/scheduler/updateDB";
+import { classList } from "../../../lib/classList";
+import updateDB from "../../../scraper/updateDB";
 import { createRequest, createResponse } from "../../support/apiMocks";
 import { firstInvocationOrder } from "../../support/mockCalls";
 
-vi.mock("../../../scraper/src/scheduler/updateDB", () => ({ default: vi.fn() }));
+vi.mock("../../../scraper/updateDB", () => ({ default: vi.fn() }));
 
 const CRON_KEY = "test-cron-key";
 

@@ -5,8 +5,8 @@ import { firstInvocationOrder } from "../support/mockCalls";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
-vi.mock("../../scraper/src/mongodb", () => ({ connectToDatabase }));
-vi.mock("../../scraper/src/models/course", () => ({ Course: { find } }));
+vi.mock("../../lib/mongodb", () => ({ connectToDatabase }));
+vi.mock("../../lib/models/course", () => ({ Course: { find } }));
 
 describe("getAllCourseData", () => {
   it("queries the reviews of every course", async () => {

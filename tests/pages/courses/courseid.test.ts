@@ -4,8 +4,8 @@ import { buildReview } from "../../support/fixtures";
 
 const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 
-vi.mock("../../../scraper/src/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../../scraper/src/models/course", () => ({ Course: { find } }));
+vi.mock("../../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
+vi.mock("../../../lib/models/course", () => ({ Course: { find } }));
 
 describe("getStaticPaths", () => {
   it("returns a dashed slug for each course in the class list and 404s other slugs", async () => {

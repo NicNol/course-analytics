@@ -1,5 +1,5 @@
-import { classList } from "../../scraper/src/classList";
-import updateDB from "../../scraper/src/scheduler/updateDB";
+import { classList } from "../../lib/classList";
+import updateDB from "../../scraper/updateDB";
 import { readEnv } from "../../lib/env";
 import { isValidCronKey } from "../../lib/isValidCronKey";
 import { sendServerError } from "../../lib/sendServerError";

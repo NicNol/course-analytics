@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../scraper/src/mongodb";
-import { Course } from "../scraper/src/models/course";
+import { connectToDatabase } from "./mongodb";
+import { Course } from "./models/course";
 import { escapeRegExp } from "./escapeRegExp";
 
 async function findCourses(codeSearchText: string) {

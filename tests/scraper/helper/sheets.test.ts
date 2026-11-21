@@ -1,7 +1,7 @@
 import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getJSON } from "../../../scraper/src/scheduler/helper/sheets";
+import { getJSON } from "../../../scraper/helper/sheets";
 import { completeEnv } from "../../support/env";
 
 vi.mock("google-auth-library", () => ({ JWT: vi.fn() }));

@@ -1,8 +1,8 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import { ICourse } from "../../models/course";
+import { ICourse } from "../../lib/models/course";
 import { formatCourseName } from "./summarize";
 import { JWT } from "google-auth-library";
-import { requireEnv } from "../../../../lib/env";
+import { requireEnv } from "../../lib/env";
 
 type SurveyRow = {
   timestamp: string;

@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import updateDB from "../../scraper/src/scheduler/updateDB";
+import updateDB from "../../scraper/updateDB";
 
-vi.mock("../../scraper/src/scheduler/updateDB", () => ({ default: vi.fn() }));
+vi.mock("../../scraper/updateDB", () => ({ default: vi.fn() }));
 
 async function runScrapeScript(scrape: Promise<void>) {
   const settled = scrape.catch(() => undefined);
   vi.mocked(updateDB).mockReturnValue(scrape);
-  await import("../../scraper/src/scheduler/updateDB/run");
+  await import("../../scraper/updateDB/run");
   await settled;
 }
 

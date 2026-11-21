@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { classList } from "../../../scraper/src/classList";
-import type { ISummaryByDate } from "../../../scraper/src/models/summary";
-import { formatCourseName, saveCourses } from "../../../scraper/src/scheduler/helper/summarize";
+import { classList } from "../../../lib/classList";
+import type { ISummaryByDate } from "../../../lib/models/summary";
+import { formatCourseName, saveCourses } from "../../../scraper/helper/summarize";
 import { buildSheetReview } from "../../support/fixtures";
 import { firstCallArguments, firstInvocationOrder } from "../../support/mockCalls";
 
@@ -11,8 +11,8 @@ const { deleteMany, insertMany, findOneAndUpdate } = vi.hoisted(() => ({
   findOneAndUpdate: vi.fn(),
 }));
 
-vi.mock("../../../scraper/src/models/course", () => ({ Course: { deleteMany, insertMany } }));
-vi.mock("../../../scraper/src/models/summary", () => ({ Summary: { findOneAndUpdate } }));
+vi.mock("../../../lib/models/course", () => ({ Course: { deleteMany, insertMany } }));
+vi.mock("../../../lib/models/summary", () => ({ Summary: { findOneAndUpdate } }));
 
 describe("formatCourseName", () => {
   it("returns the name with a spaced dash when the dash has no space before it", () => {

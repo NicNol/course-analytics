@@ -5,8 +5,8 @@ import Home from "../../pages/index";
 import { buildSummaryRow } from "../support/fixtures";
 import { renderWithProvider } from "../support/renderWithProvider";
 
-vi.mock("../../scraper/src/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../scraper/src/models/summary", () => ({ Summary: { find: vi.fn() } }));
+vi.mock("../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
+vi.mock("../../lib/models/summary", () => ({ Summary: { find: vi.fn() } }));
 
 const lowerDivisionCourse = buildSummaryRow({
   code: "CS 161",

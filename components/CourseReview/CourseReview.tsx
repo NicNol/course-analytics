@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Avatar, Box, Flex, Tag, Text, useMediaQuery } from "@chakra-ui/react";
-import type { ICourse } from "../../scraper/src/models/course";
+import type { ICourse } from "../../lib/models/course";
 import { MdAccessTime, MdCalendarToday, MdExtension, MdMode } from "react-icons/md";
 
 interface CourseReviewProps {
