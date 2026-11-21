@@ -1,12 +1,9 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import Home from "../../pages/index";
 import { buildSummaryRow } from "../support/fixtures";
 import { renderWithProvider } from "../support/renderWithProvider";
-
-vi.mock("../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../lib/models/course", () => ({ Course: { find: vi.fn() } }));
 
 const lowerDivisionCourse = buildSummaryRow({
   code: "CS 161",

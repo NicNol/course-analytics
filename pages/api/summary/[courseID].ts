@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { sendServerError } from "../../../lib/sendServerError";
+import { PUBLIC_API_CACHE_CONTROL } from "../../../lib/publicApiCache";
 import { getSummary } from "../../../lib/summaries";
 import type { ISummary } from "../../../lib/summarize";
 
@@ -30,6 +31,7 @@ async function getCourseSummary(req: NextApiRequest, res: NextApiResponse) {
       return result;
     });
 
+    res.setHeader("Cache-Control", PUBLIC_API_CACHE_CONTROL);
     res.status(200).json(filtered);
   } catch (err) {
     sendServerError(res, err);

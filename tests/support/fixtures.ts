@@ -40,8 +40,6 @@ export function buildSheetReview(overrides: Partial<ICourse> = {}): ICourse {
   };
 }
 
-export const HIDDEN_FIELDS = { _id: false, versionKey: false };
-
 export function buildMonthlyReviews(count: number) {
   return [...Array(count).keys()].map((index) =>
     buildReview({

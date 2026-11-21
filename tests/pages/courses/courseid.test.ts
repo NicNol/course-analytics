@@ -2,10 +2,9 @@ import { describe, expect, it, vi } from "vitest";
 import { getStaticPaths, getStaticProps } from "../../../pages/courses/[courseid]";
 import { buildMonthlyReviews, buildReview } from "../../support/fixtures";
 
-const { find } = vi.hoisted(() => ({ find: vi.fn() }));
+const { getReviews } = vi.hoisted(() => ({ getReviews: vi.fn() }));
 
-vi.mock("../../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../../lib/models/course", () => ({ Course: { find } }));
+vi.mock("../../../lib/survey", () => ({ getReviews }));
 
 describe("getStaticPaths", () => {
   it("returns a dashed slug for each course in the class list and 404s other slugs", async () => {
@@ -19,16 +18,22 @@ describe("getStaticPaths", () => {
 });
 
 describe("getStaticProps", () => {
-  it("queries the reviews matching the spaced course code when given a dashed slug", async () => {
-    find.mockResolvedValue([]);
+  it("returns only the reviews of the course matching the dashed slug", async () => {
+    const operatingSystemsReview = buildReview({
+      code: "CS 374",
+      title: "Operating Systems I",
+      review: "Read the man pages.",
+    });
+    const introReview = buildReview({ code: "CS 161", review: "Start early." });
+    getReviews.mockResolvedValue([operatingSystemsReview, introReview]);
 
-    await getStaticProps({ params: { courseid: "CS-374" } });
+    const result = await getStaticProps({ params: { courseid: "CS-374" } });
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 374", $options: "i" } }, { _id: false, versionKey: false });
+    expect(result.props.firstReviews).toStrictEqual([operatingSystemsReview]);
   });
 
   it("returns the spaced course code when given a dashed slug", async () => {
-    find.mockResolvedValue([]);
+    getReviews.mockResolvedValue([]);
 
     const result = await getStaticProps({ params: { courseid: "CS-374" } });
 
@@ -37,8 +42,8 @@ describe("getStaticProps", () => {
 
   it("returns stats for every review and only the ten newest written reviews", async () => {
     const reviews = buildMonthlyReviews(12);
-    const blankReview = buildReview({ review: "", "review date": "6/15/2025 10:00:00" });
-    find.mockResolvedValue([...reviews, blankReview]);
+    const blankReview = buildReview({ code: "CS 374", review: "", "review date": "6/15/2025 10:00:00" });
+    getReviews.mockResolvedValue([...reviews, blankReview]);
 
     const result = await getStaticProps({ params: { courseid: "CS-374" } });
 
@@ -59,8 +64,8 @@ describe("getStaticProps", () => {
   });
 
   it("returns the count of written reviews without the blank ones", async () => {
-    const blankReview = buildReview({ review: "", "review date": "6/15/2025 10:00:00" });
-    find.mockResolvedValue([...buildMonthlyReviews(12), blankReview]);
+    const blankReview = buildReview({ code: "CS 374", review: "", "review date": "6/15/2025 10:00:00" });
+    getReviews.mockResolvedValue([...buildMonthlyReviews(12), blankReview]);
 
     const result = await getStaticProps({ params: { courseid: "CS-374" } });
 
@@ -68,8 +73,9 @@ describe("getStaticProps", () => {
   });
 
   it("returns review stats without the review text", async () => {
-    find.mockResolvedValue([
+    getReviews.mockResolvedValue([
       buildReview({
+        code: "CS 374",
         difficulty: "4",
         "time commitment": "13-18 hours",
         "review date": "3/15/2025 10:00:00",
@@ -91,7 +97,7 @@ describe("getStaticProps", () => {
   });
 
   it("returns a page that regenerates hourly", async () => {
-    find.mockResolvedValue([]);
+    getReviews.mockResolvedValue([]);
 
     const result = await getStaticProps({ params: { courseid: "CS-374" } });
 

@@ -191,3 +191,15 @@ export const classList: Course[] = [
     tags: ["Upper Division", "Elective"],
   },
 ];
+
+const RENUMBERED_CODES = new Map([
+  ["CS 344", "CS 374"],
+  ["CS 419", "CS 467"],
+]);
+
+export function findListedCourse(surveyCourseName: string) {
+  const code = /^[A-Z]+ \d+/.exec(surveyCourseName)?.[0];
+  if (!code) return undefined;
+  const listedCode = RENUMBERED_CODES.get(code) ?? code;
+  return classList.find((course) => course.code === listedCode);
+}

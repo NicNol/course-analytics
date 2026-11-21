@@ -6,9 +6,6 @@ import Course from "../../../pages/courses/[courseid]";
 import { buildMonthlyReviews, buildReview } from "../../support/fixtures";
 import { renderWithProvider } from "../../support/renderWithProvider";
 
-vi.mock("../../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../../lib/models/course", () => ({ Course: { find: vi.fn() } }));
-
 const courseCode = "CS 374";
 const courseTitle = "Operating Systems I";
 const reviewsEndpoint = "/api/courses/CS-374";
