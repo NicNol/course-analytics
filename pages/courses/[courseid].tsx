@@ -1,7 +1,12 @@
 import CourseDetailBody from "../../components/CourseReview/CourseDetailBody";
 import { getCourseData } from "../../lib/courses";
-import type { ICourse } from "../../lib/models/course";
-import { newestWrittenReviewsFirst, REVIEWS_PER_PAGE, toReviewStats, type ReviewStats } from "../../lib/reviews";
+import {
+  newestWrittenReviewsFirst,
+  REVIEWS_PER_PAGE,
+  toReviewStats,
+  type ICourse,
+  type ReviewStats,
+} from "../../lib/reviews";
 import { classList } from "../../lib/classList";
 import PageWrapper from "../../components/PageWrapper";
 import BackBreadcrumb from "../../components/CourseReview/BackBreadcrumb";

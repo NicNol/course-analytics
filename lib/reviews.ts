@@ -1,4 +1,13 @@
-import type { ICourse } from "./models/course";
+export interface ICourse {
+  code: string;
+  title: string;
+  difficulty: string;
+  "time commitment": string;
+  review: string;
+  "review date": string;
+  quarter: string;
+  "other courses": string[];
+}
 
 export const REVIEWS_PER_PAGE = 10;
 
