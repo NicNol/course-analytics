@@ -40,8 +40,8 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({ column, handleH
         font={"inherit"}
         textAlign={"start"}
         cursor={"pointer"}
-        rounded={"l3"}
-        _focusVisible={{ outline: "2px solid", outlineColor: "colorPalette.solid", outlineOffset: "2px" }}
+        rounded={"l1"}
+        focusVisibleRing={"outside"}
       >
         {column.header}
         {handleArrowRender(column.filter)}
