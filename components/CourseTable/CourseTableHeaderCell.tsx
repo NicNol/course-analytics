@@ -21,8 +21,11 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({ column, handleH
     return inv;
   }
 
+  const ariaSort = column.filter === "asc" ? "ascending" : column.filter === "desc" ? "descending" : "none";
+
   return (
     <Table.ColumnHeader
+      aria-sort={ariaSort}
       onClick={() => handleHeaderClick(column.header)}
       _hover={{
         cursor: "pointer",
