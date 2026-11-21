@@ -39,4 +39,11 @@ describe("CourseStats", () => {
     expect(placeholder).toBeInTheDocument();
     expect(pairingCodes).toStrictEqual([]);
   });
+
+  it("renders the date filter select named by the visible Filter label", () => {
+    renderWithProvider(<CourseStats courseData={[buildReview()]} />);
+
+    const dateFilter = screen.getByRole("combobox", { name: "Filter:" });
+    expect(dateFilter).toBeInTheDocument();
+  });
 });

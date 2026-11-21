@@ -7,7 +7,7 @@ export default function PageWrapper({ children }: PropsWithChildren) {
   return (
     <Flex justifyContent={"space-between"} flexDirection={"column"} minH={"100vh"}>
       <Navbar />
-      <Flex flexGrow={1} flexDirection={"column"} justifyContent={"flex-start"}>
+      <Flex as={"main"} flexGrow={1} flexDirection={"column"} justifyContent={"flex-start"}>
         {children}
       </Flex>
 

@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, useId, useState } from "react";
 import { MdAccessTime, MdExtension, MdFeedback, MdInfo } from "react-icons/md";
 import {
   Button,
+  chakra,
   Collapsible,
   Flex,
   Heading,
@@ -32,6 +33,7 @@ interface TimeAvg {
 
 const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   const { open, onToggle } = useDisclosure();
+  const filterId = useId();
   const { courseData } = props;
   const [filteredData, setFilter] = useState(courseData);
 
@@ -122,10 +124,11 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
         Data Summary
       </Heading>
       <Flex justifyContent={"space-between"} alignItems={"center"} gap={4}>
-        <Text>Filter:</Text>
+        <chakra.label htmlFor={filterId}>Filter:</chakra.label>
         <Flex flexGrow={"1"}>
           <NativeSelect.Root w={"100%"} colorPalette={"gray"}>
             <NativeSelect.Field
+              id={filterId}
               onChange={handleChangeDateFilter}
               bg={"bg.panel"}
               color={"fg"}
