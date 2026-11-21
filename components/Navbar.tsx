@@ -7,6 +7,7 @@ export default function Nav() {
   const { toggleColorMode } = useColorMode();
   return (
     <Box
+      as={"header"}
       bg={"chrome.bg"}
       color={"chrome.fg"}
       borderBottomWidth={"1px"}
@@ -25,6 +26,7 @@ export default function Nav() {
               <Link asChild _hover={{ textDecoration: "none" }}>
                 <NextLink data-href={"/"} href={"/"}>
                   <Heading
+                    as={"h1"}
                     size={{ base: "3xl", md: "4xl" }}
                     _hover={{
                       cursor: "pointer",
