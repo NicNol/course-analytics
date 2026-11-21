@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Flex, Table } from "@chakra-ui/react";
+import { chakra, Table } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "../icons";
 import { IColumnState } from "./CourseTable";
 
@@ -32,10 +32,19 @@ const CourseTableHeaderCell: FC<CourseTableHeaderCellProps> = ({ column, handleH
         textDecoration: "underline",
       }}
     >
-      <Flex gap={4} color={"fg"}>
+      <chakra.button
+        type={"button"}
+        display={"flex"}
+        gap={4}
+        color={"fg"}
+        font={"inherit"}
+        textAlign={"start"}
+        cursor={"pointer"}
+        _focusVisible={{ outline: "2px solid", outlineColor: "colorPalette.solid", outlineOffset: "2px" }}
+      >
         {column.header}
         {handleArrowRender(column.filter)}
-      </Flex>
+      </chakra.button>
     </Table.ColumnHeader>
   );
 };

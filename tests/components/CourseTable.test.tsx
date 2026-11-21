@@ -182,4 +182,41 @@ describe("CourseTable", () => {
     const sortStates = readSortStates();
     expect(sortStates).toStrictEqual({ ...noColumnSorted, Difficulty: "descending" });
   });
+
+  it("renders each column header as a button when the table loads", () => {
+    renderTable();
+
+    const headerButtonNames = screen.getAllByRole("button").map((button) => button.textContent);
+    expect(headerButtonNames).toStrictEqual(["Course Name", "Difficulty", "Time Commitment", "Review Count"]);
+  });
+
+  it("moves focus through the column headers in order when Tab is pressed", async () => {
+    const user = userEvent.setup();
+    renderTable();
+
+    const focusedNames: (string | null)[] = [];
+    for (let tabCount = 0; tabCount < 4; tabCount++) {
+      await user.tab();
+      focusedNames.push(document.activeElement?.textContent ?? null);
+    }
+
+    expect(focusedNames).toStrictEqual(["Course Name", "Difficulty", "Time Commitment", "Review Count"]);
+  });
+
+  it.each([
+    ["Enter", "{Enter}"],
+    ["Space", " "],
+  ])(
+    "renders courses in ascending difficulty order when Difficulty is focused and %s is pressed",
+    async (_key, keys) => {
+      const user = userEvent.setup();
+      renderTable();
+      screen.getByRole("button", { name: "Difficulty" }).focus();
+
+      await user.keyboard(keys);
+
+      const rowLabels = readRowLabels();
+      expect(rowLabels).toStrictEqual([easyLongLabel, mediumPopularLabel, hardShortLabel]);
+    },
+  );
 });
