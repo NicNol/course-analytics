@@ -36,16 +36,22 @@ describe("scrape handler", () => {
     expect(updateDB).not.toHaveBeenCalled();
   });
 
-  it("returns 401 without scraping when the cron key is not configured and the request has no authorization header", async () => {
-    vi.stubEnv("CRON_KEY", undefined);
-    const request = createRequest();
-    const response = createResponse();
+  it.each([
+    ["has no authorization header", {}],
+    ["has an empty authorization header", { authorization: "" }],
+  ])(
+    "returns 401 without scraping when the cron key is not configured and the request %s",
+    async (_scenario, headers) => {
+      vi.stubEnv("CRON_KEY", undefined);
+      const request = createRequest({ headers });
+      const response = createResponse();
 
-    await handler(request, response);
+      await handler(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(401);
-    expect(updateDB).not.toHaveBeenCalled();
-  });
+      expect(response.status).toHaveBeenCalledWith(401);
+      expect(updateDB).not.toHaveBeenCalled();
+    },
+  );
 
   it("returns 200 after scraping when the authorization header matches the cron key", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
