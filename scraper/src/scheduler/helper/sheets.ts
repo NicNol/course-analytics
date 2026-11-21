@@ -57,6 +57,12 @@ const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+function getWorksheet(spreadsheet: GoogleSpreadsheet, index: number): GoogleSpreadsheetWorksheet {
+  const worksheet = spreadsheet.sheetsByIndex[index];
+  if (!worksheet) throw new Error(`Missing worksheet at index ${index}`);
+  return worksheet;
+}
+
 async function loadSpreadsheet(id: string): Promise<GoogleSpreadsheet> {
   const spreadsheet = new GoogleSpreadsheet(id, createGoogleJWT());
   await spreadsheet.loadInfo();
@@ -68,12 +74,12 @@ export async function prepareSheet(): Promise<void> {
   const originalSpreadsheet = await loadSpreadsheet(SURVEY_SPREADSHEET_ID);
 
   /* Copy original data to masterSpreadsheet */
-  await originalSpreadsheet.sheetsByIndex[0].copyToSpreadsheet(MASTER_SPREADSHEET_ID);
+  await getWorksheet(originalSpreadsheet, 0).copyToSpreadsheet(MASTER_SPREADSHEET_ID);
 
   /* Reload masterSpreadsheet data to prevent errors */
   const masterSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
   const newSheetIndex = masterSpreadsheet.sheetCount - 1;
-  const newSheet: GoogleSpreadsheetWorksheet = masterSpreadsheet.sheetsByIndex[newSheetIndex];
+  const newSheet = getWorksheet(masterSpreadsheet, newSheetIndex);
   const newSheetId = newSheet.sheetId;
 
   /* Update newSheet headers to remove duplicates from original */
@@ -97,7 +103,7 @@ export async function getJSON(): Promise<ICourse[]> {
   const newSpreadsheet = await loadSpreadsheet(MASTER_SPREADSHEET_ID);
 
   /* Declare and initialize variables */
-  const worksheet = newSpreadsheet.sheetsByIndex[0];
+  const worksheet = getWorksheet(newSpreadsheet, 0);
   const rows = await worksheet.getRows<SurveyRow>();
   const output = [];
 

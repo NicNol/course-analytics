@@ -41,14 +41,15 @@ const classFilterMap: IClassFilterMap = {
 };
 
 const Home: NextPage<SummaryDataJSON> = ({ data }) => {
-  const [jsonData] = data;
+  const [summaryByDate] = data;
   const [classFilter, setClassFilter] = useState(["Lower Division", "Core Class", "Upper Division", "Elective"]);
   const [layoutView, setLayoutView] = useState("Card View");
   const [dateFilter, setDateFilter] = useState<DateFilter>(DateFilter.AllTime);
+  const courses = summaryByDate?.[dateFilter] ?? [];
 
   function handleClassFilter(criteria: string) {
     const classFilters = classFilterMap[criteria];
-    setClassFilter(classFilters);
+    if (classFilters) setClassFilter(classFilters);
   }
 
   function handleDateFilter(criteria: DateFilter) {
@@ -60,9 +61,9 @@ const Home: NextPage<SummaryDataJSON> = ({ data }) => {
       <PageHead />
       <AllFilters classFilter={handleClassFilter} setLayoutView={setLayoutView} dateFilter={handleDateFilter} />
       {layoutView === "Card View" ? (
-        <CourseList filter={classFilter} jsonData={jsonData[dateFilter]} />
+        <CourseList filter={classFilter} jsonData={courses} />
       ) : (
-        <CourseTable filter={classFilter} jsonData={jsonData[dateFilter]} />
+        <CourseTable filter={classFilter} jsonData={courses} />
       )}
     </PageWrapper>
   );

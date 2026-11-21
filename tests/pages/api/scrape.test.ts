@@ -3,6 +3,7 @@ import handler from "../../../pages/api/scrape";
 import { classList } from "../../../scraper/src/classList";
 import updateDB from "../../../scraper/src/scheduler/updateDB";
 import { createRequest, createResponse } from "../../support/apiMocks";
+import { firstInvocationOrder } from "../../support/mockCalls";
 
 vi.mock("../../../scraper/src/scheduler/updateDB", () => ({ default: vi.fn() }));
 
@@ -94,8 +95,8 @@ describe("scrape handler", () => {
 
     await handler(request, response);
 
-    const scrapeOrder = vi.mocked(updateDB).mock.invocationCallOrder[0];
-    const firstRevalidateOrder = response.revalidate.mock.invocationCallOrder[0];
+    const scrapeOrder = firstInvocationOrder(vi.mocked(updateDB));
+    const firstRevalidateOrder = firstInvocationOrder(response.revalidate);
     expect(scrapeOrder).toBeLessThan(firstRevalidateOrder);
   });
 

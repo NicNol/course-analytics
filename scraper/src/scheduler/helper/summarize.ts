@@ -6,10 +6,6 @@ interface TimeAvg {
   [key: string]: number;
 }
 
-interface CourseCodes {
-  [key: string]: SummaryObject;
-}
-
 const timeAvg: TimeAvg = {
   "0-5 hours": 3,
   "6-12 hours": 9,
@@ -46,7 +42,7 @@ export async function saveCourses(json: ICourse[]) {
 
 function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISummary[] {
   /* Declare and initialize variables */
-  const courseCodes: CourseCodes = {};
+  const courseSummaries = new Map<string, SummaryObject>();
   const summaryJSON: ISummary[] = [];
 
   /* Create course summary objects and sum the data from each review */
@@ -56,24 +52,23 @@ function filterAndSummarizeDataByDate(json: ICourse[], daysInPast: number): ISum
     if (!code || !title) continue;
 
     /* Add course name to list of possible course names if it doesn't exist yet */
-    if (!Object.prototype.hasOwnProperty.call(courseCodes, code)) {
-      courseCodes[code] = new SummaryObject(code, title);
+    let summary = courseSummaries.get(code);
+    if (!summary) {
+      summary = new SummaryObject(code, title);
+      courseSummaries.set(code, summary);
     }
 
     /* Ignore reviews that are older than daysInPast */
     if (Date.parse(reviewDate) <= new Date().getTime() - daysInPast * 1000 * 60 * 60 * 24) continue;
 
     /* Add review details to course totals */
-    courseCodes[code].reviews += 1;
-    courseCodes[code].difficulty += parseInt(difficulty);
-    courseCodes[code].time += timeAvg[time];
+    summary.reviews += 1;
+    summary.difficulty += parseInt(difficulty);
+    summary.time += timeAvg[time] ?? NaN;
   }
 
   /* Average difficulty and time commitment data */
-  for (const course in courseCodes) {
-    /* Destructure course totals */
-    const { difficulty, code, title, reviews, tags, time } = courseCodes[course];
-
+  for (const { difficulty, code, title, reviews, tags, time } of courseSummaries.values()) {
     /* Round difficulty to one decimal */
     const avgDifficulty = Math.round((difficulty / reviews) * 10) / 10 || 0;
 

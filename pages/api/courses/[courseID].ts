@@ -14,11 +14,11 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
     const { courseID } = req.query;
 
     // courseID may be undefined, a string, or an array of strings
-    if (!courseID) {
+    const idString = Array.isArray(courseID) ? courseID[0] : courseID;
+    if (!idString) {
       res.status(400).json({ error: "CourseID not provided" });
       return;
     }
-    const idString: string = typeof courseID === "object" ? courseID[0] : courseID;
     const code = idString.replace("-", " ");
 
     const courses: ICourse[] = await Course.find({

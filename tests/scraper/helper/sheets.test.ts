@@ -62,10 +62,14 @@ function buildRow(values: Record<string, string>): SheetRow {
   return { get: (column) => values[column] };
 }
 
-function stubSurveyRows(rows: SheetRow[]) {
+function stubWorksheets(sheetsByIndex: { getRows: () => Promise<SheetRow[]> }[]) {
   vi.mocked(GoogleSpreadsheet).mockImplementation(function () {
-    return { loadInfo: vi.fn(), sheetsByIndex: [{ getRows: vi.fn().mockResolvedValue(rows) }] };
+    return { loadInfo: vi.fn(), sheetsByIndex };
   } as never);
+}
+
+function stubSurveyRows(rows: SheetRow[]) {
+  stubWorksheets([{ getRows: vi.fn().mockResolvedValue(rows) }]);
 }
 
 async function readReviews() {
@@ -111,6 +115,16 @@ describe("getJSON", () => {
       expect(GoogleSpreadsheet).not.toHaveBeenCalled();
     },
   );
+
+  it("rejects naming the worksheet when the spreadsheet has no worksheets", async () => {
+    stubWorksheets([]);
+
+    const reviews = getJSON();
+    const rejection = expect(reviews).rejects.toThrow("worksheet");
+    await vi.advanceTimersByTimeAsync(SLEEP_BEFORE_READING_MS);
+
+    await rejection;
+  });
 
   it("returns one review with the form answers when the row has one course", async () => {
     stubSurveyRows([buildRow(oneCourseRow)]);

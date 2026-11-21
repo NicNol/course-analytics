@@ -15,11 +15,11 @@ async function getSummary(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
 
     const { courseID } = req.query;
-    if (!courseID) {
+    const idString = Array.isArray(courseID) ? courseID[0] : courseID;
+    if (!idString) {
       res.status(400).json({ error: "CourseID not provided" });
       return;
     }
-    const idString: string = typeof courseID === "object" ? courseID[0] : courseID;
     const code = idString.replace("-", " ").toLowerCase();
 
     const summaries = await Summary.find({}, { _id: false, versionKey: false });

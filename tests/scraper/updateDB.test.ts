@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import updateDB from "../../scraper/src/scheduler/updateDB";
 import { buildSheetReview } from "../support/fixtures";
+import { firstInvocationOrder } from "../support/mockCalls";
 
 const { prepareSheet, getJSON, saveCourses, connectToDatabase, disconnectFromDatabase } = vi.hoisted(() => ({
   prepareSheet: vi.fn(),
@@ -37,8 +38,8 @@ describe("updateDB", () => {
 
     await updateDB();
 
-    const prepareOrder = prepareSheet.mock.invocationCallOrder[0];
-    const readOrder = getJSON.mock.invocationCallOrder[0];
+    const prepareOrder = firstInvocationOrder(prepareSheet);
+    const readOrder = firstInvocationOrder(getJSON);
     expect(prepareOrder).toBeLessThan(readOrder);
   });
 
