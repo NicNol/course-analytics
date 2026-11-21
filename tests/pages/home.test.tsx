@@ -76,9 +76,9 @@ describe("Home", () => {
     const links = within(table).getAllByRole("link");
     const linkTargets = links.map((link) => [link.textContent, link.getAttribute("href")]);
     expect(linkTargets).toStrictEqual([
-      [`${lowerDivisionCourse.code} - ${lowerDivisionCourse.title}`, "/courses/CS-161"],
-      [`${upperDivisionCourse.code} - ${upperDivisionCourse.title}`, "/courses/CS-361"],
-      [`${recentElectiveCourse.code} - ${recentElectiveCourse.title}`, "/courses/CS-493"],
+      ["CS 161 - Introduction to Computer Science I", "/courses/CS-161"],
+      ["CS 361 - Software Engineering I", "/courses/CS-361"],
+      ["CS 493 - Cloud Application Development", "/courses/CS-493"],
     ]);
   });
 

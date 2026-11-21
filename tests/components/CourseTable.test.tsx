@@ -35,8 +35,12 @@ function buildCourses() {
   return [mediumPopularCourse, easyLongCourse, hardShortCourse];
 }
 
-function label({ code, title }: { code: string; title: string }) {
-  return `${code} - ${title}`;
+const easyLongLabel = "CS 161 - Introduction to Computer Science I";
+const hardShortLabel = "CS 261 - Computer Architecture";
+const mediumPopularLabel = "CS 361 - Software Engineering I";
+
+function renderTable(filter = allTags) {
+  return renderWithProvider(<CourseTable filter={filter} jsonData={buildCourses()} />);
 }
 
 function readRowLabels() {
@@ -48,81 +52,99 @@ function readRowLabels() {
 
 describe("CourseTable", () => {
   it("renders courses in ascending course code order when the table loads", () => {
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(easyLongCourse), label(hardShortCourse), label(mediumPopularCourse)]);
+    expect(rowLabels).toStrictEqual([easyLongLabel, hardShortLabel, mediumPopularLabel]);
+  });
+
+  it("renders the difficulty, hours, and review count of every course when the table loads", () => {
+    renderTable();
+
+    const expectedCellTexts = [
+      "2.5 / 5.0",
+      "15 Hours",
+      "120 Reviews",
+      "4.0 / 5.0",
+      "9 Hours",
+      "40 Reviews",
+      "3.0 / 5.0",
+      "12 Hours",
+      "300 Reviews",
+    ];
+    const missingCellTexts = expectedCellTexts.filter((text) => screen.queryByText(text) === null);
+    expect(missingCellTexts).toStrictEqual([]);
   });
 
   it("renders only courses with a tag in the filter when a filter is given", () => {
-    renderWithProvider(<CourseTable filter={["Elective"]} jsonData={buildCourses()} />);
+    renderTable(["Elective"]);
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(mediumPopularCourse)]);
+    expect(rowLabels).toStrictEqual([mediumPopularLabel]);
   });
 
   it("renders courses in descending course code order when Course Name is clicked", async () => {
     const user = userEvent.setup();
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
 
     await user.click(screen.getByText("Course Name"));
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(mediumPopularCourse), label(hardShortCourse), label(easyLongCourse)]);
+    expect(rowLabels).toStrictEqual([mediumPopularLabel, hardShortLabel, easyLongLabel]);
   });
 
   it("renders courses in ascending difficulty order when Difficulty is clicked once", async () => {
     const user = userEvent.setup();
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
 
     await user.click(screen.getByText("Difficulty"));
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(easyLongCourse), label(mediumPopularCourse), label(hardShortCourse)]);
+    expect(rowLabels).toStrictEqual([easyLongLabel, mediumPopularLabel, hardShortLabel]);
   });
 
   it("renders courses in descending difficulty order when Difficulty is clicked twice", async () => {
     const user = userEvent.setup();
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
 
     await user.click(screen.getByText("Difficulty"));
     await user.click(screen.getByText("Difficulty"));
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(hardShortCourse), label(mediumPopularCourse), label(easyLongCourse)]);
+    expect(rowLabels).toStrictEqual([hardShortLabel, mediumPopularLabel, easyLongLabel]);
   });
 
   it("renders courses in ascending order of the new column when another column is clicked after Difficulty", async () => {
     const user = userEvent.setup();
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
     await user.click(screen.getByText("Difficulty"));
     await user.click(screen.getByText("Difficulty"));
 
     await user.click(screen.getByText("Time Commitment"));
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(hardShortCourse), label(mediumPopularCourse), label(easyLongCourse)]);
+    expect(rowLabels).toStrictEqual([hardShortLabel, mediumPopularLabel, easyLongLabel]);
   });
 
   it("renders courses in ascending order of review count when Review Count is clicked", async () => {
     const user = userEvent.setup();
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
 
     await user.click(screen.getByText("Review Count"));
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(hardShortCourse), label(easyLongCourse), label(mediumPopularCourse)]);
+    expect(rowLabels).toStrictEqual([hardShortLabel, easyLongLabel, mediumPopularLabel]);
   });
 
   it("renders courses in ascending course code order when the table is mounted again after another table was sorted", async () => {
     const user = userEvent.setup();
-    const { unmount } = renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    const { unmount } = renderTable();
     await user.click(screen.getByText("Review Count"));
     unmount();
 
-    renderWithProvider(<CourseTable filter={allTags} jsonData={buildCourses()} />);
+    renderTable();
 
     const rowLabels = readRowLabels();
-    expect(rowLabels).toStrictEqual([label(easyLongCourse), label(hardShortCourse), label(mediumPopularCourse)]);
+    expect(rowLabels).toStrictEqual([easyLongLabel, hardShortLabel, mediumPopularLabel]);
   });
 });
