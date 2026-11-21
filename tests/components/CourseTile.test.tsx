@@ -14,7 +14,7 @@ const tileProps = {
 };
 
 describe("CourseTile", () => {
-  it("sends the first Tab press to the details button named for the course", async () => {
+  it("focuses the details button named for the course when Tab is first pressed", async () => {
     const user = userEvent.setup();
     renderWithProvider(<CourseTile {...tileProps} />);
 
@@ -24,13 +24,33 @@ describe("CourseTile", () => {
     expect(detailsButton).toHaveFocus();
   });
 
-  it("renders the code, the title and the button as links to the course page that Tab skips", () => {
+  it("returns focus to the page when Tab is pressed a second time", async () => {
+    const user = userEvent.setup();
     renderWithProvider(<CourseTile {...tileProps} />);
 
-    const links = screen.getAllByRole("link");
-    const hrefs = links.map((link) => link.getAttribute("href"));
-    const tabIndexes = links.map((link) => link.getAttribute("tabindex"));
-    expect(hrefs).toStrictEqual(["/courses/CS-161", "/courses/CS-161", "/courses/CS-161"]);
-    expect(tabIndexes).toStrictEqual(["-1", "-1", "-1"]);
+    await user.tab();
+    await user.tab();
+
+    expect(document.body).toHaveFocus();
+  });
+
+  it.each([tileProps.code, tileProps.title])(
+    "renders the link named %j to the course page and keeps it out of the Tab order",
+    (linkName) => {
+      renderWithProvider(<CourseTile {...tileProps} />);
+
+      const link = screen.getByRole("link", { name: linkName });
+      expect(link).toHaveAttribute("href", "/courses/CS-161");
+      expect(link).toHaveAttribute("tabindex", "-1");
+    },
+  );
+
+  it("renders the details button inside a link to the course page that is kept out of the Tab order", () => {
+    renderWithProvider(<CourseTile {...tileProps} />);
+
+    const detailsButton = screen.getByRole("button", { name: "View Details for CS 161" });
+    const link = detailsButton.closest("a");
+    expect(link).toHaveAttribute("href", "/courses/CS-161");
+    expect(link).toHaveAttribute("tabindex", "-1");
   });
 });
