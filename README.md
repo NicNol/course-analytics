@@ -52,7 +52,7 @@ Download the current codebase or create a fork. Navigate to the root of the proj
 
 ## Configure
 
-Copy `.env.example` to `.env.local` in the root of the project directory and fill in the values. `MONGODB_URI` is required to run the site. To scrape data from the original Google Sheet you also need `GOOGLE_CLIENT_EMAIL` and `GOOGLE_PRIVATE_KEY` from a Google service account, and `CRON_KEY` to call `/api/scrape`.
+Copy `.env.example` to `.env.local` in the root of the project directory and fill in the values. `npm run dev` only needs `MONGODB_URI`. `npm run build` also needs `CRON_KEY`, `GOOGLE_CLIENT_EMAIL`, and `GOOGLE_PRIVATE_KEY`, and fails with a list of whichever are missing. The Google values come from a service account and are used by the scraper. `CRON_KEY` is the value `/api/scrape` expects in the `Authorization` header.
 
 The MongoDB URI may be a local instance of MongoDB or the URI for a cloud instance of MongoDB.
 

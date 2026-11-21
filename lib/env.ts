@@ -1,4 +1,4 @@
-type EnvName = "MONGODB_URI" | "CRON_KEY" | "GOOGLE_CLIENT_EMAIL" | "GOOGLE_PRIVATE_KEY";
+import type { EnvName } from "./envSchema";
 
 export function readEnv(name: EnvName) {
   const value = process.env[name];
