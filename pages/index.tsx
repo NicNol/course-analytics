@@ -9,10 +9,9 @@ import PageWrapper from "../components/PageWrapper";
 import { ISummaryByDate } from "../scraper/src/models/summary";
 import PageHead from "../components/PageHead";
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  let jsonData = await getSummary();
+export const getStaticProps: GetStaticProps<SummaryDataJSON> = async () => {
   /* Reformat to prevent a Next.js error when using getStaticProps */
-  jsonData = JSON.parse(JSON.stringify(jsonData));
+  const jsonData: ISummaryByDate[] = JSON.parse(JSON.stringify(await getSummary()));
   return {
     props: { data: jsonData },
     revalidate: 3600, // seconds (1 hour)

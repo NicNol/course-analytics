@@ -1,11 +1,8 @@
-import React, { FC } from "react";
 import { Button, Flex, Link } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "../icons";
 import NextLink from "next/link";
 
-interface BackBreadcrumbProps {}
-
-const BackBreadcrumb: FC<BackBreadcrumbProps> = () => {
+const BackBreadcrumb = () => {
   return (
     <Flex justifyContent={"center"}>
       <Flex maxW={"content"} w={["100%", null, null, "content"]} px={2} pt={4} pb={2}>

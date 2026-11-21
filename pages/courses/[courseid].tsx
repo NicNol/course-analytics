@@ -6,6 +6,11 @@ import PageWrapper from "../../components/PageWrapper";
 import BackBreadcrumb from "../../components/CourseReview/BackBreadcrumb";
 import PageHead from "../../components/PageHead";
 
+type CourseProps = {
+  data: ICourse[];
+  courseid: string;
+};
+
 type Params = {
   params: {
     courseid: string;
@@ -27,7 +32,7 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }: Params) => {
+export const getStaticProps = async ({ params }: Params): Promise<{ props: CourseProps; revalidate: number }> => {
   const { courseid } = params;
   const code = courseid.replace("-", " ");
 
@@ -40,10 +45,7 @@ export const getStaticProps = async ({ params }: Params) => {
   };
 };
 
-const Course = (data: any) => {
-  const courseData = data.data as ICourse[];
-  const courseid = data.courseid;
-
+const Course = ({ data: courseData, courseid }: CourseProps) => {
   return (
     <PageWrapper>
       <PageHead pageTitle={courseid} />
