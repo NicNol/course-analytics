@@ -1,5 +1,6 @@
 import { classList } from "../../scraper/src/classList";
 import updateDB from "../../scraper/src/scheduler/updateDB";
+import { readEnv } from "../../lib/env";
 import { isValidCronKey } from "../../lib/isValidCronKey";
 import { sendServerError } from "../../lib/sendServerError";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -9,7 +10,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(405).end("HTTP METHOD NOT ACCEPTED");
     return;
   }
-  if (!isValidCronKey(req.headers.authorization, process.env.CRON_KEY)) {
+  if (!isValidCronKey(req.headers.authorization, readEnv("CRON_KEY"))) {
     res.status(401).end("UNAUTHORIZED");
     return;
   }

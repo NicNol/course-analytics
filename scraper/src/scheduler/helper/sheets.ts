@@ -2,6 +2,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 import { ICourse } from "../../models/course";
 import { formatCourseName } from "./summarize";
 import { JWT } from "google-auth-library";
+import { requireEnv } from "../../../../lib/env";
 
 type SurveyRow = {
   timestamp: string;
@@ -22,13 +23,13 @@ type SurveyRow = {
   tips3: string;
 };
 
-/* Get credentials from process.env */
-const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
-const googleJWT = new JWT({
-  email: GOOGLE_CLIENT_EMAIL || "GOOGLE_CLIENT_EMAIL is missing",
-  key: GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n") || "GOOGLE_PRIVATE_KEY is missing",
-  scopes: ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file"],
-});
+function createGoogleJWT() {
+  return new JWT({
+    email: requireEnv("GOOGLE_CLIENT_EMAIL"),
+    key: requireEnv("GOOGLE_PRIVATE_KEY").replace(/\\n/g, "\n"),
+    scopes: ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file"],
+  });
+}
 
 /* Declare and initialize spreadsheet objects */
 const SURVEY_SPREADSHEET_ID = "1MFBGJbOXVjtThgj5b6K0rv9xdsC1M2GQ0pJVB-8YCeU";
@@ -57,7 +58,7 @@ const sleep = (ms: number) => {
 };
 
 async function loadSpreadsheet(id: string): Promise<GoogleSpreadsheet> {
-  const spreadsheet = new GoogleSpreadsheet(id, googleJWT);
+  const spreadsheet = new GoogleSpreadsheet(id, createGoogleJWT());
   await spreadsheet.loadInfo();
   return spreadsheet;
 }

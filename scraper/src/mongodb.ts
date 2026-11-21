@@ -1,8 +1,6 @@
 // See https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/lib/dbConnect.ts
 import mongoose from "mongoose";
-import { config } from "dotenv";
-
-config();
+import { requireEnv } from "../../lib/env";
 
 type MongooseCache = {
   conn: mongoose.Mongoose | null;
@@ -17,10 +15,7 @@ declare global {
 const cached: MongooseCache = global.mongoose ?? (global.mongoose = { conn: null, promise: null });
 
 export const connectToDatabase = async () => {
-  const MONGODB_URI = process.env.MONGODB_URI;
-  if (!MONGODB_URI) {
-    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
-  }
+  const MONGODB_URI = requireEnv("MONGODB_URI");
 
   if (cached.conn) return cached.conn;
 

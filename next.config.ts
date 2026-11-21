@@ -1,5 +1,7 @@
-/** @type {import('next').NextConfig} */
-module.exports = {
+import type { NextConfig } from "next";
+import { validateEnv } from "./lib/envSchema";
+
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   compiler: {
     /* Chakra v3 styles with Emotion. The previous `styledComponents: true` transform
@@ -8,3 +10,8 @@ module.exports = {
     emotion: true,
   },
 };
+
+export default function config() {
+  validateEnv(process.env);
+  return nextConfig;
+}
