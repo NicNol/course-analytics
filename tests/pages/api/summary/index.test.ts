@@ -54,15 +54,17 @@ describe("summary handler", () => {
     expect(response.json).toHaveBeenCalledWith(summaries);
   });
 
-  it("returns 500 with the error when the database query fails", async () => {
+  it("returns 500 with a generic message and logs the error when the database query fails", async () => {
     const request = createRequest();
     const response = createResponse();
     const failure = new Error("query failed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     find.mockRejectedValue(failure);
 
     await getSummaryHandler(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
   });
 });

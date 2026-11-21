@@ -36,16 +36,22 @@ describe("scrape handler", () => {
     expect(updateDB).not.toHaveBeenCalled();
   });
 
-  it("returns 401 without scraping when the cron key is not configured and the request has no authorization header", async () => {
-    vi.stubEnv("CRON_KEY", undefined);
-    const request = createRequest();
-    const response = createResponse();
+  it.each([
+    ["has no authorization header", {}],
+    ["has an empty authorization header", { authorization: "" }],
+  ])(
+    "returns 401 without scraping when the cron key is not configured and the request %s",
+    async (_scenario, headers) => {
+      vi.stubEnv("CRON_KEY", undefined);
+      const request = createRequest({ headers });
+      const response = createResponse();
 
-    await handler(request, response);
+      await handler(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(401);
-    expect(updateDB).not.toHaveBeenCalled();
-  });
+      expect(response.status).toHaveBeenCalledWith(401);
+      expect(updateDB).not.toHaveBeenCalled();
+    },
+  );
 
   it("returns 200 after scraping when the authorization header matches the cron key", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
@@ -82,28 +88,32 @@ describe("scrape handler", () => {
     expect(scrapeOrder).toBeLessThan(firstRevalidateOrder);
   });
 
-  it("returns 500 with the error when revalidation fails", async () => {
+  it("returns 500 with a generic message and logs the error when revalidation fails", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
     const response = createResponse();
     const failure = new Error("revalidation failed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     response.revalidate.mockRejectedValue(failure);
 
     await handler(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
   });
 
-  it("returns 500 with the error when scraping fails", async () => {
+  it("returns 500 with a generic message and logs the error when scraping fails", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
     const response = createResponse();
     const failure = new Error("database closed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(updateDB).mockRejectedValue(failure);
 
     await handler(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
     expect(response.revalidate).not.toHaveBeenCalled();
   });
 });

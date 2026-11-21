@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { escapeRegExp } from "../../../lib/escapeRegExp";
+import { sendServerError } from "../../../lib/sendServerError";
 import { connectToDatabase } from "../../../scraper/src/mongodb";
 import { Course, ICourse } from "../../../scraper/src/models/course";
 
@@ -12,16 +14,19 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
     const { courseID } = req.query;
 
     // courseID may be undefined, a string, or an array of strings
-    if (!courseID) throw "CourseID not provided";
+    if (!courseID) {
+      res.status(400).json({ error: "CourseID not provided" });
+      return;
+    }
     const idString: string = typeof courseID === "object" ? courseID[0] : courseID;
     const code = idString.replace("-", " ");
 
     const courses: ICourse[] = await Course.find({
-      code: { $regex: code, $options: "i" },
+      code: { $regex: escapeRegExp(code), $options: "i" },
     });
     res.status(200).json(courses);
   } catch (err) {
-    res.status(500).send(err);
+    sendServerError(res, err);
   }
 }
 
