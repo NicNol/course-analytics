@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { getCourseData } from "../../lib/courses";
+import { getAllCourseData, getCourseData } from "../../lib/courses";
 import { firstInvocationOrder } from "../support/mockCalls";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
@@ -8,6 +8,22 @@ vi.mock("../../scraper/src/mongodb", () => ({ connectToDatabase }));
 vi.mock("../../scraper/src/models/course", () => ({ Course: { find } }));
 
 const HIDDEN_FIELDS = { _id: false, versionKey: false };
+
+describe("getAllCourseData", () => {
+  it("queries the reviews of every course", async () => {
+    await getAllCourseData();
+
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "", $options: "i" } }, HIDDEN_FIELDS);
+  });
+
+  it("connects to the database before querying", async () => {
+    await getAllCourseData();
+
+    const connectOrder = firstInvocationOrder(connectToDatabase);
+    const queryOrder = firstInvocationOrder(find);
+    expect(connectOrder).toBeLessThan(queryOrder);
+  });
+});
 
 describe("getCourseData", () => {
   it("queries the reviews matching the course code ignoring case", async () => {
@@ -28,5 +44,16 @@ describe("getCourseData", () => {
     const connectOrder = firstInvocationOrder(connectToDatabase);
     const queryOrder = firstInvocationOrder(find);
     expect(connectOrder).toBeLessThan(queryOrder);
+  });
+
+  it.each([
+    ["is empty", ""],
+    ["is only whitespace", "  "],
+  ])("rejects without connecting or querying when the course code %s", async (_scenario, courseCode) => {
+    const courses = getCourseData(courseCode);
+
+    await expect(courses).rejects.toThrow("course code");
+    expect(connectToDatabase).not.toHaveBeenCalled();
+    expect(find).not.toHaveBeenCalled();
   });
 });

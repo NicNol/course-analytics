@@ -2,11 +2,20 @@ import { connectToDatabase } from "../scraper/src/mongodb";
 import { Course } from "../scraper/src/models/course";
 import { escapeRegExp } from "./escapeRegExp";
 
-export async function getCourseData(courseCode = "") {
+async function findCourses(codeSearchText: string) {
   await connectToDatabase();
   const courseData = await Course.find(
-    { code: { $regex: escapeRegExp(courseCode), $options: "i" } },
+    { code: { $regex: escapeRegExp(codeSearchText), $options: "i" } },
     { _id: false, versionKey: false },
   );
   return courseData;
+}
+
+export async function getAllCourseData() {
+  return findCourses("");
+}
+
+export async function getCourseData(courseCode: string) {
+  if (!courseCode.trim()) throw new Error("A course code is required");
+  return findCourses(courseCode);
 }

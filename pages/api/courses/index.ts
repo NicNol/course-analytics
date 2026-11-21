@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getCourseData } from "../../../lib/courses";
+import { getAllCourseData } from "../../../lib/courses";
 import { sendServerError } from "../../../lib/sendServerError";
 
 async function getCourses(req: NextApiRequest, res: NextApiResponse) {
@@ -8,7 +8,7 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
   try {
-    const courses = await getCourseData();
+    const courses = await getAllCourseData();
     res.status(200).json(courses);
   } catch (err) {
     sendServerError(res, err);
