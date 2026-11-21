@@ -21,7 +21,9 @@
     "transpile": "npx tsc ./scraper/src/scheduler/updateDB/run.ts --target es2020 --module commonjs --moduleResolution node",
     "cypress-dev": "cypress open",
     "cypress": "cypress run",
-    "test": "vitest run"
+    "test": "vitest run",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.36.1",
@@ -40,11 +42,16 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "^3.36.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^8.0.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.13",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "cypress": "^15.17.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.0",
+    "jsdom": "^31.0.1",
     "prettier": "^3.9.6",
     "typescript": "^5.9.0",
     "vitest": "^5.1.1"
