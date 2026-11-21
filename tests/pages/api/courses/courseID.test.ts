@@ -42,26 +42,38 @@ describe("getCourses by course ID", () => {
     expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 162", $options: "i" } });
   });
 
-  it("returns 500 without querying when the course ID is missing", async () => {
+  it("escapes regular expression characters in the course ID before querying", async () => {
+    const request = createRequest({ query: { courseID: ".*" } });
+    const response = createResponse();
+    find.mockResolvedValue([]);
+
+    await getCourses(request, response);
+
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "\\.\\*", $options: "i" } });
+  });
+
+  it("returns 400 without querying when the course ID is missing", async () => {
     const request = createRequest();
     const response = createResponse();
 
     await getCourses(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith("CourseID not provided");
+    expect(response.status).toHaveBeenCalledWith(400);
+    expect(response.json).toHaveBeenCalledWith({ error: "CourseID not provided" });
     expect(find).not.toHaveBeenCalled();
   });
 
-  it("returns 500 with the error when the database query fails", async () => {
+  it("returns 500 with a generic message and logs the error when the database query fails", async () => {
     const request = createRequest({ query: { courseID: "CS-161" } });
     const response = createResponse();
     const failure = new Error("query failed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     find.mockRejectedValue(failure);
 
     await getCourses(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
   });
 });

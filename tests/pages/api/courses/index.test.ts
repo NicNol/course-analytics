@@ -34,16 +34,18 @@ describe("getCourses", () => {
     expect(response.json).toHaveBeenCalledWith(reviews);
   });
 
-  it("returns 500 with the error when the database query fails", async () => {
+  it("returns 500 with a generic message and logs the error when the database query fails", async () => {
     const request = createRequest();
     const response = createResponse();
     const failure = new Error("query failed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     find.mockRejectedValue(failure);
 
     await getCourses(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
   });
 });
 
@@ -52,6 +54,12 @@ describe("getCourseData", () => {
     await getCourseData("CS 261");
 
     expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 261", $options: "i" } }, HIDDEN_FIELDS);
+  });
+
+  it("escapes regular expression characters in the course code before querying", async () => {
+    await getCourseData("CS (1)");
+
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS \\(1\\)", $options: "i" } }, HIDDEN_FIELDS);
   });
 
   it("connects to the database before querying", async () => {

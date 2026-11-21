@@ -82,28 +82,32 @@ describe("scrape handler", () => {
     expect(scrapeOrder).toBeLessThan(firstRevalidateOrder);
   });
 
-  it("returns 500 with the error when revalidation fails", async () => {
+  it("returns 500 with a generic message and logs the error when revalidation fails", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
     const response = createResponse();
     const failure = new Error("revalidation failed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     response.revalidate.mockRejectedValue(failure);
 
     await handler(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
   });
 
-  it("returns 500 with the error when scraping fails", async () => {
+  it("returns 500 with a generic message and logs the error when scraping fails", async () => {
     const request = createRequest({ headers: { authorization: CRON_KEY } });
     const response = createResponse();
     const failure = new Error("database closed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(updateDB).mockRejectedValue(failure);
 
     await handler(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
     expect(response.revalidate).not.toHaveBeenCalled();
   });
 });

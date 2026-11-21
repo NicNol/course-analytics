@@ -54,26 +54,28 @@ describe("getSummary by course ID", () => {
     ]);
   });
 
-  it("returns 500 without querying when the course ID is missing", async () => {
+  it("returns 400 without querying when the course ID is missing", async () => {
     const request = createRequest();
     const response = createResponse();
 
     await getSummary(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith("CourseID not provided");
+    expect(response.status).toHaveBeenCalledWith(400);
+    expect(response.json).toHaveBeenCalledWith({ error: "CourseID not provided" });
     expect(find).not.toHaveBeenCalled();
   });
 
-  it("returns 500 with the error when the database query fails", async () => {
+  it("returns 500 with a generic message and logs the error when the database query fails", async () => {
     const request = createRequest({ query: { courseID: "CS-161" } });
     const response = createResponse();
     const failure = new Error("query failed");
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     find.mockRejectedValue(failure);
 
     await getSummary(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
-    expect(response.send).toHaveBeenCalledWith(failure);
+    expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(consoleError).toHaveBeenCalledWith(failure);
   });
 });

@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { sendServerError } from "../../../lib/sendServerError";
 import { connectToDatabase } from "../../../scraper/src/mongodb";
 import { Summary } from "../../../scraper/src/models/summary";
 import type { ISummary } from "../../../scraper/src/models/summary";
@@ -14,7 +15,10 @@ async function getSummary(req: NextApiRequest, res: NextApiResponse) {
     await connectToDatabase();
 
     const { courseID } = req.query;
-    if (!courseID) throw "CourseID not provided";
+    if (!courseID) {
+      res.status(400).json({ error: "CourseID not provided" });
+      return;
+    }
     const idString: string = typeof courseID === "object" ? courseID[0] : courseID;
     const code = idString.replace("-", " ").toLowerCase();
 
@@ -31,7 +35,7 @@ async function getSummary(req: NextApiRequest, res: NextApiResponse) {
 
     res.status(200).json(filtered);
   } catch (err) {
-    res.status(500).send(err);
+    sendServerError(res, err);
   }
 }
 

@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { sendServerError } from "../../../lib/sendServerError";
 import { connectToDatabase } from "../../../scraper/src/mongodb";
 import { Summary } from "../../../scraper/src/models/summary";
 
@@ -11,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const summaryJson = await getSummary();
     res.status(200).json(summaryJson);
   } catch (err) {
-    res.status(500).send(err);
+    sendServerError(res, err);
   }
 }
 
