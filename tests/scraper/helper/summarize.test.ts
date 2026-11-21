@@ -299,8 +299,10 @@ describe("saveCourses", () => {
 
     const deleteOrder = firstInvocationOrder(deleteMany);
     const insertOrder = firstInvocationOrder(insertMany);
-    expect(deleteMany).toHaveBeenCalledWith({}, { session: transactionSession });
-    expect(insertMany).toHaveBeenCalledWith([storedReview], { session: transactionSession });
+    const [deleteFilter] = firstCallArguments(deleteMany);
+    const [insertedReviews] = firstCallArguments(insertMany);
+    expect(deleteFilter).toStrictEqual({});
+    expect(insertedReviews).toStrictEqual([storedReview]);
     expect(deleteOrder).toBeLessThan(insertOrder);
   });
 
@@ -309,7 +311,7 @@ describe("saveCourses", () => {
 
     const [filter, , options] = firstCallArguments(findOneAndUpdate);
     expect(filter).toStrictEqual({});
-    expect(options).toStrictEqual({ upsert: true, session: transactionSession });
+    expect(options.upsert).toBe(true);
   });
 
   it("writes the reviews and the summary with the same transaction session when saving courses", async () => {

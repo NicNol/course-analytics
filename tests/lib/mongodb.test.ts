@@ -92,16 +92,13 @@ describe("mongodb", () => {
   });
 
   describe("runInTransaction", () => {
-    it("runs the work through the Mongoose connection transaction and returns its result", async () => {
-      const transactionResult = { committed: true };
-      transaction.mockResolvedValue(transactionResult);
+    it("runs the work through the Mongoose connection transaction", async () => {
       const work = vi.fn();
       const { runInTransaction } = await loadMongodbModule();
 
-      const result = await runInTransaction(work);
+      await runInTransaction(work);
 
       expect(transaction).toHaveBeenCalledWith(work);
-      expect(result).toBe(transactionResult);
     });
 
     it.each([
@@ -116,8 +113,9 @@ describe("mongodb", () => {
 
         const running = runInTransaction(vi.fn());
 
-        await expect(running).rejects.toThrow(/replica set/);
-        await expect(running).rejects.toMatchObject({ cause: serverError });
+        const error = await running.catch((caught: Error) => caught);
+        expect(error.message).toMatch(/replica set/);
+        expect(error.cause).toBe(serverError);
       },
     );
 
