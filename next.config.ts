@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
-import { PHASE_PRODUCTION_BUILD } from "next/constants";
-import { deployedEnvSchema, siteEnvSchema, validateEnv } from "./lib/envSchema";
+import { validateEnv } from "./lib/envSchema";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -12,8 +11,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default function config(phase: string) {
-  const schema = phase === PHASE_PRODUCTION_BUILD ? deployedEnvSchema : siteEnvSchema;
-  validateEnv(process.env, schema);
+export default function config() {
+  validateEnv(process.env);
   return nextConfig;
 }

@@ -52,7 +52,9 @@ Download the current codebase or create a fork. Navigate to the root of the proj
 
 ## Configure
 
-Copy `.env.example` to `.env.local` in the root of the project directory and fill in the values. `npm run dev` only needs `MONGODB_URI`. `npm run build` also needs `CRON_KEY`, `GOOGLE_CLIENT_EMAIL`, and `GOOGLE_PRIVATE_KEY`, and fails with a list of whichever are missing. The Google values come from a service account and are used by the scraper. `CRON_KEY` is the value `/api/scrape` expects in the `Authorization` header.
+Copy `.env.example` to `.env.local` in the root of the project directory and fill in the values. Every command that loads the app (`npm run dev`, `npm run build`, `npm start`) fails with a list of whichever variables are missing.
+
+Running the site locally needs your own database, and the only way to fill it is the scraper. That is why all four variables are required. The Google values come from a service account with access to the survey sheet. `CRON_KEY` is the value `/api/scrape` expects in the `Authorization` header. It can be any string if you only scrape with `npm run scrape-dev`.
 
 The MongoDB URI may be a local instance of MongoDB or the URI for a cloud instance of MongoDB.
 
