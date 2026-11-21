@@ -12,9 +12,9 @@ export function sortCourses(summaryData: ISummary[]) {
   return [...summaryData].sort((a, b) => {
     const key = "code";
     const a_title = a[key].split(" ");
-    const a_number = parseInt(a_title[1]);
+    const a_number = parseInt(a_title[1] ?? "");
     const b_title = b[key].split(" ");
-    const b_number = parseInt(b_title[1]);
+    const b_number = parseInt(b_title[1] ?? "");
     return a_number - b_number;
   });
 }

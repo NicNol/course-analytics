@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import getSummaryHandler, { getSummary } from "../../../../pages/api/summary";
 import { createRequest, createResponse } from "../../../support/apiMocks";
 import { buildSummaryRow } from "../../../support/fixtures";
+import { firstInvocationOrder } from "../../../support/mockCalls";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
@@ -26,8 +27,8 @@ describe("getSummary", () => {
   it("connects to the database before querying", async () => {
     await getSummary();
 
-    const connectOrder = connectToDatabase.mock.invocationCallOrder[0];
-    const queryOrder = find.mock.invocationCallOrder[0];
+    const connectOrder = firstInvocationOrder(connectToDatabase);
+    const queryOrder = firstInvocationOrder(find);
     expect(connectOrder).toBeLessThan(queryOrder);
   });
 });

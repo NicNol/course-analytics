@@ -16,7 +16,7 @@ const MenuOptions: IMenuOption[] = [
 ];
 
 const DateMenu: FC<DateMenuProps> = ({ handleFilter }) => {
-  const [currentMenuItem, setCurrentMenuItem] = useState(MenuOptions[0].title);
+  const [currentMenuItem, setCurrentMenuItem] = useState<string>(DateFilter.AllTime);
 
   function handleMenuItemClick(menuItem: DateFilter) {
     handleFilter(menuItem);

@@ -112,6 +112,18 @@ describe("getJSON", () => {
     },
   );
 
+  it("rejects naming the worksheet when the spreadsheet has no worksheets", async () => {
+    vi.mocked(GoogleSpreadsheet).mockImplementation(function () {
+      return { loadInfo: vi.fn(), sheetsByIndex: [] };
+    } as never);
+
+    const reviews = getJSON();
+    const rejection = expect(reviews).rejects.toThrow("worksheet");
+    await vi.advanceTimersByTimeAsync(SLEEP_BEFORE_READING_MS);
+
+    await rejection;
+  });
+
   it("returns one review with the form answers when the row has one course", async () => {
     stubSurveyRows([buildRow(oneCourseRow)]);
 

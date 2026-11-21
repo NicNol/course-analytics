@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import getCourses, { getCourseData } from "../../../../pages/api/courses";
 import { createRequest, createResponse } from "../../../support/apiMocks";
 import { buildReview } from "../../../support/fixtures";
+import { firstInvocationOrder } from "../../../support/mockCalls";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
@@ -65,8 +66,8 @@ describe("getCourseData", () => {
   it("connects to the database before querying", async () => {
     await getCourseData("CS 261");
 
-    const connectOrder = connectToDatabase.mock.invocationCallOrder[0];
-    const queryOrder = find.mock.invocationCallOrder[0];
+    const connectOrder = firstInvocationOrder(connectToDatabase);
+    const queryOrder = firstInvocationOrder(find);
     expect(connectOrder).toBeLessThan(queryOrder);
   });
 });

@@ -62,19 +62,14 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   const coursePairings: CoursePairings = {};
   for (const course of filteredData) {
     for (const pairing of course["other courses"]) {
-      if (!coursePairings.hasOwnProperty(pairing)) {
-        coursePairings[pairing] = 0;
-      }
-      coursePairings[pairing] += 1;
+      coursePairings[pairing] = (coursePairings[pairing] ?? 0) + 1;
     }
   }
-  const sortedPairings = Object.keys(coursePairings).sort(function (a, b) {
-    return coursePairings[b] - coursePairings[a];
-  });
+  const sortedPairings = Object.entries(coursePairings).sort(([, countA], [, countB]) => countB - countA);
   const coursePairs =
     sortedPairings.length === 0
       ? [<Text key="None">None</Text>]
-      : sortedPairings.map((pair) => {
+      : sortedPairings.map(([pair, count]) => {
           const pairArray = pair.split(" ");
           const courseID = `${pairArray[0]} ${pairArray[1]}`;
 
@@ -90,7 +85,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
               </Tooltip>
               <Text fontWeight={"bold"}>{courseID}:</Text>
               <Text>
-                {coursePairings[pair]} {coursePairings[pair] > 1 ? "times" : "time"}
+                {count} {count > 1 ? "times" : "time"}
               </Text>
             </Stack>
           );

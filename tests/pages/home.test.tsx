@@ -65,6 +65,26 @@ describe("Home", () => {
     expect(shownTitles).toStrictEqual(expectedCourses.map(({ title }) => title));
   });
 
+  it("renders no cards when there is no summary data", () => {
+    renderWithProvider(<Home data={[]} />);
+
+    const detailButtons = screen.queryAllByRole("button", { name: /View Details/ });
+    const classFilter = screen.getByRole("button", { name: "All Classes" });
+    expect(detailButtons).toStrictEqual([]);
+    expect(classFilter).toBeInTheDocument();
+  });
+
+  it("renders only the table header row when there is no summary data and Table View is chosen", async () => {
+    const user = userEvent.setup();
+    renderWithProvider(<Home data={[]} />);
+
+    await user.click(screen.getByRole("button", { name: "Card View" }));
+    await user.click(await screen.findByRole("menuitem", { name: "Table View" }));
+
+    const rows = within(screen.getByRole("table")).getAllByRole("row");
+    expect(rows).toHaveLength(1);
+  });
+
   it("renders a table with a linked row for every course when Table View is chosen", async () => {
     const user = userEvent.setup();
     renderWithProvider(<Home data={buildSummaryByDate()} />);

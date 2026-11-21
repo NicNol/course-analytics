@@ -14,11 +14,12 @@ interface CourseDetailBodyProps {
 
 const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
   const { courseData, courseid } = props;
-  const CourseListing = classList.filter((course) => course.code === courseid);
+  const courseListing = classList.find((course) => course.code === courseid);
+  if (!courseListing) throw new Error(`Unknown course ${courseid}`);
   const tipsPerPage = 10;
   const [pageNumber, setPageNumber] = useState(1);
 
-  const { tags, title } = CourseListing[0];
+  const { tags, title } = courseListing;
   const tagElements = tags.map((tag) => <CourseTag key={courseid + tag}>{tag}</CourseTag>);
 
   const sortedReviews = [...courseData].sort(function (a, b) {

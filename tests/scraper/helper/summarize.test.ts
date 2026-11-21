@@ -3,6 +3,7 @@ import { classList } from "../../../scraper/src/classList";
 import type { ISummaryByDate } from "../../../scraper/src/models/summary";
 import { formatCourseName, saveCourses } from "../../../scraper/src/scheduler/helper/summarize";
 import { buildSheetReview } from "../../support/fixtures";
+import { firstCallArguments, firstInvocationOrder } from "../../support/mockCalls";
 
 const { deleteMany, insertMany, findOneAndUpdate } = vi.hoisted(() => ({
   deleteMany: vi.fn(),
@@ -67,7 +68,7 @@ describe("saveCourses", () => {
   const REVIEW_DATE_OLDER_THAN_TWO_YEARS = "6/1/2023 10:00:00";
 
   function readSavedSummary(): ISummaryByDate {
-    return findOneAndUpdate.mock.calls[0][1];
+    return firstCallArguments(findOneAndUpdate)[1];
   }
 
   beforeEach(() => {
@@ -134,6 +135,30 @@ describe("saveCourses", () => {
     ]);
     expect(summary["Past 6 Months"]).toStrictEqual([
       { ...cs162Summary, "average difficulty": "0", "time commitment": "0", "review count": "0" },
+    ]);
+  });
+
+  it("saves a zero time commitment but keeps the other averages when a review has an unrecognized time commitment", async () => {
+    const reviews = [
+      buildSheetReview({
+        difficulty: "2",
+        "time commitment": "6-12 hours",
+        "review date": REVIEW_DATE_WITHIN_SIX_MONTHS,
+      }),
+      buildSheetReview({
+        difficulty: "4",
+        "time commitment": "a few hours",
+        "review date": REVIEW_DATE_WITHIN_SIX_MONTHS,
+      }),
+    ];
+    const cs161Tags = classList.find(({ code }) => code === "CS 161")?.tags;
+    const cs161Summary = { code: "CS 161", title: "Introduction to Computer Science I", tags: cs161Tags };
+
+    await saveCourses(reviews);
+
+    const summary = readSavedSummary();
+    expect(summary["All Time"]).toStrictEqual([
+      { ...cs161Summary, "average difficulty": "3", "time commitment": "0", "review count": "2" },
     ]);
   });
 
@@ -217,8 +242,8 @@ describe("saveCourses", () => {
 
     await saveCourses([review]);
 
-    const deleteOrder = deleteMany.mock.invocationCallOrder[0];
-    const insertOrder = insertMany.mock.invocationCallOrder[0];
+    const deleteOrder = firstInvocationOrder(deleteMany);
+    const insertOrder = firstInvocationOrder(insertMany);
     expect(deleteMany).toHaveBeenCalledWith({});
     expect(insertMany).toHaveBeenCalledWith([storedReview]);
     expect(deleteOrder).toBeLessThan(insertOrder);
@@ -227,7 +252,7 @@ describe("saveCourses", () => {
   it("saves the summary with upsert when saving courses", async () => {
     await saveCourses([buildSheetReview()]);
 
-    const [filter, , options] = findOneAndUpdate.mock.calls[0];
+    const [filter, , options] = firstCallArguments(findOneAndUpdate);
     expect(filter).toStrictEqual({});
     expect(options).toStrictEqual({ upsert: true });
   });
