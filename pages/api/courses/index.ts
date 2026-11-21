@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getAllCourseData } from "../../../lib/courses";
+import { getReviews } from "../../../lib/survey";
 import { sendServerError } from "../../../lib/sendServerError";
+import { PUBLIC_API_CACHE_CONTROL } from "../../../lib/publicApiCache";
 
 async function getCourses(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
@@ -8,7 +9,8 @@ async function getCourses(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
   try {
-    const courses = await getAllCourseData();
+    const courses = await getReviews();
+    res.setHeader("Cache-Control", PUBLIC_API_CACHE_CONTROL);
     res.status(200).json(courses);
   } catch (err) {
     sendServerError(res, err);

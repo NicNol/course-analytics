@@ -2,19 +2,17 @@ import { describe, expect, it, vi } from "vitest";
 import { getSummary } from "../../lib/summaries";
 import { buildReview } from "../support/fixtures";
 import { useFixedClock } from "../support/fixedClock";
-import { firstInvocationOrder } from "../support/mockCalls";
 
-const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
+const { getReviews } = vi.hoisted(() => ({ getReviews: vi.fn() }));
 
-vi.mock("../../lib/mongodb", () => ({ connectToDatabase }));
-vi.mock("../../lib/models/course", () => ({ Course: { find } }));
+vi.mock("../../lib/survey", () => ({ getReviews }));
 
 const cs161Tags = ["Lower Division", "Core Class"];
 
 describe("getSummary", () => {
   useFixedClock("2026-06-15T12:00:00Z");
 
-  it("returns one document with the stored reviews summarized for each date range", async () => {
+  it("returns one document with the survey reviews summarized for each date range", async () => {
     const recentReview = buildReview({
       difficulty: "1",
       "time commitment": "0-5 hours",
@@ -25,7 +23,7 @@ describe("getSummary", () => {
       "time commitment": "6-12 hours",
       "review date": "6/1/2025 10:00:00",
     });
-    find.mockResolvedValue([recentReview, olderReview]);
+    getReviews.mockResolvedValue([recentReview, olderReview]);
     const cs161Row = { code: "CS 161", title: "Introduction to Computer Science I", tags: cs161Tags };
 
     const summary = await getSummary();
@@ -37,15 +35,5 @@ describe("getSummary", () => {
         "Past 6 Months": [{ ...cs161Row, "average difficulty": "1", "time commitment": "3", "review count": "1" }],
       },
     ]);
-  });
-
-  it("connects to the database before querying", async () => {
-    find.mockResolvedValue([]);
-
-    await getSummary();
-
-    const connectOrder = firstInvocationOrder(connectToDatabase);
-    const queryOrder = firstInvocationOrder(find);
-    expect(connectOrder).toBeLessThan(queryOrder);
   });
 });

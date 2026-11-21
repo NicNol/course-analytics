@@ -12,7 +12,14 @@ export function createRequest({ method = "GET", query = {}, headers = {} }: Requ
 }
 
 export function createResponse() {
-  const response = { status: vi.fn(), json: vi.fn(), send: vi.fn(), end: vi.fn(), revalidate: vi.fn() };
+  const response = {
+    status: vi.fn(),
+    json: vi.fn(),
+    send: vi.fn(),
+    end: vi.fn(),
+    revalidate: vi.fn(),
+    setHeader: vi.fn(),
+  };
   response.status.mockReturnValue(response);
   return response as typeof response & NextApiResponse;
 }

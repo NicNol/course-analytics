@@ -4,12 +4,11 @@ import { createRequest, createResponse } from "../../../support/apiMocks";
 import { buildReview, buildSummaryRow } from "../../../support/fixtures";
 import { useFixedClock } from "../../../support/fixedClock";
 
-const { find } = vi.hoisted(() => ({ find: vi.fn() }));
+const { getReviews } = vi.hoisted(() => ({ getReviews: vi.fn() }));
 
-vi.mock("../../../../lib/mongodb", () => ({ connectToDatabase: vi.fn() }));
-vi.mock("../../../../lib/models/course", () => ({ Course: { find } }));
+vi.mock("../../../../lib/survey", () => ({ getReviews }));
 
-const storedReviews = [
+const surveyReviews = [
   buildReview({ code: "CS 161", difficulty: "2", "time commitment": "6-12 hours", "review date": "6/1/2025 10:00:00" }),
   buildReview({
     code: "CS 162",
@@ -42,20 +41,20 @@ const cs162Row = buildSummaryRow({
 describe("getSummary by course ID", () => {
   useFixedClock("2026-06-15T12:00:00Z");
 
-  it("returns 405 without querying when the method is not GET", async () => {
+  it("returns 405 without reading the survey when the method is not GET", async () => {
     const request = createRequest({ method: "POST", query: { courseID: "CS-161" } });
     const response = createResponse();
 
     await getSummary(request, response);
 
     expect(response.status).toHaveBeenCalledWith(405);
-    expect(find).not.toHaveBeenCalled();
+    expect(getReviews).not.toHaveBeenCalled();
   });
 
   it("returns 200 with only the requested course in every date range", async () => {
     const request = createRequest({ query: { courseID: "CS-161" } });
     const response = createResponse();
-    find.mockResolvedValue(storedReviews);
+    getReviews.mockResolvedValue(surveyReviews);
 
     await getSummary(request, response);
 
@@ -65,10 +64,20 @@ describe("getSummary by course ID", () => {
     ]);
   });
 
+  it("returns a five minute shared cache header with the summary", async () => {
+    const request = createRequest({ query: { courseID: "CS-161" } });
+    const response = createResponse();
+    getReviews.mockResolvedValue(surveyReviews);
+
+    await getSummary(request, response);
+
+    expect(response.setHeader).toHaveBeenCalledWith("Cache-Control", "public, s-maxage=300");
+  });
+
   it("returns the first course in the query when the course ID is repeated", async () => {
     const request = createRequest({ query: { courseID: ["CS-162", "CS-161"] } });
     const response = createResponse();
-    find.mockResolvedValue(storedReviews);
+    getReviews.mockResolvedValue(surveyReviews);
 
     await getSummary(request, response);
 
@@ -77,7 +86,7 @@ describe("getSummary by course ID", () => {
     ]);
   });
 
-  it("returns 400 without querying when the course ID is missing", async () => {
+  it("returns 400 without reading the survey when the course ID is missing", async () => {
     const request = createRequest();
     const response = createResponse();
 
@@ -85,20 +94,21 @@ describe("getSummary by course ID", () => {
 
     expect(response.status).toHaveBeenCalledWith(400);
     expect(response.json).toHaveBeenCalledWith({ error: "CourseID not provided" });
-    expect(find).not.toHaveBeenCalled();
+    expect(getReviews).not.toHaveBeenCalled();
   });
 
-  it("returns 500 with a generic message and logs the error when the database query fails", async () => {
+  it("returns 500 with a generic message, no cache header, and logs the error when reading the survey fails", async () => {
     const request = createRequest({ query: { courseID: "CS-161" } });
     const response = createResponse();
-    const failure = new Error("query failed");
+    const failure = new Error("Survey download failed with status 500");
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    find.mockRejectedValue(failure);
+    getReviews.mockRejectedValue(failure);
 
     await getSummary(request, response);
 
     expect(response.status).toHaveBeenCalledWith(500);
     expect(response.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
+    expect(response.setHeader).not.toHaveBeenCalled();
     expect(consoleError).toHaveBeenCalledWith(failure);
   });
 });

@@ -1,58 +1,57 @@
 import { describe, expect, it, vi } from "vitest";
-import { getAllCourseData, getCourseData } from "../../lib/courses";
-import { HIDDEN_FIELDS } from "../support/fixtures";
-import { firstInvocationOrder } from "../support/mockCalls";
+import { getCourseData } from "../../lib/courses";
+import { buildReview } from "../support/fixtures";
 
-const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
+const { getReviews } = vi.hoisted(() => ({ getReviews: vi.fn() }));
 
-vi.mock("../../lib/mongodb", () => ({ connectToDatabase }));
-vi.mock("../../lib/models/course", () => ({ Course: { find } }));
+vi.mock("../../lib/survey", () => ({ getReviews }));
 
-describe("getAllCourseData", () => {
-  it("queries the reviews of every course", async () => {
-    await getAllCourseData();
-
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "", $options: "i" } }, HIDDEN_FIELDS);
-  });
-
-  it("connects to the database before querying", async () => {
-    await getAllCourseData();
-
-    const connectOrder = firstInvocationOrder(connectToDatabase);
-    const queryOrder = firstInvocationOrder(find);
-    expect(connectOrder).toBeLessThan(queryOrder);
-  });
-});
+const cs161Review = buildReview({ code: "CS 161" });
+const cs162Review = buildReview({ code: "CS 162", title: "Introduction to Computer Science II" });
+const cs261Review = buildReview({ code: "CS 261", title: "Data Structures" });
+const mth231Review = buildReview({ code: "MTH 231", title: "Elements of Discrete Mathematics" });
+const surveyReviews = [cs161Review, cs162Review, cs261Review, mth231Review];
 
 describe("getCourseData", () => {
-  it("queries the reviews matching the course code ignoring case", async () => {
-    await getCourseData("CS 261");
+  it("returns only the reviews whose course code matches", async () => {
+    getReviews.mockResolvedValue(surveyReviews);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 261", $options: "i" } }, HIDDEN_FIELDS);
+    const reviews = await getCourseData("CS 261");
+
+    expect(reviews).toStrictEqual([cs261Review]);
   });
 
-  it("escapes regular expression characters in the course code before querying", async () => {
-    await getCourseData("CS (1)");
+  it("returns the matching reviews when the course code differs in case", async () => {
+    getReviews.mockResolvedValue(surveyReviews);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS \\(1\\)", $options: "i" } }, HIDDEN_FIELDS);
+    const reviews = await getCourseData("mth 231");
+
+    expect(reviews).toStrictEqual([mth231Review]);
   });
 
-  it("connects to the database before querying", async () => {
-    await getCourseData("CS 261");
+  it("returns every review whose course code contains a partial code", async () => {
+    getReviews.mockResolvedValue(surveyReviews);
 
-    const connectOrder = firstInvocationOrder(connectToDatabase);
-    const queryOrder = firstInvocationOrder(find);
-    expect(connectOrder).toBeLessThan(queryOrder);
+    const reviews = await getCourseData("CS 16");
+
+    expect(reviews).toStrictEqual([cs161Review, cs162Review]);
+  });
+
+  it("returns no reviews when the course code contains regular expression characters", async () => {
+    getReviews.mockResolvedValue(surveyReviews);
+
+    const reviews = await getCourseData(".*");
+
+    expect(reviews).toStrictEqual([]);
   });
 
   it.each([
     ["is empty", ""],
     ["is only whitespace", "  "],
-  ])("rejects without connecting or querying when the course code %s", async (_scenario, courseCode) => {
-    const courses = getCourseData(courseCode);
+  ])("rejects without reading the survey when the course code %s", async (_scenario, courseCode) => {
+    const reviews = getCourseData(courseCode);
 
-    await expect(courses).rejects.toThrow("course code");
-    expect(connectToDatabase).not.toHaveBeenCalled();
-    expect(find).not.toHaveBeenCalled();
+    await expect(reviews).rejects.toThrow("course code");
+    expect(getReviews).not.toHaveBeenCalled();
   });
 });
