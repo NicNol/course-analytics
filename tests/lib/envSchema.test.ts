@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { validateEnv } from "../../lib/envSchema";
-import { completeEnv, envNames } from "../support/env";
+import { completeEnv, envVariableNames } from "../support/env";
 
 describe("validateEnv", () => {
   it("does not throw when every variable is set", () => {
@@ -22,7 +22,7 @@ describe("validateEnv", () => {
     expect(validate).toThrow("variables: CRON_KEY.");
   });
 
-  it.each(envNames)("throws naming %s when the variable is empty", (variableName) => {
+  it.each(envVariableNames)("throws naming %s when the variable is empty", (variableName) => {
     const validate = () => validateEnv({ ...completeEnv, [variableName]: "" });
 
     expect(validate).toThrow(variableName);

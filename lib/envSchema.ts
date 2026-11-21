@@ -9,7 +9,7 @@ export const envSchema = z.object({
   GOOGLE_PRIVATE_KEY: requiredString,
 });
 
-export type EnvName = keyof z.infer<typeof envSchema>;
+export type EnvVariableName = keyof z.infer<typeof envSchema>;
 
 export function validateEnv(source: Record<string, string | undefined>) {
   const result = envSchema.safeParse(source);

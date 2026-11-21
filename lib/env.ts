@@ -1,11 +1,11 @@
-import type { EnvName } from "./envSchema";
+import type { EnvVariableName } from "./envSchema";
 
-export function readEnv(name: EnvName) {
+export function readEnv(name: EnvVariableName) {
   const value = process.env[name];
   return value === undefined || value === "" ? undefined : value;
 }
 
-export function requireEnv(name: EnvName) {
+export function requireEnv(name: EnvVariableName) {
   const value = readEnv(name);
   if (value === undefined) {
     throw new Error(`Missing required environment variable ${name}. See .env.example.`);

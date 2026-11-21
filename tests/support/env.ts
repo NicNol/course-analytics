@@ -5,4 +5,4 @@ export const completeEnv = {
   GOOGLE_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----\\nabc123\\n-----END PRIVATE KEY-----\\n",
 };
 
-export const envNames = Object.keys(completeEnv) as (keyof typeof completeEnv)[];
+export const envVariableNames = Object.keys(completeEnv) as (keyof typeof completeEnv)[];
