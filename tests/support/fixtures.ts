@@ -39,3 +39,5 @@ export function buildSheetReview(overrides: Partial<ICourse> = {}): ICourse {
     ...overrides,
   };
 }
+
+export const HIDDEN_FIELDS = { _id: false, versionKey: false };

@@ -1,14 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import getCourses from "../../../../pages/api/courses";
 import { createRequest, createResponse } from "../../../support/apiMocks";
-import { buildReview } from "../../../support/fixtures";
+import { buildReview, HIDDEN_FIELDS } from "../../../support/fixtures";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
 vi.mock("../../../../scraper/src/mongodb", () => ({ connectToDatabase }));
 vi.mock("../../../../scraper/src/models/course", () => ({ Course: { find } }));
-
-const HIDDEN_FIELDS = { _id: false, versionKey: false };
 
 describe("getCourses", () => {
   it("returns 405 without querying when the method is not GET", async () => {

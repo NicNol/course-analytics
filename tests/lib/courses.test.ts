@@ -1,13 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import { getAllCourseData, getCourseData } from "../../lib/courses";
+import { HIDDEN_FIELDS } from "../support/fixtures";
 import { firstInvocationOrder } from "../support/mockCalls";
 
 const { connectToDatabase, find } = vi.hoisted(() => ({ connectToDatabase: vi.fn(), find: vi.fn() }));
 
 vi.mock("../../scraper/src/mongodb", () => ({ connectToDatabase }));
 vi.mock("../../scraper/src/models/course", () => ({ Course: { find } }));
-
-const HIDDEN_FIELDS = { _id: false, versionKey: false };
 
 describe("getAllCourseData", () => {
   it("queries the reviews of every course", async () => {
