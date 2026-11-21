@@ -8,6 +8,8 @@ const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 vi.mock("../../../../scraper/src/mongodb", () => ({ connectToDatabase: vi.fn() }));
 vi.mock("../../../../scraper/src/models/course", () => ({ Course: { find } }));
 
+const HIDDEN_FIELDS = { _id: false, versionKey: false };
+
 describe("getCourses by course ID", () => {
   it("returns 405 without querying when the method is not GET", async () => {
     const request = createRequest({ method: "POST", query: { courseID: "CS-161" } });
@@ -27,7 +29,7 @@ describe("getCourses by course ID", () => {
 
     await getCourses(request, response);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 161", $options: "i" } });
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 161", $options: "i" } }, HIDDEN_FIELDS);
     expect(response.status).toHaveBeenCalledWith(200);
     expect(response.json).toHaveBeenCalledWith(reviews);
   });
@@ -39,7 +41,7 @@ describe("getCourses by course ID", () => {
 
     await getCourses(request, response);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 162", $options: "i" } });
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "CS 162", $options: "i" } }, HIDDEN_FIELDS);
   });
 
   it("escapes regular expression characters in the course ID before querying", async () => {
@@ -49,11 +51,25 @@ describe("getCourses by course ID", () => {
 
     await getCourses(request, response);
 
-    expect(find).toHaveBeenCalledWith({ code: { $regex: "\\.\\*", $options: "i" } });
+    expect(find).toHaveBeenCalledWith({ code: { $regex: "\\.\\*", $options: "i" } }, HIDDEN_FIELDS);
   });
 
   it("returns 400 without querying when the course ID is missing", async () => {
     const request = createRequest();
+    const response = createResponse();
+
+    await getCourses(request, response);
+
+    expect(response.status).toHaveBeenCalledWith(400);
+    expect(response.json).toHaveBeenCalledWith({ error: "CourseID not provided" });
+    expect(find).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["empty", ""],
+    ["blank", "   "],
+  ])("returns 400 without querying when the course ID is %s", async (_description, courseID) => {
+    const request = createRequest({ query: { courseID } });
     const response = createResponse();
 
     await getCourses(request, response);
