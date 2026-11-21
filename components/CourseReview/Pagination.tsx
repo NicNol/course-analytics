@@ -6,10 +6,11 @@ interface PaginationProps {
   pageNumber: number;
   totalTipCount: number;
   tipsPerPage: number;
+  isLoading: boolean;
   changePage: (delta: number) => void;
 }
 
-const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPage, changePage }) => {
+const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPage, isLoading, changePage }) => {
   const pageCount = Math.ceil(totalTipCount / tipsPerPage);
 
   return (
@@ -19,7 +20,13 @@ const Pagination: FC<PaginationProps> = ({ pageNumber, totalTipCount, tipsPerPag
         <Text>Previous</Text>
       </Button>
       <Text textAlign={"center"}>{`Page ${pageNumber} of ${pageCount}`}</Text>
-      <Button disabled={pageNumber === pageCount} onClick={() => changePage(1)} variant={"solid"} colorPalette={"gray"}>
+      <Button
+        disabled={pageNumber >= pageCount}
+        loading={isLoading}
+        onClick={() => changePage(1)}
+        variant={"solid"}
+        colorPalette={"gray"}
+      >
         <Text>Next</Text>
         <ArrowForwardIcon />
       </Button>
