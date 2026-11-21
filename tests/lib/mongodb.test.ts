@@ -113,7 +113,12 @@ describe("mongodb", () => {
 
         const running = runInTransaction(vi.fn());
 
-        const error = await running.catch((caught: Error) => caught);
+        const error = await running.then(
+          () => {
+            throw new Error("Expected the transaction to reject");
+          },
+          (caught: Error) => caught,
+        );
         expect(error.message).toMatch(/replica set/);
         expect(error.cause).toBe(serverError);
       },
