@@ -40,6 +40,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           <Link asChild display={"block"} w={"full"} mt={3} _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
+              tabIndex={-1}
               data-href={`/courses/${code.replace(" ", "-")}`}
               href={`/courses/${code.replace(" ", "-")}`}
             >
@@ -53,6 +54,7 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           <Link asChild display={"block"} w={"full"} _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
+              tabIndex={-1}
               data-href={`/courses/${code.replace(" ", "-")}`}
               href={`/courses/${code.replace(" ", "-")}`}
             >
@@ -73,10 +75,12 @@ const CourseTile: FC<CourseTileProps> = ({ tags, code, title, reviews, difficult
           <Link asChild _hover={{ textDecoration: "none" }}>
             <NextLink
               onClick={() => setLoadingStatus(true)}
+              tabIndex={-1}
               data-href={`/courses/${code.replace(" ", "-")}`}
               href={`/courses/${code.replace(" ", "-")}`}
             >
               <Button
+                aria-label={`View Details for ${code}`}
                 data-href={`/courses/${code.replace(" ", "-")}`}
                 mt={4}
                 w={"full"}
