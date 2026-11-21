@@ -9,7 +9,7 @@ interface CourseListProps {
 }
 
 export function sortCourses(summaryData: ISummary[]) {
-  return summaryData.sort((a, b) => {
+  return [...summaryData].sort((a, b) => {
     const key = "code";
     const a_title = a[key].split(" ");
     const a_number = parseInt(a_title[1]);

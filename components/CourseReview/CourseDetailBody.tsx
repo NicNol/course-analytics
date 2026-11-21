@@ -21,7 +21,7 @@ const CourseDetailBody: FC<CourseDetailBodyProps> = (props) => {
   const { tags, title } = CourseListing[0];
   const tagElements = tags.map((tag) => <CourseTag key={courseid + tag}>{tag}</CourseTag>);
 
-  const sortedReviews = courseData.sort(function (a, b) {
+  const sortedReviews = [...courseData].sort(function (a, b) {
     const dateKey = "review date";
     const dateA = new Date(a[dateKey]);
     const dateB = new Date(b[dateKey]);

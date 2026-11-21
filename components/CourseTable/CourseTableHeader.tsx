@@ -10,29 +10,10 @@ interface CourseTableHeaderProps {
 
 const CourseTableHeader: FC<CourseTableHeaderProps> = ({ columns, setColumnState }) => {
   function handleHeaderClick(columnHeader: string): void {
-    const newColumnState: IColumnState[] = [...columns];
-
-    for (let i = 0; i < newColumnState.length; i++) {
-      if (newColumnState[i].header === columnHeader) {
-        switch (newColumnState[i].filter) {
-          case null:
-            newColumnState[i].filter = "asc";
-            break;
-          case "asc":
-            newColumnState[i].filter = "desc";
-            break;
-          case "desc":
-            newColumnState[i].filter = "asc";
-            break;
-        }
-
-        if (newColumnState[i].filter === null) {
-          newColumnState[i].filter = "asc";
-        }
-      } else {
-        newColumnState[i].filter = null;
-      }
-    }
+    const newColumnState = columns.map((column): IColumnState => {
+      if (column.header !== columnHeader) return { ...column, filter: null };
+      return { ...column, filter: column.filter === "asc" ? "desc" : "asc" };
+    });
 
     setColumnState(newColumnState);
   }
