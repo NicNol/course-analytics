@@ -166,11 +166,15 @@ describe("saveCourses", () => {
   it("saves a zero time commitment when no review of the course has a recognized time commitment", async () => {
     vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const reviews = [buildSheetReview({ difficulty: "4", "time commitment": "a few hours" })];
+    const cs161Tags = classList.find(({ code }) => code === "CS 161")?.tags;
+    const cs161Summary = { code: "CS 161", title: "Introduction to Computer Science I", tags: cs161Tags };
 
     await saveCourses(reviews);
 
-    const [courseSummary] = readSavedSummary()["All Time"];
-    expect(courseSummary).toMatchObject({ "average difficulty": "4", "time commitment": "0", "review count": "1" });
+    const summary = readSavedSummary();
+    expect(summary["All Time"]).toStrictEqual([
+      { ...cs161Summary, "average difficulty": "4", "time commitment": "0", "review count": "1" },
+    ]);
   });
 
   it("logs one warning listing each distinct unrecognized time commitment when reviews have unrecognized time commitments", async () => {
@@ -185,7 +189,18 @@ describe("saveCourses", () => {
     await saveCourses(reviews);
 
     expect(consoleWarn).toHaveBeenCalledTimes(1);
-    expect(consoleWarn).toHaveBeenCalledWith('Ignoring unrecognized time commitments: "a few hours", ""');
+    expect(consoleWarn).toHaveBeenCalledWith(expect.stringContaining('"a few hours", ""'));
+  });
+
+  it("logs a warning and saves a zero time commitment when the time commitment is named like an object property", async () => {
+    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const reviews = [buildSheetReview({ "time commitment": "constructor" })];
+
+    await saveCourses(reviews);
+
+    const [courseSummary] = readSavedSummary()["All Time"];
+    expect(consoleWarn).toHaveBeenCalledWith(expect.stringContaining('"constructor"'));
+    expect(courseSummary?.["time commitment"]).toBe("0");
   });
 
   it("logs no warning when every time commitment is recognized", async () => {
