@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Tooltip } from "../ui/tooltip";
 import type { ReviewStats } from "../../lib/reviews";
+import { timeAvg } from "../../lib/summarize";
 
 interface CourseDetailBodyProps {
   courseData: ReviewStats[];
@@ -22,13 +23,6 @@ interface CourseDetailBodyProps {
 
 interface CoursePairings {
   [key: string]: number;
-}
-
-interface TimeAvg {
-  "0-5 hours": number;
-  "6-12 hours": number;
-  "13-18 hours": number;
-  "18+ hours": number;
 }
 
 const CourseStats: FC<CourseDetailBodyProps> = (props) => {
@@ -46,19 +40,17 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
     setFilter(filteredData);
   }
 
-  const timeAvg: TimeAvg = {
-    "0-5 hours": 3,
-    "6-12 hours": 9,
-    "13-18 hours": 15,
-    "18+ hours": 21,
-  };
-
   let totalDifficulty = 0;
   let totalHours = 0;
+  let hoursReviews = 0;
   const totalReviews = filteredData.length;
   for (const course of filteredData) {
     totalDifficulty += parseInt(course.difficulty);
-    totalHours += timeAvg[course["time commitment"] as keyof TimeAvg];
+    const hours = timeAvg.get(course["time commitment"]);
+    if (hours !== undefined) {
+      totalHours += hours;
+      hoursReviews += 1;
+    }
   }
 
   const coursePairings: CoursePairings = {};
@@ -112,7 +104,7 @@ const CourseStats: FC<CourseDetailBodyProps> = (props) => {
   );
 
   const difficulty = totalDifficulty ? (Math.round((totalDifficulty / totalReviews) * 10) / 10).toFixed(1) : "0.0";
-  const timeCommitment = totalHours ? Math.round(totalHours / totalReviews) : 0;
+  const timeCommitment = hoursReviews ? Math.round(totalHours / hoursReviews) : 0;
 
   function handleChangeDateFilter(e: ChangeEvent<HTMLSelectElement>) {
     handleFilter(parseInt(e.target.value));
