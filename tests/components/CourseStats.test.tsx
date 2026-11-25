@@ -15,7 +15,42 @@ function readPairingCounts() {
   return screen.getAllByText(PAIRING_COUNT_PATTERN).map((element) => element.textContent);
 }
 
+function readHoursPerWeek() {
+  return screen.getByText("Hours per Week").previousElementSibling?.textContent;
+}
+
 describe("CourseStats", () => {
+  it("renders the average hours per week across reviews with a recognized time commitment", () => {
+    const reviews = [buildReview({ "time commitment": "6-12 hours" }), buildReview({ "time commitment": "18+ hours" })];
+
+    renderWithProvider(<CourseStats courseData={reviews} />);
+
+    const hoursPerWeek = readHoursPerWeek();
+    expect(hoursPerWeek).toBe("15");
+  });
+
+  it("renders the average hours per week without counting a review with an unrecognized time commitment", () => {
+    const reviews = [
+      buildReview({ "time commitment": "6-12 hours" }),
+      buildReview({ "time commitment": "18+ hours" }),
+      buildReview({ "time commitment": "a lot" }),
+    ];
+
+    renderWithProvider(<CourseStats courseData={reviews} />);
+
+    const hoursPerWeek = readHoursPerWeek();
+    expect(hoursPerWeek).toBe("15");
+  });
+
+  it("renders 0 hours per week when no review has a recognized time commitment", () => {
+    const reviews = [buildReview({ "time commitment": "a lot" })];
+
+    renderWithProvider(<CourseStats courseData={reviews} />);
+
+    const hoursPerWeek = readHoursPerWeek();
+    expect(hoursPerWeek).toBe("0");
+  });
+
   it("renders pairings with the most common first and the number of times each was taken", () => {
     const reviews = [
       buildReview({ "other courses": ["CS 290 - Web Development", "CS 261 - Data Structures"] }),
